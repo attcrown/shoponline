@@ -105,4 +105,16 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+
+  auth: {
+    persistence: 'local', // วิธีที่ข้อมูลการเข้าสู่ระบบถูกเก็บรักษา (local หมายถึงบนอุปกรณ์ของผู้ใช้)
+    initialize: {
+      onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION', // mutation ที่จะถูกเรียกเมื่อสถานะการเข้าสู่ระบบเปลี่ยน
+      onAuthStateChangedAction: 'onAuthStateChangedAction', // action ที่จะถูกเรียกเมื่อสถานะการเข้าสู่ระบบเปลี่ยน
+      subscribeManually: false // ตั้งค่าเป็น true หากคุณต้องการที่จะทำการ subscribe ด้วยตัวเอง (ในกรณีที่คุณต้องการควบคุมขั้นตอนการตรวจสอบสถานะเข้าสู่ระบบเอง)
+    },
+    ssr: false, // ตั้งค่าเป็น true หากคุณต้องการให้โมดูลทำงานบน Server-Side Rendering (SSR)
+    emulatorPort: 9099, // หากคุณกำลังใช้ Firebase Emulator Suite, ค่าพอร์ตที่ใช้สำหรับ Firebase Authentication Emulator
+    emulatorHost: 'http://localhost', // หากคุณกำลังใช้ Firebase Emulator Suite, โฮสต์ที่ใช้สำหรับ Firebase Authentication Emulator
+  },  
 };
