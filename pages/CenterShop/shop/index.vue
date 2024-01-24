@@ -1,14 +1,18 @@
 <template>
     <div>
-        hello
+        hello {{ $store.state.displayName }}
         <v-btn @click="signout()">
             Signout
         </v-btn>
     </div>
 </template>
 <script>
+
 export default {
     layout: 'default',
+    mounted() {
+        console.log(this.$store.state)
+    },
     methods: {
         signout() {
             const auth = this.$fireModule.auth();

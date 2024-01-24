@@ -88,14 +88,21 @@ export default {
           // ตรวจสอบการยืนยันที่อยู่อีเมล
           if (!user.emailVerified) {
             // ถ้าที่อยู่อีเมลยังไม่ได้รับการยืนยัน, redirect ไปหน้า login
-            this.$router.push("/CenterShop/login");
+            auth.signOut().then(() => {
+              this.$router.push("/CenterShop/login");
+            })
           }
+          this.handleUserData(user);
         } else {
           // ไม่มีผู้ใช้ลงทะเบียน, ทำการเข้าสู่ระบบ
           this.$router.push("/CenterShop/login");
         }
       });
     },
+
+    handleUserData(user) {
+      this.$store.commit('SET_USER', user);
+    }
   },
 };
 </script>

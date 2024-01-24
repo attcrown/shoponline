@@ -119,6 +119,7 @@ export default {
     /* ทำให้เต็มจอ */
 }
 
+
 .fontsMoi {
     font-family: 'Moirai One', sans-serif;
     font-weight: 400;
