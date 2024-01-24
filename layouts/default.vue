@@ -1,20 +1,8 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
+  <v-app dark class="fonts300">
+    <v-navigation-drawer v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list>
-        <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          :to="item.to"
-          router
-          exact
-        >
+        <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-action>
@@ -27,7 +15,7 @@
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-btn icon @click.stop="miniVariant = !miniVariant">
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
+        <v-icon>mdi-{{ `chevron-${miniVariant ? "right" : "left"}` }}</v-icon>
       </v-btn>
       <v-btn icon @click.stop="clipped = !clipped">
         <v-icon>mdi-application</v-icon>
@@ -64,7 +52,7 @@
 
 <script>
 export default {
-  name: 'DefaultLayout',
+  name: "DefaultLayout",
   data() {
     return {
       clipped: false,
@@ -72,21 +60,49 @@ export default {
       fixed: false,
       items: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
+          icon: "mdi-apps",
+          title: "Welcome",
+          to: "/",
         },
         {
-          icon: 'mdi-chart-bubble',
-          title: 'Inspire',
-          to: '/inspire',
+          icon: "mdi-chart-bubble",
+          title: "Inspire",
+          to: "/inspire",
         },
       ],
       miniVariant: false,
       right: true,
       rightDrawer: false,
-      title: 'Vuetify.js',
-    }
+      title: "Vuetify.js",
+    };
   },
-}
+  mounted() {
+    this.beforeCreate();
+  },
+  methods: {
+    beforeCreate() {
+      const auth = this.$fireModule.auth();
+
+      auth.onAuthStateChanged((user) => {
+        if (user) {
+          // ตรวจสอบการยืนยันที่อยู่อีเมล
+          if (!user.emailVerified) {
+            // ถ้าที่อยู่อีเมลยังไม่ได้รับการยืนยัน, redirect ไปหน้า login
+            this.$router.push("/CenterShop/login");
+          }
+        } else {
+          // ไม่มีผู้ใช้ลงทะเบียน, ทำการเข้าสู่ระบบ
+          this.$router.push("/CenterShop/login");
+        }
+      });
+    },
+  },
+};
 </script>
+ 
+<style>
+.fonts300 {
+  font-family: 'Prompt', sans-serif;
+  font-weight: 500;
+}
+</style>
