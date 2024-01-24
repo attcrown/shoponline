@@ -110,7 +110,8 @@ export default {
     families: {
       Prompt: true, // โหลดสไตล์ทั้งหมดของ Roboto
       'Moirai One':true,
-      Kanit: true
+      Kanit: true,
+      'Dancing Script': true
     } // กำหนดการแสดงผลเมื่อโหลด Font
   }
 };

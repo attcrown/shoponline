@@ -1,30 +1,59 @@
 <template>
-    <div class="center-container" style="background: linear-gradient(to right, #ff7e5f, #feb47b, #ff7e5f);">
-        <v-card v-if="!deviceMode" class="container fonts500 text-center" max-width="500px" rounded="xxl">
-            <h1>TreadShop</h1>
-            <v-card-text>
-                ทดลองระบบได้แล้ววันนี้
-            </v-card-text>
-        </v-card>
-        <v-card elevation="16" :class="!deviceMode ? 'container' : 'container mx-3'" max-width="500px" rounded="xxl"
-            style="background-color: rgba(255, 255, 255, 0.741);">
-            <h1 class="text-center fonts500">LOGIN</h1>
-            <v-form ref="form" v-model="valid" lazy-validation>
-
-                <v-text-field v-model="register.email" :rules="emailRules" label="E-mail" required></v-text-field>
-
-                <v-text-field v-model="register.password" :rules="passRules" type="password" label="Password"
-                    required></v-text-field>
-
+    <div>
+        <div :class="!deviceMode ? 'center-container' : ''" 
+            :style="!deviceMode ? 'height: 89vh;' : 'height: 100vh;'" 
+            style="background: linear-gradient(to right, #ff7f5fad, #feb47b94, #ff7f5f9a);">
+            <div class="container fontsMoi text-center " rounded="xxl"
+                style="background-color:transparent; max-width: 500px;">
                 <div class="d-flex justify-center">
-                    <v-btn :disabled="!valid" color="#feb47b" class="mr-4" @click="validate">
-                        Login
-                    </v-btn>
-                </div>
-            </v-form>
-            <v-card-text>
-                <a href="/CenterShop/register">หากยังไม่ได้ลงทะเบียน กรุณาลงทะเบียน</a>
-            </v-card-text>
+                    <v-img :src="require('@/assets/BTCimg.png')" max-width="300px"></v-img>
+                </div>                
+                <h1 class="fw-bold">TreadShop <span class="mdi mdi-shopping-outline text-h6"></span></h1>
+                <hr style="border-bottom: 2px solid #000">
+                <p class="text--secondary font-weight-black fontsPro">
+                    <br>ทุกอย่างจะง่ายขึ้นเพียงแค่คลิกเดียวก็เทรดได้แล้ว <br><br>
+                    ทดลองระบบได้แล้ววันนี้
+                </p>
+            </div>
+            <v-card elevation="16" :class="!deviceMode ? 'container rounded-xxl' : 'container'" max-width="500px"
+                style="background-color: rgba(255, 255, 255, 0.741);">
+                <h1 class="text-center fontsDanc">LOGIN</h1>
+                <v-form ref="form" v-model="valid" lazy-validation>
+
+                    <v-text-field
+                        v-model="register.email" 
+                        :rules="emailRules" 
+                        prepend-icon="mdi mdi-email-outline"
+                        required></v-text-field>
+
+                    <v-text-field 
+                        v-model="register.password" 
+                        :rules="passRules" 
+                        type="password" 
+                        prepend-icon="mdi mdi-lock"
+                        required></v-text-field>
+
+                    <div class="text-center fontsPro">
+                        <v-btn :disabled="!valid" color="#feb47b" @click="validate">
+                            เข้าสู่ระบบ
+                            <v-icon right dark>
+                                mdi-login
+                            </v-icon>
+                        </v-btn>
+                    </div>
+                </v-form>
+                <v-card-text class="fontsPro">
+                    <a href="/CenterShop/register">หากยังไม่ได้ลงทะเบียน กรุณาลงทะเบียน</a>
+                </v-card-text>
+            </v-card>
+        </div>
+        <v-card v-if="!deviceMode">
+            <p class="text-center fontsPro pt-1">
+                English (UK) ภาษาไทย 日本語 中文(简体) Tiếng Việt Français (France) Deutsch Русский Español Português (Brasil) <br>
+                การันตีความปลอดภัยแบบ Real-time ที่ทันสมัยในทุกช่วงการใช้งาน <br>
+                Ensuring real-time, cutting-edge security throughout every usage phase. <br>
+                © 2024
+            </p>
         </v-card>
     </div>
 </template>
@@ -87,12 +116,21 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
     /* ทำให้เต็มจอ */
 }
 
-.fonts500 {
+.fontsMoi {
     font-family: 'Moirai One', sans-serif;
+    font-weight: 400;
+}
+
+.fontsPro {
+    font-family: 'Prompt', sans-serif;
+    font-weight: 500;
+}
+
+.fontsDanc {
+    font-family: 'Dancing Script', sans-serif;
     font-weight: 500;
 }
 </style>
