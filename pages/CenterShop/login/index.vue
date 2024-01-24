@@ -15,8 +15,8 @@
                     ทดลองระบบได้แล้ววันนี้
                 </p>
             </div>
-            <v-card elevation="16" :class="!deviceMode ? 'container rounded-xxl' : 'container'" max-width="500px"
-                style="background-color: rgba(255, 255, 255, 0.741);">
+            <v-card elevation="5" :class="!deviceMode ? 'container rounded-xxl' : 'container'" max-width="500px"
+                style="background-color: rgba(255, 255, 255, 0.401);">
                 <h1 class="text-center fontsDanc">LOGIN</h1>
                 <v-form ref="form" v-model="valid" lazy-validation>
 
@@ -55,9 +55,11 @@
                 © 2024
             </p>
         </v-card>
+        <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
 <script>
+import AlertButtom from '~/components/AlertButtom.vue';
 export default {
     layout: 'login',
     data: () => ({
@@ -73,6 +75,10 @@ export default {
         ],
 
     }),
+
+    components: {
+        AlertButtom,
+    },
 
     mounted() {
         this.checkMobile();
@@ -90,7 +96,6 @@ export default {
             }
         },
 
-
         login(item) {
             const auth = this.$fireModule.auth();
             auth.signInWithEmailAndPassword(item.email, item.password) // ในตัวอย่างนี้ "PASSWORD" ควรถูกเปลี่ยนเป็นรหัสผ่านที่ผู้ใช้ลงทะเบียนไว้
@@ -105,6 +110,11 @@ export default {
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.error("Login failed:", errorCode, errorMessage);
+                    
+                    //snackbar
+                    this.$refs.AlertButtom.snackbar = true;
+                    this.$refs.AlertButtom.colorAlart = 'red';
+                    this.$refs.AlertButtom.text = 'ไม่สามารเข้าสู่ระบบได้';
                 });
         },
     }
