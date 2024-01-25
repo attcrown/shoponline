@@ -1,14 +1,14 @@
 <template>
     <div>
         <div :class="!deviceMode ? 'center-container' : ''" 
-            :style="!deviceMode ? 'height: 89vh;' : 'height: 100vh;'" 
-            style="background: linear-gradient(to right, #ff7f5fad, #feb47b94, #ff7f5f9a);">
+            :style="!deviceMode ? 'height: 89vh;' : 'height: 100%;'" 
+            style="background: linear-gradient(to right, #0381f7ad, #78baf094,#78baf094, #0577fa9a);">
             <div class="container fontsMoi text-center " rounded="xxl"
                 style="background-color:transparent; max-width: 500px;">
                 <div class="d-flex justify-center">
-                    <v-img :src="require('@/assets/BTCimg.png')" max-width="300px"></v-img>
+                    <v-img :src="require('@/assets/logoexchange.png')" style="opacity: 0.8" max-width="300px"></v-img>
                 </div>                
-                <h1 class="fw-bold">TreadShop <span class="mdi mdi-shopping-outline text-h6"></span></h1>
+                <h1 class="fw-bold">Exchange Shop <span class="mdi mdi-shopping-outline text-h4"></span></h1>
                 <hr style="border-bottom: 2px solid #000">
                 <p class="text--secondary font-weight-black fontsPro">
                     <br>ทุกอย่างจะง่ายขึ้นเพียงแค่คลิกเดียวก็เทรดได้แล้ว <br><br>
@@ -17,7 +17,7 @@
             </div>
             <v-card elevation="5" :class="!deviceMode ? 'container rounded-xxl' : 'container'" max-width="500px"
                 style="background-color: rgba(255, 255, 255, 0.401);">
-                <h1 class="text-center fontsDanc">LOGIN</h1>
+                <h1 class="text-center fontsPro">LOGIN</h1>
                 <v-form ref="form" v-model="valid" lazy-validation>
 
                     <v-text-field
@@ -34,7 +34,7 @@
                         required></v-text-field>
 
                     <div class="text-center fontsPro">
-                        <v-btn :disabled="!valid" color="#feb47b" @click="validate">
+                        <v-btn :disabled="!valid" color="success" rounded @click="validate">
                             เข้าสู่ระบบ
                             <v-icon right dark>
                                 mdi-login
@@ -43,7 +43,8 @@
                     </div>
                 </v-form>
                 <v-card-text class="fontsPro">
-                    <a href="/CenterShop/register">หากยังไม่ได้ลงทะเบียน กรุณาลงทะเบียน</a>
+                    <a href="#" @click="sendSignin(true)">หากยังไม่ได้ลงทะเบียน กรุณาลงทะเบียน</a><br><br>
+                    <a href="/CenterShop/resetpass">ต้องการเปลี่ยนรหัสผ่าน</a>
                 </v-card-text>
             </v-card>
         </div>
@@ -55,11 +56,14 @@
                 © 2024
             </p>
         </v-card>
+        <signin></signin>
         <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
 <script>
 import AlertButtom from '~/components/AlertButtom.vue';
+import signin from './signin.vue';
+import { sendSignin } from './signin.vue';
 export default {
     layout: 'login',
     data: () => ({
@@ -78,6 +82,7 @@ export default {
 
     components: {
         AlertButtom,
+        signin
     },
 
     mounted() {
@@ -95,6 +100,12 @@ export default {
                 this.login(this.register);
             }
         },
+        reset() {
+            this.$refs.form.reset()
+        },
+        resetValidation() {
+            this.$refs.form.resetValidation()
+        },
 
         login(item) {
             const auth = this.$fireModule.auth();
@@ -103,20 +114,32 @@ export default {
                     // การลงชื่อเข้าใช้สำเร็จ
                     const user = userCredential.user;
                     console.log("User logged in successfully:", user);
-                    this.$router.push('/CenterShop/shop');
+                    if (!user.emailVerified) {
+                        //snackbar
+                        this.$refs.AlertButtom.snackbar = true;
+                        this.$refs.AlertButtom.colorAlart = 'red';
+                        this.$refs.AlertButtom.text = 'กรุณายืนยันอีเมล';
+                    }else{
+                        this.$router.push('/CenterShop/shop');
+                    }                    
                 })
                 .catch((error) => {
                     // การลงชื่อเข้าใช้ไม่สำเร็จ
                     const errorCode = error.code;
                     const errorMessage = error.message;
                     console.error("Login failed:", errorCode, errorMessage);
-                    
+
                     //snackbar
                     this.$refs.AlertButtom.snackbar = true;
                     this.$refs.AlertButtom.colorAlart = 'red';
                     this.$refs.AlertButtom.text = 'ไม่สามารเข้าสู่ระบบได้';
                 });
         },
+        sendSignin(item){
+            sendSignin.$emit('ShowSign', item, (callback) => {
+                console.log(callback);
+            })
+        }
     }
 }
 </script>
@@ -137,7 +160,7 @@ export default {
 
 .fontsPro {
     font-family: 'Prompt', sans-serif;
-    font-weight: 500;
+    font-weight: 800;
 }
 
 .fontsDanc {

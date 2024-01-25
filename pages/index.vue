@@ -7,7 +7,7 @@ export default {
   layout: 'default',
 
   created() {
-    this.$router.push('/CenterShop/login');
+    this.$router.push('/CenterShop/shop');
   },
 }
 </script>
