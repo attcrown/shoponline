@@ -12,8 +12,22 @@
                 <hr style="border-bottom: 2px solid #000">
                 <p class="text--secondary font-weight-black fontsPro">
                     <br>ทุกอย่างจะง่ายขึ้นเพียงแค่คลิกเดียวก็เทรดได้แล้ว <br><br>
-                    ทดลองระบบได้แล้ววันนี้
-                </p>
+                    👇ทดลองระบบได้แล้ววันนี้👇
+                </p>                
+                <v-btn
+                    @click="$router.push('/CenterShop/shop')"
+                    color="success"
+                    dark
+                    class="fontsPro"
+                    rounded
+                    elevation="16">      
+                    <div class="ms-3 d-flex justify-center">            
+                        ไปหน้าร้านค้า 
+                        <v-icon color="#FAFAFA">
+                            mdi-chevron-right
+                        </v-icon> 
+                    </div>                                      
+                </v-btn>                
             </div>
             <v-card elevation="5" :class="!deviceMode ? 'container rounded-xxl' : 'container'" max-width="500px"
                 style="background-color: rgba(255, 255, 255, 0.401);">
@@ -120,6 +134,7 @@ export default {
                         this.$refs.AlertButtom.colorAlart = 'red';
                         this.$refs.AlertButtom.text = 'กรุณายืนยันอีเมล';
                     }else{
+                        this.$store.commit('SET_USER', user);
                         this.$router.push('/CenterShop/shop');
                     }                    
                 })

@@ -1,16 +1,12 @@
 <template>
     <div>
-        hello {{ $store.state.displayName }}
-        <v-btn @click="signout()">
-            Signout
-        </v-btn>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem></LoadingItem>
     </div>
 </template>
 <script>
 import LoadingItem from '~/components/LoadingItem.vue';
 export default {
-    layout: 'public',
+    layout: 'default',
     mounted() {
         console.log(this.$store.state)
     },
