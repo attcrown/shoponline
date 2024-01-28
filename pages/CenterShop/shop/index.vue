@@ -5,17 +5,20 @@
             Signout
         </v-btn>
         <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <uploadimage></uploadimage>
     </div>
 </template>
 <script>
 import LoadingItem from '~/components/LoadingItem.vue';
+import uploadimage from './uploadimage.vue'
 export default {
     layout: 'public',
     mounted() {
         console.log(this.$store.state)
     },
     components: {
-        LoadingItem
+        LoadingItem,
+        uploadimage
     },
     methods: {
         signout() {
