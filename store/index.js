@@ -7,9 +7,9 @@ export const state = () => ({
 
 export const mutations = {
     SET_USER(state, data) {
-        state.displayName = data.displayName;
-        state.email = data.email;
-        state.uid = data.uid;
+        state.displayName = data?.displayName || null;
+        state.email = data?.email || null;
+        state.uid = data?.uid || null;
     },
 
 };
