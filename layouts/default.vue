@@ -1,7 +1,7 @@
 <template>
     <v-app>
         <div class="fontsPublic d-flex justify-space-around align-center pt-2"
-            style="background-color: #0240aa; color: white">
+            style="background-color: #0240aa; color: white; position: fixed; width: 100%; z-index: 100;">
             <div v-if="!deviceMode" class="d-flex align-center">
                 ติดตามเราบน
                 <v-btn icon color="white" href="https://web.facebook.com/marketplace/item/392278576571390/">
@@ -50,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <v-main>
+        <v-main class="mt-10">
             <Nuxt />
         </v-main>
     </v-app>

@@ -2,6 +2,16 @@
     <div>
         hello {{ $store.state.displayName }}
         <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
         <uploadimage></uploadimage>
     </div>
 </template>

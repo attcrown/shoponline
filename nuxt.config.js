@@ -3,15 +3,19 @@ import colors from "vuetify/es5/util/colors";
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: "%s - shoponline",
-    title: "shoponline",
+    titleTemplate: "%s - Global",
+    title: "ExchengeShop",
     meta: [
       { charset: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    // link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    link: [
+      { rel: "icon", type: "image/jpg", href: "/logoex.jpg" },
+      { rel: "apple-touch-icon", href: "/logoex.jpg" }
+    ]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
