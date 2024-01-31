@@ -1,34 +1,38 @@
 <template>
-    <div>
-        hello {{ $store.state.displayName }}
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.displayName"></LoadingItem>
+    <div class="container">
+        hello {{ $store.state.uid }}
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
         <uploadimage></uploadimage>
     </div>
 </template>
 <script>
 import LoadingItem from '~/components/LoadingItem.vue';
-import uploadimage from './uploadimage.vue'
+import uploadimage from './uploadimage.vue';
+import {publicStatus} from '../../../services/public-status';
 export default {
-    layout: 'public',
+    layout: 'default',
     mounted() {
-        
+        this.publicStatus()
     },
     components: {
         LoadingItem,
         uploadimage
     },
     methods: {
-         
+        publicStatus(){
+            const auth = this.$fireModule.auth();
+            publicStatus(auth ,this.$store);
+        } 
     }
 
 }
