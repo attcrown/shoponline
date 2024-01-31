@@ -1,17 +1,9 @@
 <template>
-    <div class="container">
-        hello {{ $store.state.uid }}
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
-        <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+    <div>
+        <div>
+            <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        </div>
+        
         <uploadimage></uploadimage>
     </div>
 </template>
