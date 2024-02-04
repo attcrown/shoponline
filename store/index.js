@@ -2,8 +2,10 @@
 export const state = () => ({
     displayName: null,
     email: null,
-    uid: null
+    uid: null,
+    deviceMode: false,
 });
+
 
 export const mutations = {
     SET_USER(state, data) {
@@ -12,4 +14,8 @@ export const mutations = {
         state.uid = data?.uid || null;
     },
 
+    SET_DEVICE(state, data) {
+        state.deviceMode = data || false;
+    }
 };
+

@@ -16,7 +16,6 @@
                     style="font-size: 16px;">
                         ค้นหา
                 </v-btn>
-                {{ computedValue }}
             </div>
         </div>
     </div>
@@ -30,9 +29,7 @@ export default {
         };
     },
     computed: {
-        computedValue() {
-            return this.input_search * 2
-        }
+        
     },
     mounted() {
 

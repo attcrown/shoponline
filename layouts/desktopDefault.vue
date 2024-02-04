@@ -1,7 +1,7 @@
 <template>
     <div class="fontsPublic d-flex justify-space-around align-center pt-2"
             style="background-color: #0240aa; color: white; position: fixed; width: 100%; z-index: 100;" >
-            <div v-if="!deviceMode" class="d-flex align-center">
+            <div class="d-flex align-center">
                 ติดตามเราบน
                 <v-btn icon color="white" href="https://web.facebook.com/marketplace/item/392278576571390/">
                     <v-icon size="24px"> mdi mdi-facebook </v-icon>
@@ -91,7 +91,6 @@ export default {
     name: "publicLayout",
     data() {
         return {
-            deviceMode: false,
             items: [
                 {
                     icon: "mdi-account-edit",
@@ -132,10 +131,7 @@ export default {
             SINGOUT_ID : SINGOUT_ID
         };
     },
-    mounted() {      
-        this.checkMobile();
-        window.addEventListener('resize', this.checkMobile);
-    },
+
     methods: {        
         handleMenuItemClick(item) {
             if (item.id === SINGOUT_ID) {
@@ -154,10 +150,7 @@ export default {
                     // เกิดข้อผิดพลาดในการ logout
                     console.error("Logout error:", error);
                 });
-        },
-        checkMobile() {
-            this.deviceMode = window.innerWidth <= 768; // ตั้งค่าให้เป็น mobile ถ้าขนาดน้อยกว่าหรือเท่ากับ 768 pixels
-        },
+        }
     },
 };
 </script>
