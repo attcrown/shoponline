@@ -1,15 +1,20 @@
 <template>
     <div>
-        <div>
-            <LoadingItem v-if="!$store.state?.uid"></LoadingItem>
+        <div v-if="!$store.state?.uid">
+            <LoadingItem></LoadingItem>
         </div>
-        
-        <uploadimage></uploadimage>
+        <div v-else>
+            <search></search>        
+            <carousel></carousel>
+            <uploadimage></uploadimage>
+        </div>        
     </div>
 </template>
 <script>
 import LoadingItem from '~/components/LoadingItem.vue';
 import uploadimage from './uploadimage.vue';
+import search from './search.vue';
+import carousel from './carousel.vue';
 import {publicStatus} from '../../../services/public-status';
 export default {
     layout: 'default',
@@ -18,12 +23,13 @@ export default {
     },
     components: {
         LoadingItem,
-        uploadimage
+        uploadimage,
+        search,
+        carousel
     },
     methods: {
         publicStatus(){
-            const auth = this.$fireModule.auth();
-            publicStatus(auth ,this.$store);
+            publicStatus(this.$fireModule.auth() ,this.$store);
         } 
     }
 

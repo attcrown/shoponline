@@ -2,7 +2,7 @@
     <v-app> 
         <desktopDefault v-if="!deviceMode"></desktopDefault>
         <mobileDefault v-if="deviceMode"></mobileDefault>  
-        <v-main :class="!deviceMode ? 'mt-10' : 'mt-0'">
+        <v-main :class="!deviceMode ? 'mt-11' : 'mt-0'">
             <Nuxt />
         </v-main>        
     </v-app>

@@ -1,82 +1,64 @@
 <template>
-    <div class="fontsPublic d-flex align-center pt-2" :class="deviceMode ? 'justify-space-between' : 'justify-space-around'"
+    <div class="fontsPublic d-flex align-center justify-center pt-2"        
         style="background-color: #0240aa; color: white; position: fixed; width: 100%; z-index: 100; bottom: 0;">
-        <div v-if="$store.state?.uid">
-            <v-btn color="white" icon @click="Mnavbar = !Mnavbar">
-                <v-icon>mdi-menu</v-icon>
-            </v-btn>
-        </div>
-        <div v-if="$store.state?.uid" class="d-flex">
-            <v-menu offset-y v-model="menuMessage">
-                <template v-slot:activator="{ attrs, on }">
-                    <div v-bind="attrs" v-on="on">
-                        <v-badge :color="alert_message > 0 ? 'error' : ''" :content="alert_message" class="me-3" overlap>
-                            <v-icon color="white" size="24px"> mdi mdi-message-text-outline</v-icon>
-                        </v-badge>
-                    </div>
-                </template>
-                <v-list>
-                    <v-list-item v-for="item in itemsMessage" :key="item.to" router :to="item.to" @click="">
-                        <v-list-item-action>
-                            <v-icon>{{ item.icon }}</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-title>
-                            {{ item.title }}
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-
-            <v-menu offset-y v-model="menuLight">
-                <template v-slot:activator="{ attrs, on }">
-                    <div v-bind="attrs" v-on="on">
-                        <v-badge :color="alert_light > 0 ? 'error' : ''" :content="alert_light" class="me-6" overlap>
-                            <v-icon color="white" size="24px"> mdi mdi-bell-outline</v-icon>
-                        </v-badge>
-                    </div>
-                </template>
-                <v-list>
-                    <v-list-item v-for="item in itemsLight" :key="item.to" router :to="item.to" @click="">
-                        <v-list-item-action>
-                            <v-icon>{{ item.icon }}</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-title>
-                            {{ item.title }}
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-            &nbsp&nbsp&nbsp
-        </div>
         <div v-if="!$store.state?.uid" class="d-flex align-center">
             <span class="mdi mdi-account-circle text-h5"></span> &nbsp<a @click="$router.push('/CenterShop/login')"
                 style="color: white">เข้าสู่ระบบ</a>
         </div>
 
-        <div v-if="$store.state?.displayName" class="d-flex align-center">
-            <v-menu offset-y v-model="menuUser">
-                <template v-slot:activator="{ attrs, on }">
-                    <div v-bind="attrs" v-on="on" class="d-flex align-center">
-                        <v-avatar size="32px">
-                            <img alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
-                        </v-avatar> &nbsp
-                        {{ $store.state.displayName }}
-                        <span class="mdi mdi-menu-down text-h5"></span>
-                    </div>
-                </template>
+        <div v-if="$store.state?.displayName" class="d-flex align-center text-center">
+            <div class="me-3">
+                <v-icon @click="$router.push('/')" color="white" size="24px">mdi-home</v-icon>
+                <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">หน้าหลัก</p>
+            </div>
+            <div class="me-3">
+                <v-menu offset-y v-model="menuLight">
+                    <template v-slot:activator="{ attrs, on }">
+                        <div v-bind="attrs" v-on="on">
+                            <v-badge :color="alert_light > 0 ? 'error' : ''" :content="alert_light" class="me-6" overlap>
+                                <v-icon style="margin-left: 20px;" color="white" size="24px"> mdi mdi-bell-outline</v-icon>
+                            </v-badge>
+                        </div>
+                    </template>
+                    <v-list>
+                        <v-list-item v-for="item in itemsLight" :key="item.to" router :to="item.to" @click="">
+                            <v-list-item-action>
+                                <v-icon>{{ item.icon }}</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-title>
+                                {{ item.title }}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">การแจ้งเตือน</p>
+            </div>
+            <div class="me-3">
+                <v-menu offset-y v-model="menuUser">
+                    <template v-slot:activator="{ attrs, on }">
+                        <div v-bind="attrs" v-on="on" class="d-flex align-center">
+                            <v-avatar size="32px">
+                                <img alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
+                            </v-avatar>
+                            <!-- {{ $store.state.displayName }} -->
+                            <!-- <span class="mdi mdi-menu-down text-h5"></span> -->
+                        </div>
+                    </template>
+                    <v-list>
+                        <v-list-item v-for="item in items" :key="item.to" router :to="item.to"
+                            @click="handleMenuItemClick(item)">
+                            <v-list-item-action>
+                                <v-icon>{{ item.icon }}</v-icon>
+                            </v-list-item-action>
+                            <v-list-item-title>
+                                {{ item.title }}
+                            </v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                <p style="margin-bottom: 0px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">ฉัน</p>
+            </div>
 
-                <v-list>
-                    <v-list-item v-for="item in items" :key="item.to" router :to="item.to"
-                        @click="handleMenuItemClick(item)">
-                        <v-list-item-action>
-                            <v-icon>{{ item.icon }}</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-title>
-                            {{ item.title }}
-                        </v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
         </div>
     </div>
 </template>
@@ -86,8 +68,7 @@ export default {
     name: "publicLayout",
     data() {
         return {
-            Mnavbar : false,
-            deviceMode: false,
+            Mnavbar: false,
             items: [
                 {
                     icon: "mdi-account-edit",
