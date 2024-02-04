@@ -1,20 +1,27 @@
 <template>
     <div>
-        <div v-if="!$store.state?.uid">
-            <LoadingItem></LoadingItem>
-        </div>
-        <div v-else>
-            <search></search>        
-            <carousel></carousel>
-            <uploadimage></uploadimage>
-        </div>        
+        <search></search>        
+        <carousel></carousel>
+        <listitems></listitems> 
+        <div v-if="!$store.state.deviceMode">
+            <p class="text-center fontsPro pt-1">
+                การันตีความปลอดภัยแบบ Real-time ที่ทันสมัยในทุกช่วงการใช้งาน <br>
+                Ensuring real-time, cutting-edge security throughout every usage phase. <br>
+                © 2024
+            </p>
+        </div>  
+        <div v-else class="pb-10">
+            <p class="text-center fontsPro pt-1">
+                © 2024
+            </p>
+        </div>            
     </div>
 </template>
 <script>
-import LoadingItem from '~/components/LoadingItem.vue';
-import uploadimage from './uploadimage.vue';
 import search from './search.vue';
 import carousel from './carousel.vue';
+import listitems from './list-items.vue';
+import uploadimage from './uploadimage.vue';
 import {publicStatus} from '../../../services/public-status';
 export default {
     layout: 'default',
@@ -22,10 +29,10 @@ export default {
         this.publicStatus()
     },
     components: {
-        LoadingItem,
         uploadimage,
         search,
-        carousel
+        carousel,
+        listitems
     },
     methods: {
         publicStatus(){

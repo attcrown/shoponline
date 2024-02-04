@@ -1,7 +1,7 @@
 <template>
     <v-carousel class="fontsProCaro" cycle height="200px" hide-delimiter-background show-arrows-on-hover interval="3000">
         <v-carousel-item v-for="(slide, i) in slides" :key="i">
-            <div class="d-flex justify-center align-center"
+            <div class="d-flex justify-center align-center pb-10"
                 :style="`color: ${slide.color_text}; height: 200px; background-color: #0240aa;`">
                 <v-img v-if="$store.state?.deviceMode && slide.img_url_mobile" height="200" :src="slide.img_url_mobile"
                     @click="$router.push(slide.link ? slide.link : '')">
