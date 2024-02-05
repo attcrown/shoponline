@@ -12,6 +12,21 @@
             </div>
 
             <div class="d-flex align-center">
+                <p class="me-5" 
+                    style="margin-bottom: -2px;"
+                    @click="$router.push('/CenterShop/shop')">
+                        หน้าหลัก 
+                        <v-icon size="24px" color="white">mdi mdi-home</v-icon>
+                </p>
+                <p class="ms-5" 
+                    style="margin-bottom: -2px;"
+                    @click="$router.push('/CenterShop/shop')">
+                        ตะกร้าสินค้า 
+                        <v-icon size="24px" color="white">mdi mdi-cart-heart</v-icon>
+                </p>
+            </div>
+
+            <div class="d-flex align-center">
                 <div v-if="$store.state?.uid" class="d-flex">
                     <v-menu offset-y v-model="menuMessage">
                         <template v-slot:activator="{ attrs, on }">

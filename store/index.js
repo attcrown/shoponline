@@ -6,6 +6,7 @@ export const state = () => ({
     deviceMode: false,
     list_item: [],
     show_list_item: [],
+    detail_item: [],
 });
 
 
@@ -27,5 +28,9 @@ export const mutations = {
     SET_SHOWLISTITEMS(state, data) {
         state.show_list_item = data || [];
     },
+
+    SET_DETAILITEM(state, data) {
+        state.detail_item = data || [];
+    }
 };
 
