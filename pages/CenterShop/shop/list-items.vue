@@ -9,38 +9,32 @@
                 <v-row dense class="fontsProList">
                     <v-col cols="12" class="text-center">
                         <div style="font-size: 28px;" class="mt-5">
-                            <v-icon left 
-                                :color="this.cards.length === 0 ? 'red' : '#FF9800'" 
-                                style="font-size: 32px;">
-                                {{ this.cards.length === 0 ? 'mdi-archive-cancel-outline' : 'mdi-label'}}
+                            <v-icon left :color="this.cards.length === 0 ? 'red' : '#FF9800'" style="font-size: 32px;">
+                                {{ this.cards.length === 0 ? 'mdi-archive-cancel-outline' : 'mdi-label' }}
                             </v-icon>
-                            {{ this.cards.length === 0 ? 'ไม่พบสินค้า' : 'รายการสินค้าแนะนำ'}}
+                            {{ this.cards.length === 0 ? 'ไม่พบสินค้า' : 'รายการสินค้าแนะนำ' }}
                         </div>
                     </v-col>
                     <v-col v-for="card in cards" :key="card.title" :cols="$store.state.deviceMode ? 6 : 3">
                         <v-hover v-slot="{ hover }">
-                            <v-card  
-                                :elevation="hover ? 16 : 2" 
-                                :class="!$store.state.deviceMode ? 'm-1' : 'mb-4'">
+                            <v-card :elevation="hover ? 16 : 2" :class="!$store.state.deviceMode ? 'm-1' : 'mb-4'">
                                 <v-img :src="card.src" class="white--text align-end"
                                     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="200px">
                                     <v-card-title v-text="card.title"></v-card-title>
                                 </v-img>
 
-                                <v-card-actions>
+                                <v-card-text>
+                                    <p style="margin-bottom: -3px;">เครื่องบิน F1 รุ่น 2020</p>
+                                    <v-rating v-model="rating" background-color="white" color="yellow accent-4" dense
+                                        half-increments hover size="18" readonly></v-rating>
+                                    <v-chip color="green" label outlined x-small>สินค้าขายดี</v-chip>
+                                    <v-chip color="orange" label outlined x-small>ผ่อนชำระ</v-chip>
+                                </v-card-text>
+
+                                <v-card-actions style="margin-top: -20px;">
+                                    ฿100
                                     <v-spacer></v-spacer>
-
-                                    <v-btn icon>
-                                        <v-icon>mdi-heart</v-icon>
-                                    </v-btn>
-
-                                    <v-btn icon>
-                                        <v-icon>mdi-bookmark</v-icon>
-                                    </v-btn>
-
-                                    <v-btn icon>
-                                        <v-icon>mdi-share-variant</v-icon>
-                                    </v-btn>
+                                    <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">ขายแล้ว 193 ชิ้น</p> 
                                 </v-card-actions>
                             </v-card>
                         </v-hover>
@@ -54,6 +48,7 @@
 <script>
 export default {
     data: () => ({
+        rating: 4.3,
         cards: [],
     }),
     computed: {

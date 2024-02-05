@@ -21,28 +21,18 @@ export default {
             slides: [
                 {
                     link: '/CenterShop/profile',
-                    img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST.png?alt=media&token=848d1d06-10da-4853-9f10-2e10d305a25d',
-                    img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST3.png?alt=media&token=69662e64-8880-4e98-b1e9-c53ff911eb2a'
+                    img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_MB1.jpg?alt=media&token=b6f47784-b2fe-4330-bea2-b7d47604ea1b',
+                    img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_DK1.jpg?alt=media&token=b80f4f40-baf7-4953-b874-9cd4f337bb65'
                 },
                 {
                     link: '/CenterShop/addstock',
-                    img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST.png?alt=media&token=848d1d06-10da-4853-9f10-2e10d305a25d',
-                    img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST3.png?alt=media&token=69662e64-8880-4e98-b1e9-c53ff911eb2a'
+                    img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_MB2.jpg?alt=media&token=61a54c3f-2bed-4f24-8706-f4484023e1cc',
+                    img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_DK2.png?alt=media&token=0c12273d-0d4b-4dc2-a755-6074fe95d2fe'
 
                 },
                 {
-                    img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST.png?alt=media&token=848d1d06-10da-4853-9f10-2e10d305a25d',
-                    img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST3.png?alt=media&token=69662e64-8880-4e98-b1e9-c53ff911eb2a'
-
-                },
-                {
-                    img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST.png?alt=media&token=848d1d06-10da-4853-9f10-2e10d305a25d',
-                    img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2FTEST3.png?alt=media&token=69662e64-8880-4e98-b1e9-c53ff911eb2a'
-
-                },
-                {
-                    text: 'พื้นที่โฆษณาให้เช่า Mobile:200px x 1000px และ Desktop:200px x 370px',
-                    color_text: 'black',
+                    text: 'พื้นที่โฆษณาให้เช่า Mobile📱: 200px*370px & Desktop💻: 200px*1000px',
+                    color_text: 'white',
                 },
             ],
         }
