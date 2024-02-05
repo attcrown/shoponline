@@ -5,17 +5,19 @@
         </div> -->
         <div style="background-color: #d7d7d7;">
             <v-container fluid :class="!$store.state.deviceMode ? 'd-flex justify-center' : ''"
-                :style="!$store.state.deviceMode ? 'max-width: 1250px' : ''">
+                :style="!$store.state.deviceMode ? 'max-width: 1200px' : ''">
                 <v-row dense class="fontsProList">
                     <v-col cols="12" class="text-center">
                         <div style="font-size: 28px;" class="mt-5">
-                            <v-icon left color="#FF9800">
-                                mdi-label
+                            <v-icon left 
+                                :color="this.cards.length === 0 ? 'red' : '#FF9800'" 
+                                style="font-size: 32px;">
+                                {{ this.cards.length === 0 ? 'mdi-archive-cancel-outline' : 'mdi-label'}}
                             </v-icon>
-                            รายการสินค้าแนะนำ
+                            {{ this.cards.length === 0 ? 'ไม่พบสินค้า' : 'รายการสินค้าแนะนำ'}}
                         </div>
                     </v-col>
-                    <v-col v-for="card in cards" :key="card.title" :cols="$store.state.deviceMode ? 6 : 2">
+                    <v-col v-for="card in cards" :key="card.title" :cols="$store.state.deviceMode ? 6 : 3">
                         <v-hover v-slot="{ hover }">
                             <v-card  
                                 :elevation="hover ? 16 : 2" 
@@ -46,29 +48,19 @@
                 </v-row>
             </v-container>
         </div>
-
+        {{ checkShowListItems }}
     </div>
 </template>
 <script>
 export default {
     data: () => ({
-        cards: [
-            { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 6 },
-            { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-            { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-            { title: 'Pre-fab homes1', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 6 },
-            { title: 'Favorite road trips1', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-            { title: 'Best airlines1', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-            { title: 'Pre-fab homes2', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 6 },
-            { title: 'Favorite road trips2', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-            { title: 'Best airlines2', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-            { title: 'Pre-fab homes3', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex: 6 },
-            { title: 'Favorite road trips3', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-            { title: 'Best airlines3', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        ],
+        cards: [],
     }),
     computed: {
-
+        checkShowListItems() {
+            this.cards = this.$store.state.show_list_item;
+            return;
+        }
     },
     methods: {
 

@@ -3,6 +3,7 @@
         <search></search>        
         <carousel></carousel>
         <listitems></listitems> 
+        <pagination></pagination>
         <div v-if="!$store.state.deviceMode">
             <p class="text-center fontsPro pt-1">
                 การันตีความปลอดภัยแบบ Real-time ที่ทันสมัยในทุกช่วงการใช้งาน <br>
@@ -21,7 +22,7 @@
 import search from './search.vue';
 import carousel from './carousel.vue';
 import listitems from './list-items.vue';
-import uploadimage from './uploadimage.vue';
+import pagination from './pagination.vue';
 import {publicStatus} from '../../../services/public-status';
 export default {
     layout: 'default',
@@ -29,10 +30,10 @@ export default {
         this.publicStatus()
     },
     components: {
-        uploadimage,
         search,
         carousel,
-        listitems
+        listitems,
+        pagination
     },
     methods: {
         publicStatus(){
