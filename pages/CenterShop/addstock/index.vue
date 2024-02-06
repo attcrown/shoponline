@@ -20,6 +20,5 @@ export default {
             checkStatus(auth ,this.$store ,this.$router);
         }
     }
-
 }
 </script>

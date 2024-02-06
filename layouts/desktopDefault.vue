@@ -11,19 +11,31 @@
                 </v-btn>
             </div>
 
-            <div class="d-flex align-center">
-                <p class="me-5" 
-                    style="margin-bottom: -2px;"
+            <div class="d-flex align-center justify-space-around">
+                <v-btn
+                    text
+                    color="white"
+                    style="font-size: 17px;"
                     @click="$router.push('/CenterShop/shop')">
                         หน้าหลัก 
-                        <v-icon size="24px" color="white">mdi mdi-home</v-icon>
-                </p>
-                <p class="ms-5" 
-                    style="margin-bottom: -2px;"
+                        <v-icon>mdi mdi-home</v-icon>
+                </v-btn>
+                <v-btn
+                    text
+                    color="white"
+                    style="font-size: 17px;"
                     @click="$router.push('/CenterShop/shop')">
                         ตะกร้าสินค้า 
-                        <v-icon size="24px" color="white">mdi mdi-cart-heart</v-icon>
-                </p>
+                        <v-icon>mdi mdi-cart-heart</v-icon>
+                </v-btn>
+                <v-btn
+                    text
+                    color="white"
+                    style="font-size: 17px;"
+                    @click="$router.push('/CenterShop/shop')">
+                        คลังของฉัน
+                        <v-icon>mdi mdi-invoice-list</v-icon>
+                </v-btn>
             </div>
 
             <div class="d-flex align-center">

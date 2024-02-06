@@ -41,12 +41,10 @@ export default {
 
     },
     mounted() {
-        this.getImgContent();
+
     },
     methods: {
-        getImgContent() {
-            return;
-        }
+
     }
 }
 </script>
