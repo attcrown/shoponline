@@ -49,13 +49,42 @@
                         <v-col cols="12" md="6">
                         </v-col>
                     </v-row>
+                    <v-divider color="black" class="mx-5"></v-divider>
                     <div class="pt-5">
                         ที่อยู่ส่วนตัว
                     </div>
                     <v-row dense class="d-flex justify-space-around pb-10">
-                        <v-col cols="12" md="6">
-                            <v-text-field class="mx-4" v-model="personalData.location" :counter="255" :rules="nameRules"
-                                 label="location" required></v-text-field>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[0]" :rules="nameRules"
+                                 label="บ้านเลขที่" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[1]" :rules="nameRules"
+                                 label="ซอย" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[2]" :rules="nameRules"
+                                 label="หมู่" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[3]" :rules="nameRules"
+                                 label="ถนน" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[4]" :rules="nameRules"
+                                 label="แขวง/ตําบล" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[5]" :rules="nameRules"
+                                 label="เขต/อําเภอ" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[6]" :rules="nameRules"
+                                 label="จังหวัด" required></v-text-field>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                            <v-text-field class="mx-4" v-model="locationAll[7]" :rules="nameRules"
+                                 label="รหัสไปรษณีย์" type="number" required></v-text-field>
                         </v-col>
                     </v-row>
                 </v-form>
@@ -91,6 +120,7 @@ import { saveImgFirebase } from '../../../services/save-img-firebase.js';
 export default {
     data() {
         return {
+            locationAll: [],
             personalData: [],
             valid: true,
             selectPrefix: ["Mr", "Mrs", "Miss"],
@@ -100,11 +130,12 @@ export default {
             loadingSave: false,
 
             nameRules: [
-                v => !!v || 'Name is required',
-                v => (v && v.length <= 50) || 'Name must be less than 50 characters',
+                v => !!v || 'กรุณาระบุ "-" ถ้าไม่มีข้อมูล',
+                v => (v && v.length <= 50) || 'ตัวอักษรตัวเกิน 50 ตัว',
+                v => (v != "|") || 'ห้ามใช้อักษรพิเศษ "|"'
             ],
             selectRules: [
-                v => !!v || 'Item is required'
+                v => !!v || 'กรุณาระบุ'
             ]
         }
     },
@@ -126,6 +157,7 @@ export default {
             try {
                 const doc = await firebase.firestore().collection('users').doc(this.$store.state.uid).get();            
                 this.personalData = doc.data()
+                this.locationAll = this.personalData.location ? this.personalData.location.split("|") : []
             } catch (error) {
                 this.alertFail("ไม่พบข้อมูลผู้ใช้งาน")
             }
@@ -148,6 +180,7 @@ export default {
             this.loadingSave = true
 
             if (this.$refs.form.validate()) {
+                this.personalData.location = this.locationAll.join("|")
                 try {
                     await firebase.firestore().collection('users').doc(this.$store.state.uid)
                         .update({
@@ -190,7 +223,6 @@ export default {
             }
             this.personalData.avatar = await processImg(this.avatar)
             this.previewAvatar = URL.createObjectURL(this.personalData.avatar)
-            console.log(this.previewAvatar ,this.personalData.avatar)
         }
     },
 }
