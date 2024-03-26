@@ -1,8 +1,8 @@
 <template>
     <div>
-        <search></search>        
+        <search></search>
         <carousel></carousel>
-        <listitems></listitems> 
+        <listitems></listitems>
         <pagination></pagination>
         <div v-if="!$store.state.deviceMode">
             <p class="text-center fontsPro pt-1">
@@ -10,12 +10,12 @@
                 Ensuring real-time, cutting-edge security throughout every usage phase. <br>
                 © 2024
             </p>
-        </div>  
+        </div>
         <div v-else class="pb-10">
             <p class="text-center fontsPro pt-1">
                 © 2024
             </p>
-        </div>            
+        </div>
     </div>
 </template>
 <script>
@@ -23,11 +23,11 @@ import search from './search.vue';
 import carousel from './carousel.vue';
 import listitems from './list-items.vue';
 import pagination from './pagination.vue';
-import {publicStatus} from '../../../services/public-status';
+import { publicStatus } from '../../../services/public-status';
 export default {
     layout: 'default',
-    mounted() {
-        this.publicStatus()
+    async mounted() {
+        await this.publicStatus()
     },
     components: {
         search,
@@ -36,10 +36,11 @@ export default {
         pagination
     },
     methods: {
-        publicStatus(){
-            publicStatus(this.$fireModule.auth() ,this.$store);
-        } 
-    }
+        async publicStatus() {
+            publicStatus(this.$fireModule.auth(), this.$store); // รอให้ publicStatus เสร็จสิ้น
+        },
+    },
+
 
 }
 </script>

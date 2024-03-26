@@ -12,6 +12,14 @@
                 <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">หน้าหลัก</p>
             </div>
             <div class="me-3">
+                <v-icon @click="$router.push('/')" color="white" size="24px">mdi-cart-heart</v-icon>
+                <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">ตะกร้าสินค้า</p>
+            </div>
+            <div class="me-3">
+                <v-icon @click="$router.push('/')" color="white" size="24px">mdi-invoice-list</v-icon>
+                <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">คลังของฉัน</p>
+            </div>
+            <div class="me-3">
                 <v-menu offset-y v-model="menuLight">
                     <template v-slot:activator="{ attrs, on }">
                         <div v-bind="attrs" v-on="on">
@@ -38,10 +46,13 @@
                     <template v-slot:activator="{ attrs, on }">
                         <div v-bind="attrs" v-on="on" class="d-flex align-center">
                             <v-avatar size="32px">
-                                <img alt="Avatar" src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460">
+                                <img v-if="$store.state?.photoURL"
+                                        alt="Avatar" 
+                                        :src="$store.state.photoURL" >
+                                <v-icon v-if="!$store.state?.photoURL" color="white">
+                                    mdi-account-circle
+                                </v-icon>   
                             </v-avatar>
-                            <!-- {{ $store.state.displayName }} -->
-                            <!-- <span class="mdi mdi-menu-down text-h5"></span> -->
                         </div>
                     </template>
                     <v-list>
