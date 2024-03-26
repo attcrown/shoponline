@@ -11,7 +11,7 @@
             </v-btn>
         </div>
 
-        <div class="d-flex align-center justify-space-around">
+        <div class="d-flex align-center justify-space-around" v-if="$store.state?.uid">
             <v-btn text color="white" style="font-size: 17px;" @click="$router.push('/CenterShop/shop')">
                 หน้าหลัก
                 <v-icon>mdi mdi-home</v-icon>

@@ -1,9 +1,6 @@
 <template>
     <div>
         <detailItems></detailItems>
-        <div v-for="typeItem in typeItems" :key="typeItem.id">
-            {{ typeItem.seq_no }}. {{ typeItem.name }}
-        </div>
     </div>
 </template>
 <script>
@@ -17,8 +14,7 @@ export default {
         }
     },
     async mounted() {
-        this.publicStatus(),
-        await this.getTypeItems()
+        this.publicStatus()
     },
     components: {
         detailItems
@@ -26,12 +22,6 @@ export default {
     methods: {
         publicStatus(){
             publicStatus(this.$fireModule.auth() ,this.$store);
-        },
-        async getTypeItems(){
-            await this.$axios.$get('/document-api/items').then(result => {
-                this.typeItems = result; 
-                console.log(result)
-            })
         }
     },
 }

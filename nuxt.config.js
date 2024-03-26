@@ -10,11 +10,7 @@ export default {
       { hid: "description", name: "description", content: "" },
       { name: "format-detection", content: "telephone=no" },
     ],
-    // link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
-    link: [
-      { rel: "icon", type: "image/jpg", href: "/logoex.jpg" },
-      { rel: "apple-touch-icon", href: "/logoex.jpg" }
-    ]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
