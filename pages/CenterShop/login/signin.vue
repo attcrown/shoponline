@@ -46,9 +46,7 @@
     </div>
 </template>
 <script>
-import Vue from 'vue';
 import AlertButtom from '~/components/AlertButtom.vue';
-export const sendSignin = new Vue();
 export default {
     layout: 'login',
     data: () => ({
@@ -71,17 +69,8 @@ export default {
     components: {
         AlertButtom
     },
-    created() {
-        sendSignin.$on('ShowSign', (item, callback) => {
-            this.ShowSign(item, callback);
-        });
-    },
 
     methods: {
-        ShowSign(item, callback) {
-            this.dialog = item;
-            callback('show signin');
-        },
         validate() {
             if (this.$refs.form.validate()) {
                 this.loadingCreate = true;

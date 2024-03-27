@@ -116,6 +116,11 @@ export default {
         return {
             items: [
                 {
+                    icon: "mdi-cart-plus",
+                    title: "Add stock",
+                    to: "/CenterShop/addstock"
+                },
+                {
                     icon: "mdi-account-edit",
                     title: "ข้อมูลส่วนตัว",
                     to: "/CenterShop/profile"

@@ -1,13 +1,18 @@
 <template>
-    <v-skeleton-loader class="mx-auto" max-width="300" type="card"></v-skeleton-loader>
+    <v-overlay :value="overlay">
+      <v-progress-circular
+        indeterminate
+        size="64"
+      ></v-progress-circular>
+    </v-overlay>
 </template>
   
 <script>
 export default {
-    inject: {
-        theme: {
-            default: { isDark: false },
-        },
+    data() {
+        return {
+            overlay: true
+        }
     },
 }
 </script>

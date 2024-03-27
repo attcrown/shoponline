@@ -32,8 +32,7 @@
             <v-card elevation="5" :class="!deviceMode ? 'container rounded-xxl' : 'container'" max-width="500px"
                 style="background-color: rgba(255, 255, 255, 0.401);">
                 <h1 class="text-center fontsPro">LOGIN</h1>
-                <v-form ref="form" v-model="valid" lazy-validation>
-
+                <v-form ref="form" v-model="valid" lazy-validation :disabled="loadingLogin">
                     <v-text-field
                         v-model="register.email" 
                         :rules="emailRules" 
@@ -48,7 +47,7 @@
                         required></v-text-field>
 
                     <div class="text-center fontsPro">
-                        <v-btn :disabled="!valid" color="success" rounded @click="validate">
+                        <v-btn :disabled="!valid" :loading="loadingLogin" color="success" rounded @click="validate">
                             เข้าสู่ระบบ
                             <v-icon right dark>
                                 mdi-login
@@ -57,7 +56,7 @@
                     </div>
                 </v-form>
                 <v-card-text class="fontsPro">
-                    <a href="#" @click="sendSignin(true)">หากยังไม่ได้ลงทะเบียน กรุณาลงทะเบียน</a><br><br>
+                    <a href="#" @click="$refs.signin.dialog = true">หากยังไม่ได้ลงทะเบียน กรุณาลงทะเบียน</a><br><br>
                     <a href="/CenterShop/resetpass">ต้องการเปลี่ยนรหัสผ่าน</a>
                 </v-card-text>
             </v-card>
@@ -70,17 +69,17 @@
                 © 2024
             </p>
         </v-card>
-        <signin></signin>
+        <signin ref="signin"></signin>
         <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
 <script>
 import AlertButtom from '~/components/AlertButtom.vue';
 import signin from './signin.vue';
-import { sendSignin } from './signin.vue';
 export default {
     layout: 'login',
     data: () => ({
+        unitClickLogin: 0,
         valid: true,
         deviceMode: true,
         register: [],
@@ -91,12 +90,25 @@ export default {
             v => !!v || 'E-mail is required',
             v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
         ],
+        loadingLogin: false,
 
     }),
 
     components: {
         AlertButtom,
         signin
+    },
+
+    watch: {
+        'unitClickLogin': function () {
+            if (this.unitClickLogin > 5) {
+                this.$refs.AlertButtom.snackbar = true;
+                this.$refs.AlertButtom.colorAlart = 'red';
+                this.$refs.AlertButtom.text = 'คุณกดเกินจํานวนครั้งที่อนุญาตไปแล้ว กรุณาลองอีกครั้งภายหลัง';
+            }else{
+                this.loadingLogin = false;
+            }
+        }
     },
 
     mounted() {
@@ -109,9 +121,10 @@ export default {
             // ตรวจสอบขนาดหน้าจอและกำหนดค่าให้ isMobile
             this.deviceMode = window.innerWidth <= 768; // ตั้งค่าให้เป็น mobile ถ้าขนาดน้อยกว่าหรือเท่ากับ 768 pixels
         },
-        validate() {
+        async validate() {
             if (this.$refs.form.validate()) {
-                this.login(this.register);
+                this.loadingLogin = true;
+                await this.login(this.register);
             }
         },
         reset() {
@@ -121,39 +134,26 @@ export default {
             this.$refs.form.resetValidation()
         },
 
-        login(item) {
+        async login(item) {
             const auth = this.$fireModule.auth();
-            auth.signInWithEmailAndPassword(item.email, item.password) // ในตัวอย่างนี้ "PASSWORD" ควรถูกเปลี่ยนเป็นรหัสผ่านที่ผู้ใช้ลงทะเบียนไว้
-                .then((userCredential) => {
-                    // การลงชื่อเข้าใช้สำเร็จ
-                    const user = userCredential.user;
-                    console.log("User logged in successfully:");
-                    if (!user.emailVerified) {
-                        //snackbar
-                        this.$refs.AlertButtom.snackbar = true;
-                        this.$refs.AlertButtom.colorAlart = 'red';
-                        this.$refs.AlertButtom.text = 'กรุณายืนยันอีเมล';
-                    }else{
-                        this.$store.commit('SET_USER', user);
-                        this.$router.push('/CenterShop/shop');
-                    }                    
-                })
-                .catch((error) => {
-                    // การลงชื่อเข้าใช้ไม่สำเร็จ
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error("Login failed:", errorCode, errorMessage);
-
+            try {
+                const result = await auth.signInWithEmailAndPassword(item.email, item.password);
+                if (!result.user.emailVerified) {
                     //snackbar
                     this.$refs.AlertButtom.snackbar = true;
                     this.$refs.AlertButtom.colorAlart = 'red';
-                    this.$refs.AlertButtom.text = 'ไม่สามารเข้าสู่ระบบได้';
-                });
-        },
-        sendSignin(item){
-            sendSignin.$emit('ShowSign', item, (callback) => {
-                console.log(callback);
-            })
+                    this.$refs.AlertButtom.text = 'กรุณายืนยันอีเมล';
+                }else{
+                    this.$store.commit('SET_USER', result.user);
+                    this.$router.push('/CenterShop/shop');
+                }
+            } catch (error) {
+                //snackbar
+                this.$refs.AlertButtom.snackbar = true;
+                this.$refs.AlertButtom.colorAlart = 'red';
+                this.$refs.AlertButtom.text = 'ไม่สามารเข้าสู่ระบบได้';
+                this.unitClickLogin++;
+            }
         }
     }
 }
