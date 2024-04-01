@@ -6,7 +6,7 @@
         <div class="d-flex align-center">
             <draggable v-model="itemsImg" @end="onDragEnd" class="d-flex mt-3">                
                 <div v-for="item in itemsImg" :key="item.src">
-                    <v-img :src="item.src" 
+                    <v-img :src="item.src" type="button"
                         style="width: 90px; height: 90px;"
                         class="carousel-img me-3">
                         <div class="d-flex justify-end">
