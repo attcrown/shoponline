@@ -19,7 +19,7 @@
             <v-divider :vertical="!$store.state.deviceMode" color="black" class="mt-3"></v-divider>
             
             <div class="mt-10" :style="!$store.state.deviceMode ? 'width: 70%' : ''">
-                <dragdrop ref="dragdrop"></dragdrop>
+                <review ref="review"></review>
             </div>        
             <LoadingItem v-if="loading"></LoadingItem>
         </div>
@@ -32,9 +32,8 @@
     
 </template>
 <script>
-import { processImg } from '~/services/img-sizing';
 import checkStep from './check-step.vue'
-import dragdrop from './review/dragdrop.vue'
+import review from './review.vue'
 import LoadingItem from '~/components/LoadingItem.vue';
 export default {
     data() {
@@ -51,12 +50,12 @@ export default {
     components: {
         LoadingItem,
         checkStep,
-        dragdrop
+        review
     },
 
     watch: {        
         'items': function () {
-            if (this.$refs.dragdrop) this.$refs.dragdrop.items = this.items
+            if (this.$refs.review) this.$refs.review.items = this.items
         }
     },
 
