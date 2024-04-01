@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-5">
+    <div>
         <v-banner class="text-center" color="white" elevation="10">
             Review <v-icon>mdi-eye</v-icon>
         </v-banner>        
@@ -9,10 +9,10 @@
                 <v-carousel 
                     v-if="itemsImg.length > 0"
                     class="carousel-item"
-                    cycle
                     height="350"
                     hide-delimiter-background
-                    show-arrows-on-hover>
+                    show-arrows-on-hover
+                    delimiter-icon="mdi-minus">
                     <v-carousel-item
                         v-for="(item,i) in itemsImg"
                         :key="i">
@@ -23,8 +23,8 @@
                 </v-carousel>
             </div>
             <div :class="!$store.state.deviceMode ? 'ms-5' : ''">
-                <h4 class="max-length">{{ name }}</h4>
-                <p>{{ title }}</p>
+                <h4 class="max-length">{{ items.name }}</h4>
+                <p>{{ items.title }}</p>
             </div>
         </div>
     </div>
@@ -34,8 +34,7 @@ export default {
     data() {
         return {
             itemsImg:[],
-            name: '',
-            title: '',
+            items: []
         }
     }
 }
