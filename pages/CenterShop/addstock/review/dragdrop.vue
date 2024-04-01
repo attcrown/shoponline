@@ -3,11 +3,19 @@
         <div>
             <review ref="review"></review>
         </div>
-        <div>
-            <draggable v-model="itemsImg" @end="onDragEnd">
+        <div class="d-flex align-center">
+            <draggable v-model="itemsImg" @end="onDragEnd" class="d-flex mt-3">                
                 <div v-for="item in itemsImg" :key="item.src">
-                    {{ item.src }} <v-btn @click="itemsImg.splice(itemsImg.indexOf(item), 1)">delete</v-btn>
-                </div>
+                    <v-img :src="item.src" 
+                        style="width: 90px; height: 90px;"
+                        class="carousel-img me-3">
+                        <div class="d-flex justify-end">
+                            <v-btn icon small @click="itemsImg.splice(itemsImg.indexOf(item), 1)">
+                                <v-icon color="error">mdi-close-circle-outline</v-icon>
+                            </v-btn>
+                        </div>                        
+                    </v-img>        
+                </div>                            
             </draggable>
             <div>
                 <v-hover v-slot="{ hover }">
@@ -45,9 +53,6 @@ export default {
     methods: {
         onDragEnd(evt) {
             // console.log("Drag ended:", evt);
-        },
-        onFileChange(e) {
-            console.log(e)
         },
         openFileInput() {
             this.$refs.fileInput.$refs.input.click();
