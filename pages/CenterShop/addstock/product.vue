@@ -7,17 +7,6 @@
                     Add item <v-icon>mdi-plus-circle</v-icon>
                 </v-banner>            
                 <v-form ref="form" class="mt-5" v-model="valid" lazy-validation>
-                    <div class="d-flex align-center">
-                        <v-file-input v-model="jpgUpload" 
-                            :counter="6" multiple small-chips label="เพิ่มรูปภาพ"
-                            accept="image/png, image/jpeg, image/bmp"
-                            :rules="[v => v.length > 0 || 'This field is required']" required>
-                        </v-file-input>
-                        &nbsp; 
-                        <v-btn small elevation="6">
-                            <v-icon>mdi-plus</v-icon>
-                        </v-btn>
-                    </div>
                     <div class="d-flex">
                         <v-text-field v-model="items.name" :counter="50" :rules="nameRules" label="Name"
                             required>
@@ -51,7 +40,6 @@ export default {
     data() {
         return {
             valid: true,
-            jpgUpload: [],
             loading: true,
             items: [],
             nameRules: [
@@ -66,18 +54,7 @@ export default {
         dragdrop
     },
 
-    watch: {
-        'jpgUpload': async function () {
-            if (this.$refs.dragdrop) {
-                let imgSizing = []
-                console.log(this.jpgUpload)
-                for (const img in this.jpgUpload) {
-                    let result = await processImg(this.jpgUpload[img])
-                    imgSizing.push({ src: URL.createObjectURL(result) })
-                }
-                this.$refs.dragdrop.itemsImg = imgSizing
-            }
-        },
+    watch: {        
         'items': function () {
             if (this.$refs.dragdrop) this.$refs.dragdrop.items = this.items
         }

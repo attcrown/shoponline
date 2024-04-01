@@ -17,19 +17,21 @@
                     </v-card> 
                 </v-hover>
             </div>
-
-            <v-file-input ref="fileInput" v-model="jpgUpload" v-show="false"
-                :counter="6" multiple small-chips label="เพิ่มรูปภาพ"
-                accept="image/png, image/jpeg, image/bmp"
-                :rules="[v => v.length > 0 || 'This field is required']">
-            </v-file-input>
         </div>
+
+        <!-- Upload IMG -->
+        <v-file-input ref="fileInput" v-model="jpgUpload" v-show="false"
+            multiple small-chips label="เพิ่มรูปภาพ"
+            accept="image/png, image/jpeg, image/bmp"
+            :rules="[v => v.length > 0 || 'This field is required']">
+        </v-file-input>
     </div>
 </template>
 
 <script>
 import draggable from "vuedraggable";
 import review from "./review.vue";
+import { processImg } from "~/services/img-sizing";
 
 export default {
     components: { draggable, review },
@@ -52,8 +54,11 @@ export default {
         }
     },
     watch: {
-        'jpgUpload': async function () {
-            console.log(this.jpgUpload)
+        'jpgUpload': async function () {            
+            for (const img in this.jpgUpload) {
+                let result = await processImg(this.jpgUpload[img])
+                this.itemsImg.push({ src: URL.createObjectURL(result) })
+            }
         },
         'itemsImg': function () {
             if (this.$refs.review) this.$refs.review.itemsImg = this.itemsImg;
