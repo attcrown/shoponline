@@ -1,6 +1,6 @@
 <template>
     <div class="mx-5">
-        <v-banner class="text-center" color="white" elevation="10">
+        <v-banner class="text-center rounded-lg" color="white" elevation="10">
             Review <v-icon>mdi-eye</v-icon>
         </v-banner>
         <div class="mt-5"
@@ -8,7 +8,7 @@
             <div style="width: 350px;">
                 <controlReviewImg></controlReviewImg>
             </div>
-            <div>
+            <div style="width: 100%;">
                 <controlDetail ref="controlDetail"></controlDetail>
             </div>
         </div>

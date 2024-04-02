@@ -1,18 +1,21 @@
 <template>
     <div>
-        <checkStep ref="checkStep" v-if="!$store.state.deviceMode"></checkStep>
         <div :class="!$store.state.deviceMode ? 'd-flex' : ''">
             <div class="mt-10 mx-5" :style="!$store.state.deviceMode ? 'width: 30%' : ''">
-                <v-banner class="text-center" color="white" elevation="10">
+                <v-banner class="text-center rounded-lg" color="white" elevation="10">
                     Add item <v-icon>mdi-plus-circle</v-icon>
                 </v-banner>            
                 <v-form ref="form" class="mt-5" v-model="valid" lazy-validation>
-                    <div class="d-flex">
-                        <v-text-field v-model="items.name" :counter="50" :rules="nameRules" label="Name"
-                            required>
-                        </v-text-field>
+                    <v-text-field v-model="items.name" :counter="50" :rules="nameRules" label="Name Product"
+                        required>
+                    </v-text-field>
 
-                    </div>
+                    <v-text-field v-model="items.title" :counter="50" :rules="nameRules" label="Title"
+                        required></v-text-field>
+
+                    <v-text-field v-model="items.price" type="number" :rules="nameRules" label="Price"
+                        required></v-text-field>
+                    
                 </v-form>
             </div>
 
@@ -32,7 +35,6 @@
     
 </template>
 <script>
-import checkStep from './check-step.vue'
 import review from './review.vue'
 import LoadingItem from '~/components/LoadingItem.vue';
 export default {
@@ -42,14 +44,13 @@ export default {
             loading: true,
             items: [],
             nameRules: [
-                v => !!v || 'Name is required',
-                v => (v && v.length <= 50) || 'Name must be less than 50 characters',
+                v => !!v || 'โปรดระบุข้อมูล',
+                v => (v && v.length <= 50) || 'โปรดระบุข้อมูลไม่เกิน 50 ตัวอักษร',
             ],
         }
     },
     components: {
         LoadingItem,
-        checkStep,
         review
     },
 
