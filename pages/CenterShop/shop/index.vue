@@ -11,7 +11,7 @@
                 © 2024
             </p>
         </div>
-        <div v-else class="pb-10">
+        <div v-else>
             <p class="text-center fontsPro pt-1">
                 © 2024
             </p>

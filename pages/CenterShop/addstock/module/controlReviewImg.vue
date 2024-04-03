@@ -45,10 +45,10 @@
                 </v-hover>
             </draggable>
 
-            <div v-if="itemsImg.length === 0">
+            <div v-if="itemsImg.length === 0" :style="!$store.state.deviceMode ? 'width: 350px;' : 'width: 100%;'">
                 <!-- await processImg -->
                 <v-sheet class="pa-3">
-                    <v-skeleton-loader class="mx-auto" width="350" type="card"></v-skeleton-loader>
+                    <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
                 </v-sheet>
                 <div class="d-flex align-center justify-center">
                     <!-- alert -->

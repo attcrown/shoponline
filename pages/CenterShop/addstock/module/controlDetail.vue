@@ -14,18 +14,18 @@
                     style="margin-top: -15px; margin-bottom: -15px;"
                 size="18" readonly></v-rating>
                 
-                <v-divider class="mx-2" vertical style="border: 1px solid #B71C1C; height: 30px"></v-divider>
+                <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
                 
                 <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">
                     ขายแล้ว {{ 50+Math.floor(Math.random() * 100) }} ชิ้น</p>
 
-                <v-divider class="mx-2" vertical style="border: 1px solid #B71C1C; height: 30px"></v-divider>
+                <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
 
                 <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">100 view</p>
 
             </div>
             
-            <v-divider style="border: 1px solid #B71C1C;"></v-divider>
+            <v-divider style="border: 1px solid #B71C1C; margin-top: 4px"></v-divider>
 
             <v-card-text>
                 {{ items.title }}
