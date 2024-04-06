@@ -10,10 +10,13 @@
                         required>
                     </v-text-field>
 
-                    <v-text-field v-model="items.title" :counter="50" :rules="nameRules" label="Title"
-                        required></v-text-field>
+                    <v-textarea v-model="items.detail" auto-grow :rules="[v => !!v || 'โปรดระบุข้อมูล']" label="Detail"
+                        required></v-textarea>
 
                     <v-text-field v-model="items.price" type="number" :rules="nameRules" label="Price"
+                        required></v-text-field>
+
+                    <v-text-field v-model="items.stockItems" type="number" :rules="nameRules" label="จำนวน"
                         required></v-text-field>
                     
                 </v-form>
@@ -46,7 +49,7 @@ export default {
             nameRules: [
                 v => !!v || 'โปรดระบุข้อมูล',
                 v => (v && v.length <= 50) || 'โปรดระบุข้อมูลไม่เกิน 50 ตัวอักษร',
-            ],
+            ]
         }
     },
     components: {

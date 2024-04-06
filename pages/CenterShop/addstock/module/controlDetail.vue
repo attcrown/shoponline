@@ -29,8 +29,9 @@
             <v-navigation-drawer
                 dark
                 src="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg"
-                width="100%" permanent height="40">
-                <div class="d-flex align-center justify-space-between" style="height: 100%;">
+                width="100%" permanent>
+                <div 
+                    :class="!deviceTabletMode ? 'd-flex align-center justify-space-between' : ''">
                     <div class="ms-5 d-flex" style="color: white;">
                         <i class="mdi mdi-alpha-f"></i>
                         <i class="mdi mdi-flash"></i>
@@ -42,7 +43,7 @@
                         <i class="mdi mdi-alpha-l"></i>
                         <i class="mdi mdi-alpha-e"></i>                     
                     </div>
-                    <div class="me-5" style="color: white; font-size: 16px;">
+                    <div class="mx-5" style="color: white; font-size: 16px;">
                         <i class="mdi mdi-clock-time-eight-outline"></i> จบใน 
                         <v-chip label outlined class="px-1">
                             <div v-if="String(hour).length == 1">0</div>
@@ -61,16 +62,48 @@
             </v-navigation-drawer>
 
             <div class="d-flex align-center p-3" style="background-color: rgb(73, 73, 73, 0.1);">
-                <span style="font-size: 16px; text-decoration: line-through; color: rgb(171, 171, 171);">฿300</span>
-                <span class="ms-3" style="color: #0240aa;">฿230</span> 
+                <span style="font-size: 16px; text-decoration: line-through; color: rgb(171, 171, 171);" v-if="discount && items.price">฿{{ sale(items.price , discount) }}</span>
+                <span class="ms-3" style="color: #0240aa;">฿{{ items.price }}</span> 
                 <v-chip dark color="#B71C1C" class="px-1 ms-3" small label>                    
                     10% ส่วนลด<i class="mdi mdi-sale ms-1"></i> 
                 </v-chip>
             </div>
 
+            <v-textarea style="font-size: 16px; color: rgb(171, 171, 171);" 
+                v-model="items.detail" auto-grow readonly></v-textarea>
+            
             <v-card-text>
-                {{ items.title }}
+                จำนวน 
+                <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa" @click="countItems--"> 
+                    <v-icon>
+                        mdi-minus
+                    </v-icon>
+                </v-btn>
+
+                <input type="number" 
+                    style="border: 1px solid rgb(171, 171, 171); 
+                        width: 80px; text-align: end;
+                        border-radius: 5px;" 
+                    v-model="countItems"></input>
+
+                <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa" @click="countItems++"> 
+                    <v-icon>
+                        mdi-plus
+                    </v-icon>
+                </v-btn>
+
+                เหลือ {{ stockItems }} ชิ้น
             </v-card-text>
+                
+
+            <v-card-actions>
+                <v-spacer></v-spacer>       
+                <v-btn small color="#0240aa" dark style="font-size: 16px;">ซื้อ</v-btn>         
+                <v-btn small color="#0240aa" outlined style="font-size: 16px;">
+                    <span class="mdi mdi-cart-plus text-h5"></span> 
+                    เพิ่มใส่ตะกร้า
+                </v-btn>                
+            </v-card-actions>
         </v-card>
     </div>
 </template>
@@ -78,11 +111,15 @@
 export default {
     data() {
         return {
+            deviceTabletMode: false,
             rating: 4.3,
             items: [],
             seconds: 5,
             min: 1,
-            hour: 0
+            hour: 0,
+            discount: 50,
+            countItems : 1,
+            stockItems: 20
         }
     },
     watch: {
@@ -90,10 +127,19 @@ export default {
             setTimeout(() => {
                 this.settimeSeconds();
             }, 1000);
+        },
+        'countItems': function (newVal, oldVal) {
+            if (newVal >= this.stockItems) {
+                this.countItems = this.stockItems
+            }else if (newVal <= 1) {
+                this.countItems = 1
+            }
         }
     },
     mounted() {
         this.settimeSeconds()
+        this.checkSizeTablet()
+        window.addEventListener('resize', this.checkSizeTablet)
     },
 
     methods: {
@@ -113,6 +159,13 @@ export default {
             }else {
                 this.seconds--
             }
+        },
+        checkSizeTablet() {
+            this.deviceTabletMode = window.innerWidth < 1300;
+        },
+        sale(price , discount) {
+            if(!discount || !price) return null
+            return price - price * (discount / 100)
         }
     }
 }
