@@ -6,17 +6,17 @@
                         class="mdi mdi-shopping me-1"></i>Top</v-chip> &nbsp; {{ items.name }}
             </v-card-title>
             <div class="d-flex align-center">
-                <v-rating v-model="rating" background-color="white" color="yellow accent-4" dense half-increments hover
+                <v-rating  v-model="rating" background-color="white" color="yellow accent-4" dense half-increments hover
                     style="margin-top: -15px; margin-bottom: -15px;" size="18" readonly></v-rating>
 
                 <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
 
                 <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">
-                    ขายแล้ว {{ 50 + Math.floor(Math.random() * 100) }} ชิ้น</p>
+                    ขายแล้ว {{ items.seller ? items.seller : 0 }} ชิ้น</p>
 
                 <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
 
-                <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">100 view</p>
+                <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">{{ items.view ? items.view : 0 }} view</p>
             </div>
 
             <v-divider style="border: 1px solid #B71C1C; margin-top: 4px"></v-divider>
@@ -143,6 +143,9 @@ export default {
         'items.dateFirst': function () {
             if (!this.items.utcDateFirst) return
             this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
+        },
+        'items.star': function () {
+            this.rating = parseFloat(this.items.star) 
         }
     },
     mounted() {

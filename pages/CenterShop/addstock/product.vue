@@ -18,18 +18,18 @@
                     <v-text-field v-model="items.stockItems" type="number" :rules="nameRules" label="units"
                         required></v-text-field>
 
-                    <v-text-field v-model="items.discount" type="number" :rules="nameRules" label="Discount"
+                    <v-text-field v-model="items.discount" type="number" :rules="nameRules" label="ส่วนลด"
                         append-icon="mdi-percent" required></v-text-field>
 
                     <div v-if="items.discount" class="text-center border p-3 rounded-lg">
-                        เริ่ม
+                        เริ่มโปรโมชั่น
                         <div class="d-flex">
                             <v-text-field type="date" v-model="items.dateFirst" :rules="[v => !!v || 'โปรดระบุข้อมูล']"
                                 class="mr-5"></v-text-field>
                             <v-text-field type="time" v-model="items.timeFirst"
                                 :rules="[v => !!v || 'โปรดระบุข้อมูล']"></v-text-field>
                         </div>
-                        ถึง
+                        สิ้นสุดโปรโมชั่น
                         <div class="d-flex">
                             <v-text-field type="date" v-model="items.dateEnd" :rules="[v => !!v || 'โปรดระบุข้อมูล']"
                                 class="mr-5"></v-text-field>
@@ -44,7 +44,7 @@
                     <v-text-field v-model="items.seller" type="number" :rules="nameRules" label="ยอดขาย"
                         required></v-text-field>
 
-                    <v-text-field v-model="items.star" type="number" :rules="nameRules" label="star 1-5"
+                    <v-text-field v-model="items.star" type="float" :rules="nameRules" label="star 1-5"
                         required></v-text-field>
 
                     <v-checkbox v-model="items.goodSell" label="สินค้าขายดี" value="false"></v-checkbox>
