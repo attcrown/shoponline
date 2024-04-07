@@ -205,7 +205,7 @@ export default {
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
             }
 
-            let limitTime = limitUtcDate.diff(dateTimeInBangkok, ['year','months', 'days', 'hours', 'minutes', 'seconds']).toObject()
+            let limitTime = limitUtcDateEnd.diff(dateTimeInBangkok, ['year','months', 'days', 'hours', 'minutes', 'seconds']).toObject()
             console.log(limitTime)
 
             // console.log('>>>',dateTimeInBangkok.toISODate()); // Display the converted datetime in ISO format
