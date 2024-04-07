@@ -181,6 +181,7 @@ export default {
             return price * this.countItems
         },
         rateTime(limitUtcDateFirst ,limitUtcDateEnd) {
+            if (!limitUtcDateFirst || !limitUtcDateEnd) return
             const dateTimeInBangkok = checkDateNow(this.$fireModule)
             // console.log('limitStart ',limitUtcDateFirst ,'End ', limitUtcDateEnd,'>>> ',dateTimeInBangkok )
 
