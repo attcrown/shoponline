@@ -21,11 +21,21 @@
                     <v-text-field v-model="items.discount" type="number" :rules="nameRules" label="Discount"
                         append-icon="mdi-percent" required></v-text-field>
 
-                    <div class="d-flex" v-if="items.discount">
-                        <v-text-field type="date" v-model="items.date" :rules="[v => !!v || 'โปรดระบุข้อมูล']"
-                            class="mr-5"></v-text-field>
-                        <v-text-field type="time" v-model="items.time"
-                            :rules="[v => !!v || 'โปรดระบุข้อมูล']"></v-text-field>
+                    <div v-if="items.discount" class="text-center border p-3 rounded-lg">
+                        เริ่ม
+                        <div class="d-flex">
+                            <v-text-field type="date" v-model="items.dateFirst" :rules="[v => !!v || 'โปรดระบุข้อมูล']"
+                                class="mr-5"></v-text-field>
+                            <v-text-field type="time" v-model="items.timeFirst"
+                                :rules="[v => !!v || 'โปรดระบุข้อมูล']"></v-text-field>
+                        </div>
+                        ถึง
+                        <div class="d-flex">
+                            <v-text-field type="date" v-model="items.dateEnd" :rules="[v => !!v || 'โปรดระบุข้อมูล']"
+                                class="mr-5"></v-text-field>
+                            <v-text-field type="time" v-model="items.timeEnd"
+                                :rules="[v => !!v || 'โปรดระบุข้อมูล']"></v-text-field>
+                        </div>                        
                     </div>
 
                     <v-text-field v-model="items.view" type="number" :rules="nameRules" label="view"
@@ -60,8 +70,9 @@
 
 </template>
 <script>
+import { formatDatetime } from '~/services/formatDatetime';
 import review from './review.vue'
-import moment from 'moment';
+import { DateTime } from 'luxon';
 import LoadingItem from '~/components/LoadingItem.vue';
 export default {
     data() {
@@ -85,12 +96,20 @@ export default {
         'items': function (newVal, oldVal) {
             if (this.$refs.review) this.$refs.review.items = this.items
         },
-        'items.date': function () {
-            if (this.items.date && this.items.time) this.timeZoneUTC(this.items.date, this.items.time)
+        'items.dateEnd': function () {
+            this.items.utcDateEnd = formatDatetime(this.items.dateEnd, this.items.timeEnd)
             if (this.$refs.review) this.$refs.review.items = this.items
         },
-        'items.time': function () {
-            if (this.items.date && this.items.time) this.timeZoneUTC(this.items.date, this.items.time)
+        'items.timeEnd': function () { 
+            this.items.utcDateEnd = formatDatetime(this.items.dateEnd, this.items.timeEnd)
+            if (this.$refs.review) this.$refs.review.items = this.items
+        },
+        'items.dateFirst': function () {
+            this.items.utcDateFirst = formatDatetime(this.items.dateFirst, this.items.timeFirst)
+            if (this.$refs.review) this.$refs.review.items = this.items
+        },
+        'items.timeFirst': function () { 
+            this.items.utcDateFirst = formatDatetime(this.items.dateFirst, this.items.timeFirst)
             if (this.$refs.review) this.$refs.review.items = this.items
         }
     },
@@ -106,12 +125,12 @@ export default {
         timeZoneUTC(date, time) {
             if (!date || !time) return
             // แปลงวันที่ yyyy-MM-dd
-            const dateFormat = moment(date).format('YYYY-MM-DD')
+            const dateFormat = DateTime.fromISO(date).toFormat('yyyy-MM-dd');
             // สร้างวันเวลาท้องถิ่น
-            const localDate = new Date(`${dateFormat}T${time}:00`)  
+            const isoDateTime = DateTime.fromISO(`${dateFormat}T${time}:00`);
 
-            this.items.utcDate = localDate
-        }
+            return isoDateTime
+        },
     }
 }
 </script>

@@ -96,19 +96,22 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
+        <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
 <script>
-import { DateTime } from 'luxon';
+import AlertButtom from '~/components/AlertButtom.vue';
+import { checkDateNow } from '~/services/formatDatetime';
 export default {
+    components: { AlertButtom },
     data() {
         return {
             deviceTabletMode: false,
             rating: 4.3,
             items: [],
             seconds: 5,
-            min: 1,
-            hour: 0,
+            min: 0,
+            hour: 1,
             countItems: 1,
         }
     },
@@ -125,13 +128,21 @@ export default {
                 this.countItems = 1
             }
         },
-        'items.time': function () {
-            if (!this.items.date || !this.items.time) return
-            this.rateTime(this.items.utcDate)
+        'items.timeEnd': function () {
+            if (!this.items.utcDateEnd) return
+            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
         },
-        'items.date': function () {
-            if (!this.items.date || !this.items.time) return
-            this.rateTime(this.items.utcDate)
+        'items.dateEnd': function () {
+            if (!this.items.utcDateEnd) return
+            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
+        },
+        'items.timeFirst': function () {
+            if (!this.items.utcDateFirst) return
+            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
+        },
+        'items.dateFirst': function () {
+            if (!this.items.utcDateFirst) return
+            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
         }
     },
     mounted() {
@@ -149,7 +160,7 @@ export default {
                     } else {
                         this.hour--
                     }
-                    this.min = 60
+                    this.min = 59
                 } else {
                     this.min--
                 }
@@ -169,15 +180,38 @@ export default {
             if (!price) return 0
             return price * this.countItems
         },
-        rateTime(time) {
-            const timestampFromFirestore = this.$fireModule.firestore.Timestamp.now();
-            // Convert Firestore Timestamp to milliseconds
-            const milliseconds = timestampFromFirestore.toMillis();
-            // Convert milliseconds to DateTime object in the desired timezone
-            const dateTimeInBangkok = DateTime.fromMillis(milliseconds, { zone: 'Asia/Bangkok' });
-            console.log(dateTimeInBangkok.toISO()); // Display the converted datetime in ISO format
+        rateTime(limitUtcDateFirst ,limitUtcDateEnd) {
+            const dateTimeInBangkok = checkDateNow(this.$fireModule)
+            // console.log('limitStart ',limitUtcDateFirst ,'End ', limitUtcDateEnd,'>>> ',dateTimeInBangkok )
 
+            if(dateTimeInBangkok > limitUtcDateEnd){
+                this.items.dateEnd = null
+                this.items.timeEnd = null
+
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'วันที่สิ้นสุดต้องมากกว่าวันที่ปัจจุบัน'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+            } 
+
+            if(limitUtcDateEnd < limitUtcDateFirst){
+                this.items.dateFirst = null
+                this.items.timeFirst = null
+
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'วันที่เริ่มต้นต้องน้อยกว่าวันที่สิ้นสุด'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
             }
+
+            let limitTime = limitUtcDate.diff(dateTimeInBangkok, ['year','months', 'days', 'hours', 'minutes', 'seconds']).toObject()
+            console.log(limitTime)
+
+            // console.log('>>>',dateTimeInBangkok.toISODate()); // Display the converted datetime in ISO format
+            // console.log('>>>',dateTimeInBangkok.toFormat('HH:mm:ss')); // Display the converted datetime in ISO format
+            // console.log('---',limitUtcDate.toISODate()); // Display the converted datetime in ISO format
+            // console.log('---',limitUtcDate.toFormat('HH:mm:ss')); // Display the converted datetime in ISO format
+        }
     }
 }
 </script>
