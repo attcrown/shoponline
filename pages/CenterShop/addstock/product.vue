@@ -140,7 +140,6 @@ import draggable from "vuedraggable";
 import { processImg } from "~/services/img-sizing";
 import { checkDateNow } from '~/services/formatDatetime';
 import AlertButtom from '~/components/AlertButtom.vue';
-import { formatDatetime } from '~/services/formatDatetime';
 import review from './review.vue'
 import LoadingItem from '~/components/LoadingItem.vue';
 export default {
