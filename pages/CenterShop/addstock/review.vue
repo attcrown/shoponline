@@ -6,7 +6,7 @@
         <div class="mt-5"
             :class="!$store.state.deviceMode ? 'd-flex' : ''">
             <div :style="!$store.state.deviceMode ? 'width: 350px;' : 'width: 100%;'">
-                <controlReviewImg></controlReviewImg>
+                <controlReviewImg ref="controlReview"></controlReviewImg>
             </div>
             <div style="width: 100%;">
                 <controlDetail ref="controlDetail"></controlDetail>
@@ -17,17 +17,22 @@
 <script>
 import controlReviewImg from './module/controlReviewImg.vue'
 import controlDetail from './module/controlDetail.vue'
-
 export default {
     data() {
         return {
-            items: []
+            items: [],
+            imgs:[]
         }
     },
     watch: {
         'items': function () {
             if (this.$refs.controlDetail) {
                 this.$refs.controlDetail.items = this.items
+            }
+        },
+        'imgs': function () {
+            if (this.$refs.controlReview) {
+                this.$refs.controlReview.items = this.imgs
             }
         }
     },

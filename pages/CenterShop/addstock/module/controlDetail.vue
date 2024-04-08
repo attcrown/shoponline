@@ -2,8 +2,11 @@
     <div :class="!$store.state.deviceMode ? 'ms-5' : 'mt-5'" class="fontsProDetail">
         <v-card outlined style="border: 0px;">
             <v-card-title style="padding: 0px;">
-                <v-chip label color="#B71C1C" text-color="white" small class="px-1"><i
-                        class="mdi mdi-shopping me-1"></i>Top</v-chip> &nbsp; {{ items.name }}
+                <v-chip v-if="items.top" label color="#B71C1C" text-color="white" small class="px-1 me-2"><i
+                        class="mdi mdi-shopping me-1"></i>Top</v-chip> 
+                <v-chip v-if="items.goodSell" label color="orange" text-color="white" small class="px-1 me-2">
+                    <i class="mdi mdi-charity me-1"></i>สินค้าขายดี</v-chip>
+                &nbsp; {{ items.name }}
             </v-card-title>
             <div class="d-flex align-center">
                 <v-rating  v-model="rating" background-color="white" color="yellow accent-4" dense half-increments hover
@@ -23,7 +26,7 @@
 
             <v-navigation-drawer dark src="https://cdn.vuetifyjs.com/images/backgrounds/bg-2.jpg" width="100%" permanent
                 v-if="items.discount">
-                <div :class="!deviceTabletMode ? 'd-flex align-center justify-space-between' : ''">
+                <div :class="!$store.state.deviceMode ? 'd-flex align-center justify-space-between' : ''">
                     <div class="ms-5 d-flex" style="color: white;">
                         <i class="mdi mdi-alpha-f"></i>
                         <i class="mdi mdi-flash"></i>
@@ -54,18 +57,26 @@
             </v-navigation-drawer>
 
             <div class="d-flex align-center p-3" style="background-color: rgb(73, 73, 73, 0.1);">
-                <span style="font-size: 16px; text-decoration: line-through; color: rgb(171, 171, 171);"
-                    v-if="items.discount && items.price">฿{{ priceUnit(items.price) }}</span>
-                <span class="ms-3" style="color: #0240aa;">฿{{ sale(items.price, items.discount) }}</span>
+                <span style="text-decoration: line-through; color: rgb(171, 171, 171);"
+                    :style="$store.state.deviceMode ? 'font-size: 11px;' : 'font-size: 16px;'"
+                    v-if="items.discount && items.price">
+                    ฿{{ formatBath(priceUnit(items.price)) }}
+                </span>
+                
+                <span class="ms-3" style="color: #0240aa;" 
+                    :style="$store.state.deviceMode ? 'font-size: 16px;' : ''">
+                    ฿{{ formatBath(sale(items.price, items.discount))  }}
+                </span>
+
                 <v-chip dark color="#B71C1C" class="px-1 ms-3" small label v-if="items.discount">
                     {{ items.discount }}% ส่วนลด<i class="mdi mdi-sale ms-1"></i>
                 </v-chip>
             </div>
 
-            <v-textarea style="font-size: 16px; color: rgb(171, 171, 171);" v-model="items.detail" auto-grow
-                readonly></v-textarea>
+            <v-textarea style="font-size: 16px;" v-model="items.detail" auto-grow
+                disabled></v-textarea>
 
-            <v-card-text>
+            <v-card-text class="px-0">
                 จำนวน
                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa" @click="countItems--">
                     <v-icon>
@@ -73,9 +84,11 @@
                     </v-icon>
                 </v-btn>
 
-                <input type="number" style="border: 1px solid rgb(171, 171, 171); 
-                        width: 80px; text-align: end;
-                        border-radius: 5px;" v-model="countItems"></input>
+                <input type="number" style="border: 1px solid rgb(171, 171, 171);                        
+                        width: 60px; text-align: end;
+                        border-radius: 5px;" 
+                        class="text-center"
+                        v-model="countItems"></input>
 
                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa" @click="countItems++">
                     <v-icon>
@@ -95,18 +108,13 @@
                     เพิ่มใส่ตะกร้า
                 </v-btn>
             </v-card-actions>
-        </v-card>
-        <AlertButtom ref="AlertButtom"></AlertButtom>
+        </v-card>        
     </div>
 </template>
 <script>
-import AlertButtom from '~/components/AlertButtom.vue';
-import { checkDateNow } from '~/services/formatDatetime';
 export default {
-    components: { AlertButtom },
     data() {
         return {
-            deviceTabletMode: false,
             rating: 4.3,
             items: [],
             seconds: 5,
@@ -116,33 +124,17 @@ export default {
         }
     },
     watch: {
-        'seconds': function (newVal, oldVal) {
+        'seconds': function () {
             setTimeout(() => {
                 this.settimeSeconds();
             }, 1000);
         },
-        'countItems': function (newVal, oldVal) {
+        'countItems': function (newVal) {
             if (parseInt(newVal) >= this.items.stockItems) {
                 this.countItems = this.items.stockItems
             } else if (parseInt(newVal) <= 1) {
                 this.countItems = 1
             }
-        },
-        'items.timeEnd': function () {
-            if (!this.items.utcDateEnd) return
-            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
-        },
-        'items.dateEnd': function () {
-            if (!this.items.utcDateEnd) return
-            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
-        },
-        'items.timeFirst': function () {
-            if (!this.items.utcDateFirst) return
-            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
-        },
-        'items.dateFirst': function () {
-            if (!this.items.utcDateFirst) return
-            this.rateTime(this.items.utcDateFirst,this.items.utcDateEnd)
         },
         'items.star': function () {
             this.rating = parseFloat(this.items.star) 
@@ -150,7 +142,6 @@ export default {
     },
     mounted() {
         this.settimeSeconds()
-        this.checkSizeTablet()
         window.addEventListener('resize', this.checkSizeTablet)
     },
 
@@ -172,9 +163,6 @@ export default {
                 this.seconds--
             }
         },
-        checkSizeTablet() {
-            this.deviceTabletMode = window.innerWidth < 1300;
-        },
         sale(price, discount) {
             if (!discount) return this.priceUnit(price)
             return this.priceUnit(price) - this.priceUnit(price) * (discount / 100)
@@ -183,38 +171,9 @@ export default {
             if (!price) return 0
             return price * this.countItems
         },
-        rateTime(limitUtcDateFirst ,limitUtcDateEnd) {
-            if (!limitUtcDateFirst || !limitUtcDateEnd) return
-            const dateTimeInBangkok = checkDateNow(this.$fireModule)
-            // console.log('limitStart ',limitUtcDateFirst ,'End ', limitUtcDateEnd,'>>> ',dateTimeInBangkok )
-
-            if(dateTimeInBangkok > limitUtcDateEnd){
-                this.items.dateEnd = null
-                this.items.timeEnd = null
-
-                this.$refs.AlertButtom.snackbar = true
-                this.$refs.AlertButtom.colorAlart = 'red'
-                this.$refs.AlertButtom.text = 'วันที่สิ้นสุดต้องมากกว่าวันที่ปัจจุบัน'
-                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-            } 
-
-            if(limitUtcDateEnd < limitUtcDateFirst){
-                this.items.dateFirst = null
-                this.items.timeFirst = null
-
-                this.$refs.AlertButtom.snackbar = true
-                this.$refs.AlertButtom.colorAlart = 'red'
-                this.$refs.AlertButtom.text = 'วันที่เริ่มต้นต้องน้อยกว่าวันที่สิ้นสุด'
-                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-            }
-
-            let limitTime = limitUtcDateEnd.diff(dateTimeInBangkok, ['year','months', 'days', 'hours', 'minutes', 'seconds']).toObject()
-            console.log(limitTime)
-
-            // console.log('>>>',dateTimeInBangkok.toISODate()); // Display the converted datetime in ISO format
-            // console.log('>>>',dateTimeInBangkok.toFormat('HH:mm:ss')); // Display the converted datetime in ISO format
-            // console.log('---',limitUtcDate.toISODate()); // Display the converted datetime in ISO format
-            // console.log('---',limitUtcDate.toFormat('HH:mm:ss')); // Display the converted datetime in ISO format
+        formatBath(price){
+            // 1,000.00 | 1,000,000.00 | 1,000,000.00
+            return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");            
         }
     }
 }
