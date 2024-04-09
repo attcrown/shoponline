@@ -46,8 +46,7 @@ export async function getItemsAll() {
         if(item.empty) return []
 
         const docs = item.docs
-        let data = docs.map(doc => doc.data())
-
+        let data = docs.map(doc => ({idDocs: doc.id, ...doc.data()}))
         //stockitems
         for(const x in data){
             let stockItems = await firebase.database().ref(`items/${data[x].id}`).get()
@@ -91,4 +90,29 @@ export async function delItem(items) {
         console.log(error)
     }
     return true
+}
+
+export async function updateItems(items) {
+    try {
+        await firebase.database().ref(`items/${items.id}`).update({
+            stockItems : items.stockItems,
+            view : items.view,
+            seller : items.seller
+        })
+
+        let idDocs = items.idDocs
+
+        delete items.stockItems
+        delete items.view
+        delete items.seller
+        delete items.idDocs
+
+        await firebase.firestore().collection('items').doc(idDocs).update({
+            ...items
+        })
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
 }

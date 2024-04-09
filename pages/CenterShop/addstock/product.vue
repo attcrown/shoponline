@@ -4,7 +4,7 @@
             <div class="mt-10 mx-5"
                 :style="!$store.state.deviceMode ? 'width: 25%; overflow-y: auto; overflow-x: hidden; height: 84vh' : ''">
                 <v-banner class="text-center rounded-lg" color="white" elevation="10">
-                    Add item <v-icon>mdi-plus-circle</v-icon>
+                    {{ modeStatus ? 'Edit' : 'Add' }} item <v-icon>mdi-plus-circle</v-icon>
                 </v-banner>
 
                 <!-- add IMG & Control -->
@@ -125,7 +125,7 @@
         <div class="m-5 text-center">
             <v-btn color="success" @click="validate" :disabled="!valid" :loading="doing" class="px-1 pe-2">
                 <span class="mdi mdi-database-plus me-2 text-h6"></span>
-                ADD ITEMS
+                {{ modeStatus ? 'UPDATE' : 'ADD' }} ITEMS
             </v-btn>
             <v-btn color="warning" @click="reset" class="px-1 pe-2">
                 <span class="mdi mdi-delete-empty me-2 text-h6"></span>
@@ -137,7 +137,8 @@
 
 </template>
 <script>
-import { createItems } from '~/services/items-firebase';
+import { EventBus } from '~/plugins/EventBus';
+import { createItems ,updateItems } from '~/services/items-firebase';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from "vuedraggable";
 import { processImg } from "~/services/img-sizing";
@@ -162,7 +163,8 @@ export default {
 
             jpgUpload: [],
             itemsImg: [],
-            unitImg: 6
+            unitImg: 6,
+            modeStatus: false,
         }
     },
 
@@ -208,6 +210,14 @@ export default {
             if (this.$refs.review) this.$refs.review.imgs = this.items.imgs
         }
     },
+    created() {
+        EventBus.$on('editItem', (items) => {
+            this.items = {...items}
+            this.itemsImg = items.imgs
+            this.dates = items.dates
+            this.modeStatus = true
+        })
+    },
 
     mounted() {
         this.loading = false
@@ -226,15 +236,24 @@ export default {
         async save(){
             this.doing = true;
             let id = uuidv4()
-            this.items = {...this.items, 
-                id: id,
-                createdUser: this.$store.state.uid,
-                createdAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
-                updatedAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
-                deletedAt: null
-            }
-            const result = await createItems(this.items)
+            let result = false
 
+            if(!this.modeStatus){
+                this.items = {...this.items, 
+                    id: id,
+                    createdUser: this.$store.state.uid,
+                    createdAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
+                    deletedAt: null
+                }
+                result = await createItems(this.items)                
+            }else{
+                this.items.updatedAt = this.$fireModule.firestore.FieldValue.serverTimestamp()                
+                result = await updateItems(this.items)
+
+                EventBus.$emit('refreshEditItem')
+            }
+            
             this.doing = false;
             if(result){
                 this.$refs.AlertButtom.snackbar = true
@@ -253,41 +272,7 @@ export default {
         reset() {
             this.$refs.form.reset()
             this.itemsImg = []
-        },
-
-        rateTime(limitUtcDateFirst, limitUtcDateEnd) {
-            console.log(limitUtcDateFirst, '<<>>', limitUtcDateEnd)
-            if (!limitUtcDateFirst || !limitUtcDateEnd) return
-            const dateTimeInBangkok = checkDateNow(this.$fireModule)
-            // console.log('limitStart ',limitUtcDateFirst ,'End ', limitUtcDateEnd,'>>> ',dateTimeInBangkok )
-
-            if (dateTimeInBangkok > limitUtcDateEnd) {
-                this.items.dateEnd = null
-                this.items.timeEnd = null
-
-                this.$refs.AlertButtom.snackbar = true
-                this.$refs.AlertButtom.colorAlart = 'red'
-                this.$refs.AlertButtom.text = 'วันที่สิ้นสุดต้องมากกว่าวันที่ปัจจุบัน'
-                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-            }
-
-            if (limitUtcDateEnd < limitUtcDateFirst) {
-                this.items.dateFirst = null
-                this.items.timeFirst = null
-
-                this.$refs.AlertButtom.snackbar = true
-                this.$refs.AlertButtom.colorAlart = 'red'
-                this.$refs.AlertButtom.text = 'วันที่เริ่มต้นต้องน้อยกว่าวันที่สิ้นสุด'
-                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-            }
-
-            let limitTime = limitUtcDateEnd.diff(dateTimeInBangkok, ['year', 'months', 'days', 'hours', 'minutes', 'seconds']).toObject()
-            console.log(limitTime)
-
-            // console.log('>>>',dateTimeInBangkok.toISODate()); // Display the converted datetime in ISO format
-            // console.log('>>>',dateTimeInBangkok.toFormat('HH:mm:ss')); // Display the converted datetime in ISO format
-            // console.log('---',limitUtcDate.toISODate()); // Display the converted datetime in ISO format
-            // console.log('---',limitUtcDate.toFormat('HH:mm:ss')); // Display the converted datetime in ISO format
+            this.modeStatus = false
         }
     }
 }

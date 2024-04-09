@@ -4,13 +4,17 @@
             <v-card-title>
                 รายการสินค้าทั้งหมด
                 <v-spacer></v-spacer>
-                <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
+                <!-- <v-btn small @click="searchItemsAll()" class="mx-2">refesh</v-btn> -->
+                <v-text-field v-model="search" 
+                    append-icon="mdi-magnify" 
+                    label="Search" single-line
+                    style="max-width: 400px;"
                     hide-details></v-text-field>
             </v-card-title>
             <v-data-table sort-by="updatedAt" sort-desc :headers="headers" :items="desserts" :search="search" :loading="loading">
                 <template v-slot:item.action="{ item }">
                     <div class="mx-0 px-0">
-                        <v-btn>
+                        <v-btn @click="editItem(item)">
                             edit
                         </v-btn>
                         <v-btn @click="deleteItem(item)" :disabled="deleteItemsLoading">
@@ -22,8 +26,7 @@
                     <div class="d-flex align-center">
                         <div style="width: 40px; height: 40px;" class="me-2">
                             <v-img class="rounded-lg" style="width: 40px; height: 40px;" :src="item.imgs[0].src"></v-img>
-                        </div>
-                        
+                        </div>                        
                         {{ item.name }}
                     </div>
                 </template>
@@ -64,6 +67,7 @@
     </div>
 </template>
 <script>
+import { EventBus } from '~/plugins/EventBus';
 import AlertButtom from '~/components/AlertButtom.vue';
 import { formatBath ,formatInt} from '~/services/format-number';
 import { formatTimestamp } from '~/services/formatDatetime';
@@ -96,6 +100,11 @@ export default {
     mounted() {
         this.searchItemsAll()
     },
+    created() {
+        EventBus.$on('refreshEditItem', () => {
+            this.searchItemsAll()
+        })
+    },
     methods: {
         async searchItemsAll(){
             let result = await getItemsAll()
@@ -127,6 +136,9 @@ export default {
                 this.$refs.AlertButtom.text = 'ลบสินค้าไม่สําเร็จ'
                 this.searchItemsAll()
             }
+        },
+        editItem(item) {
+            EventBus.$emit('editItem', item)
         }
     },
 }
