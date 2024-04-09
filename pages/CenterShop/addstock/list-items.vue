@@ -13,9 +13,18 @@
                         <v-btn>
                             edit
                         </v-btn>
-                        <v-btn>
+                        <v-btn @click="deleteItem(item)" :disabled="deleteItemsLoading">
                             Del
                         </v-btn>
+                    </div>
+                </template>
+                <template v-slot:item.name="{ item }">
+                    <div class="d-flex align-center">
+                        <div style="width: 40px; height: 40px;" class="me-2">
+                            <v-img class="rounded-lg" style="width: 40px; height: 40px;" :src="item.imgs[0].src"></v-img>
+                        </div>
+                        
+                        {{ item.name }}
                     </div>
                 </template>
                 <template v-slot:item.price="{ item }">
@@ -51,15 +60,21 @@
                 </template>
             </v-data-table>
         </v-card>
+        <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
 <script>
+import AlertButtom from '~/components/AlertButtom.vue';
 import { formatBath ,formatInt} from '~/services/format-number';
 import { formatTimestamp } from '~/services/formatDatetime';
-import { getItemsAll } from '~/services/items-firebase';
+import { getItemsAll ,delItem } from '~/services/items-firebase';
 export default {
+    components: {
+        AlertButtom
+    },
     data() {
         return {
+            deleteItemsLoading: false,
             loading: true,
             search: '',
             headers: [
@@ -95,6 +110,23 @@ export default {
         },
         formatInt(num) {
             return formatInt(num)
+        },
+        async deleteItem(items) {
+            this.deleteItemsLoading = true
+            const result = await delItem(items)
+            this.deleteItemsLoading = false
+            
+            if(result) {
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'green'
+                this.$refs.AlertButtom.text = 'ลบสินค้าเรียบร้อย'
+                this.searchItemsAll()
+            }else{
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'ลบสินค้าไม่สําเร็จ'
+                this.searchItemsAll()
+            }
         }
     },
 }

@@ -25,9 +25,7 @@ export async function createItems(itemsMain) {
         return true
     } catch (error) {
         console.log(error)
-        firebase.storage().ref(`items/${items.id}`).delete()
-        firebase.database().ref(`items/${items.id}`).delete()
-        firebase.firestore().collection('items').where('id', '==', items.id).delete()
+        delItem(items)
         return false
     }
 }
@@ -57,12 +55,40 @@ export async function getItemsAll() {
                 data[x] = {...data[x] , ...stockItems.val()}
             }
         }
-        
+
         return data 
 
     } catch (error) {
         console.log(error)
         return []
     }
-    
+}
+
+export async function delItem(items) {
+    if(!items || !items.id) return false
+    try {
+        await firebase.database().ref(`items/${items.id}`).remove()       
+    } catch (error) {
+        console.log(error)
+    }
+
+    try {
+        for(const x in items.imgs){
+           await firebase.storage().ref(`items/${items.id}/${items.imgs[x].value}`).delete()
+        }
+    } catch (error) {
+        console.log(error)
+    }
+
+    try{
+        const result = await firebase.firestore().collection('items').where('id', '==', items.id).get()
+        if(!result.empty){
+            result.forEach(async (doc) => {
+                await firebase.firestore().collection('items').doc(doc.id).delete();
+            });
+        }
+    }catch (error) {
+        console.log(error)
+    }
+    return true
 }
