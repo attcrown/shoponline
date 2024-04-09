@@ -1,9 +1,11 @@
 <template>
     <div class="fontsProAdd">
         <product></product>
+        <listItems class="mt-5"></listItems>
     </div>
 </template>
 <script>
+import listItems from './list-items.vue'
 import product from './product.vue'
 import { checkStatus } from '../../../services/check-status';
 
@@ -13,7 +15,8 @@ export default {
         this.checkStatusRank();
     },
     components: {
-        product
+        product,
+        listItems
     },
     methods: {
         checkStatusRank() {

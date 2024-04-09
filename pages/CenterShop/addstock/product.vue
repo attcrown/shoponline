@@ -122,8 +122,8 @@
             <LoadingItem v-if="loading"></LoadingItem>
         </div>
 
-        <div class="mx-5 mb-5 text-center">
-            <v-btn color="success" @click="validate" :disabled="!valid" class="px-1 pe-2">
+        <div class="m-5 text-center">
+            <v-btn color="success" @click="validate" :disabled="!valid" :loading="doing" class="px-1 pe-2">
                 <span class="mdi mdi-database-plus me-2 text-h6"></span>
                 ADD ITEMS
             </v-btn>
@@ -137,6 +137,8 @@
 
 </template>
 <script>
+import { createItems } from '~/services/items-firebase';
+import { v4 as uuidv4 } from 'uuid';
 import draggable from "vuedraggable";
 import { processImg } from "~/services/img-sizing";
 import { checkDateNow } from '~/services/formatDatetime';
@@ -146,6 +148,7 @@ import LoadingItem from '~/components/LoadingItem.vue';
 export default {
     data() {
         return {
+            doing : false,
             valid: true,
             loading: true,
             items: [],
@@ -197,7 +200,7 @@ export default {
                     this.$refs.AlertButtom.text = 'ไม่สามารถเพิ่มรูปภาพได้เกิน 6 รูป'
                     break
                 }                
-                this.itemsImg.push({ src: URL.createObjectURL(result) })
+                this.itemsImg.push({ src: URL.createObjectURL(result) , value: result})
             }
         },
         'itemsImg': function () {
@@ -217,8 +220,34 @@ export default {
             this.$refs.fileInput.$refs.input.click();
         },
         validate() {
-            this.$refs.form.validate()
-            console.log(this.items)
+            if(this.$refs.form.validate()) this.save()
+        },
+
+        async save(){
+            this.doing = true;
+            let id = uuidv4()
+            this.items = {...this.items, 
+                id: id,
+                createdUser: this.$store.state.uid,
+                createdAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
+                updatedAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
+                deletedAt: null
+            }
+            const result = await createItems(this.items)
+
+            this.doing = false;
+            if(result){
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'green'
+                this.$refs.AlertButtom.text = 'บันทึกข้อมูลสําเร็จ'
+                this.$refs.AlertButtom.icon = 'mdi mdi-check-circle-outline'
+                this.reset()
+            }else{
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'บันทึกข้อมูลไม่สําเร็จ'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+            }
         },
 
         reset() {

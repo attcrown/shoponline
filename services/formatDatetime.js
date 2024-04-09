@@ -18,3 +18,10 @@ export function checkDateNow(firebase) {
     const dateTimeInBangkok = DateTime.fromMillis(milliseconds, { zone: 'Asia/Bangkok' });
     return dateTimeInBangkok
 }
+
+export function formatTimestamp(timestamp) {
+    if(timestamp === null) return '-'
+    // dd/mm/yyyy hh:mm:ss
+    const date = DateTime.fromMillis(timestamp.toMillis(),{zone: 'Asia/Bangkok'}).toFormat('dd/MM/yyyy HH:mm:ss');
+    return date
+}

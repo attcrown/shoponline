@@ -181,8 +181,9 @@ export default {
 
             if (this.$refs.form.validate()) {
                 this.personalData.location = this.locationAll.join("|")
+                const db = this.$fire.firestore
                 try {
-                    await firebase.firestore().collection('users').doc(this.$store.state.uid)
+                    await db.collection('users').doc(this.$store.state.uid)
                         .update({
                             first_name: this.personalData.first_name,
                             last_name: this.personalData.last_name,
