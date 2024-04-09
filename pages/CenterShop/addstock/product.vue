@@ -11,8 +11,7 @@
                 <div class="d-flex align-center justify-center mt-5">
                     <draggable v-if="itemsImg.length > 0" v-model="itemsImg" @end="onDragEnd"
                         class="d-flex justify-center justify-centeralign-content-start flex-wrap mt-3">
-                        <div v-for="item in itemsImg" :key="item.src" 
-                            class="d-flex justify-between">
+                        <div v-for="item in itemsImg" :key="item.src" class="d-flex justify-between">
                             <v-img :src="item.src" type="button" style="width: 90px; height: 90px; cursor: all-scroll;"
                                 class="me-3 mb-3 rounded-lg">
                                 <div class="d-flex justify-space-between">
@@ -33,7 +32,7 @@
                         </v-hover>
                     </draggable>
                     <div v-if="itemsImg.length === 0"
-                        :style="!$store.state.deviceMode ? 'width: 350px;' : 'width: 100%;'">            
+                        :style="!$store.state.deviceMode ? 'width: 350px;' : 'width: 100%;'">
                         <div class="d-flex align-center justify-center">
                             <!-- alert -->
                             <span style="color: red" class="outlined me-3">กรุณาเพิ่มรูปภาพ</span>
@@ -59,14 +58,14 @@
                     <v-textarea v-model="items.detail" auto-grow :rules="[v => !!v || 'โปรดระบุข้อมูล']" label="Detail"
                         required></v-textarea>
 
-                    <v-text-field v-model="items.price" type="number" :rules="nameRules" label="Price"
-                        required hide-spin-buttons></v-text-field>
+                    <v-text-field v-model="items.price" type="number" :rules="nameRules" label="Price" required
+                        hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.stockItems" type="number" :rules="nameRules" label="units"
-                        required hide-spin-buttons></v-text-field>
+                    <v-text-field v-model="items.stockItems" type="number" :rules="nameRules" label="units" required
+                        hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.discount" type="number" label="ส่วนลด"
-                        append-icon="mdi-percent" hide-spin-buttons></v-text-field>
+                    <v-text-field v-model="items.discount" type="number" label="ส่วนลด" append-icon="mdi-percent"
+                        hide-spin-buttons></v-text-field>
 
                     <div v-if="items.discount" class="text-center border p-3 rounded-lg">
                         วันที่เริ่ม-สิ้นสุดโปรโมชั่น
@@ -98,11 +97,11 @@
                         </div>
                     </div>
 
-                    <v-text-field v-model="items.view" type="number" :rules="nameRules" label="view"
-                        required hide-spin-buttons></v-text-field>
+                    <v-text-field v-model="items.view" type="number" :rules="nameRules" label="view" required
+                        hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.seller" type="number" :rules="nameRules" label="ยอดขาย"
-                        required hide-spin-buttons></v-text-field>
+                    <v-text-field v-model="items.seller" type="number" :rules="nameRules" label="ยอดขาย" required
+                        hide-spin-buttons></v-text-field>
 
                     <v-text-field v-model="items.star" type="float" :rules="nameRules" label="star 1-5"
                         required></v-text-field>
@@ -132,13 +131,16 @@
                 CLEAR
             </v-btn>
         </div>
+        <v-overlay :value="doing">
+            <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
         <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 
 </template>
 <script>
 import { EventBus } from '~/plugins/EventBus';
-import { createItems ,updateItems } from '~/services/items-firebase';
+import { createItems, updateItems } from '~/services/items-firebase';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from "vuedraggable";
 import { processImg } from "~/services/img-sizing";
@@ -149,7 +151,7 @@ import LoadingItem from '~/components/LoadingItem.vue';
 export default {
     data() {
         return {
-            doing : false,
+            doing: false,
             valid: true,
             loading: true,
             items: [],
@@ -196,13 +198,13 @@ export default {
         'jpgUpload': async function () {
             for (const img in this.jpgUpload) {
                 let result = await processImg(this.jpgUpload[img])
-                if(this.itemsImg.length >= this.unitImg) {
+                if (this.itemsImg.length >= this.unitImg) {
                     this.$refs.AlertButtom.snackbar = true
                     this.$refs.AlertButtom.colorAlart = 'red'
                     this.$refs.AlertButtom.text = 'ไม่สามารถเพิ่มรูปภาพได้เกิน 6 รูป'
                     break
-                }                
-                this.itemsImg.push({ src: URL.createObjectURL(result) , value: result})
+                }
+                this.itemsImg.push({ src: URL.createObjectURL(result), value: result })
             }
         },
         'itemsImg': function () {
@@ -212,7 +214,7 @@ export default {
     },
     created() {
         EventBus.$on('editItem', (items) => {
-            this.items = {...items}
+            this.items = { ...items }
             this.itemsImg = items.imgs
             this.dates = items.dates
             this.modeStatus = true
@@ -230,38 +232,39 @@ export default {
             this.$refs.fileInput.$refs.input.click();
         },
         validate() {
-            if(this.$refs.form.validate()) this.save()
+            if (this.$refs.form.validate()) this.save()
         },
 
-        async save(){
+        async save() {
             this.doing = true;
             let id = uuidv4()
             let result = false
 
-            if(!this.modeStatus){
-                this.items = {...this.items, 
+            if (!this.modeStatus) {
+                this.items = {
+                    ...this.items,
                     id: id,
                     createdUser: this.$store.state.uid,
                     createdAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
                     updatedAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
                     deletedAt: null
                 }
-                result = await createItems(this.items)                
-            }else{
-                this.items.updatedAt = this.$fireModule.firestore.FieldValue.serverTimestamp()                
+                result = await createItems(this.items)
+                EventBus.$emit('refreshEditItem')
+            } else {
+                this.items.updatedAt = this.$fireModule.firestore.FieldValue.serverTimestamp()
                 result = await updateItems(this.items)
-
                 EventBus.$emit('refreshEditItem')
             }
-            
+
             this.doing = false;
-            if(result){
+            if (result) {
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.colorAlart = 'green'
                 this.$refs.AlertButtom.text = 'บันทึกข้อมูลสําเร็จ'
                 this.$refs.AlertButtom.icon = 'mdi mdi-check-circle-outline'
                 this.reset()
-            }else{
+            } else {
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.colorAlart = 'red'
                 this.$refs.AlertButtom.text = 'บันทึกข้อมูลไม่สําเร็จ'

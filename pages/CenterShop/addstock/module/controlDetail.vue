@@ -74,9 +74,6 @@
             </div>
 
             <v-textarea style="font-size: 16px;" v-model="items.detail" auto-grow readonly></v-textarea>
-            <v-card-text>
-                {{ items.detail }}
-            </v-card-text>
 
             <v-card-text class="px-0">
                 จำนวน
