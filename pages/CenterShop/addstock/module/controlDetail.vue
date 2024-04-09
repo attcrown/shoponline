@@ -73,8 +73,10 @@
                 </v-chip>
             </div>
 
-            <v-textarea style="font-size: 16px;" v-model="items.detail" auto-grow
-                disabled></v-textarea>
+            <v-textarea style="font-size: 16px;" v-model="items.detail" auto-grow readonly></v-textarea>
+            <v-card-text>
+                {{ items.detail }}
+            </v-card-text>
 
             <v-card-text class="px-0">
                 จำนวน
@@ -84,11 +86,12 @@
                     </v-icon>
                 </v-btn>
 
-                <input type="number" style="border: 1px solid rgb(171, 171, 171);                        
+                <input type="number" style="border: 1px solid rgb(171, 171, 171);                      
                         width: 60px; text-align: end;
                         border-radius: 5px;" 
                         class="text-center"
-                        v-model="countItems"></input>
+                        v-model="countItems"
+                        ></input>
 
                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa" @click="countItems++">
                     <v-icon>
@@ -184,5 +187,10 @@ export default {
     font-family: 'Prompt', sans-serif;
     font-weight: 100;
     font-size: 25px;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 </style>

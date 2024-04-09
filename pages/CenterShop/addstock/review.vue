@@ -5,7 +5,7 @@
         </v-banner>
         <div class="mt-5"
             :class="!$store.state.deviceMode ? 'd-flex' : ''">
-            <div :style="!$store.state.deviceMode ? 'width: 350px;' : 'width: 100%;'">
+            <div :style="!$store.state.deviceMode ? 'width: 400px;' : 'width: 100%;'">
                 <controlReviewImg ref="controlReview"></controlReviewImg>
             </div>
             <div style="width: 100%;">

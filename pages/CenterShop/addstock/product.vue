@@ -2,7 +2,7 @@
     <div>
         <div :class="!$store.state.deviceMode ? 'd-flex' : ''">
             <div class="mt-10 mx-5"
-                :style="!$store.state.deviceMode ? 'width: 30%; overflow-y: auto; overflow-x: hidden; height: 84vh' : ''">
+                :style="!$store.state.deviceMode ? 'width: 25%; overflow-y: auto; overflow-x: hidden; height: 84vh' : ''">
                 <v-banner class="text-center rounded-lg" color="white" elevation="10">
                     Add item <v-icon>mdi-plus-circle</v-icon>
                 </v-banner>
@@ -11,7 +11,8 @@
                 <div class="d-flex align-center justify-center mt-5">
                     <draggable v-if="itemsImg.length > 0" v-model="itemsImg" @end="onDragEnd"
                         class="d-flex justify-center justify-centeralign-content-start flex-wrap mt-3">
-                        <div v-for="item in itemsImg" :key="item.src">
+                        <div v-for="item in itemsImg" :key="item.src" 
+                            class="d-flex justify-between">
                             <v-img :src="item.src" type="button" style="width: 90px; height: 90px; cursor: all-scroll;"
                                 class="me-3 mb-3 rounded-lg">
                                 <div class="d-flex justify-space-between">
@@ -59,13 +60,13 @@
                         required></v-textarea>
 
                     <v-text-field v-model="items.price" type="number" :rules="nameRules" label="Price"
-                        required></v-text-field>
+                        required hide-spin-buttons></v-text-field>
 
                     <v-text-field v-model="items.stockItems" type="number" :rules="nameRules" label="units"
-                        required></v-text-field>
+                        required hide-spin-buttons></v-text-field>
 
                     <v-text-field v-model="items.discount" type="number" label="ส่วนลด"
-                        append-icon="mdi-percent"></v-text-field>
+                        append-icon="mdi-percent" hide-spin-buttons></v-text-field>
 
                     <div v-if="items.discount" class="text-center border p-3 rounded-lg">
                         วันที่เริ่ม-สิ้นสุดโปรโมชั่น
@@ -98,10 +99,10 @@
                     </div>
 
                     <v-text-field v-model="items.view" type="number" :rules="nameRules" label="view"
-                        required></v-text-field>
+                        required hide-spin-buttons></v-text-field>
 
                     <v-text-field v-model="items.seller" type="number" :rules="nameRules" label="ยอดขาย"
-                        required></v-text-field>
+                        required hide-spin-buttons></v-text-field>
 
                     <v-text-field v-model="items.star" type="float" :rules="nameRules" label="star 1-5"
                         required></v-text-field>
@@ -115,7 +116,7 @@
 
             <v-divider :vertical="!$store.state.deviceMode" color="black" class="mt-3"></v-divider>
 
-            <div class="mt-10" :style="!$store.state.deviceMode ? 'width: 70%' : ''">
+            <div class="mt-10" :style="!$store.state.deviceMode ? 'width: 75%' : ''">
                 <review ref="review"></review>
             </div>
             <LoadingItem v-if="loading"></LoadingItem>
