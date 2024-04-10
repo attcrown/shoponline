@@ -29,17 +29,13 @@ export default {
     },
     methods: {
         async sendListItems() {
-            if(this.$store.state.list_item?.length > 0) {
-                console.log('loadFirst items') 
-                return
-            }
+            if(this.$store.state.list_item?.length > 0) return
             this.searchNewItems()
         },
         async searchNewItems() {
             this.loadSearch = true
             const result = await getItemShopAll() 
             this.$store.commit('SET_LISTITEMS', result);
-            console.log('loadNew items')
             this.loadSearch = false
         },
 

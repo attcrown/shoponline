@@ -52,6 +52,7 @@
                 </v-row>
             </v-container>
         </div>
+        {{ checkShowListItems }}
     </div>
 </template>
 <script>
@@ -61,10 +62,10 @@ export default {
         rating: 4.3,
         cards: [],
     }),
-    watch: {
-      '$store.state.show_list_item' : function() {
-        this.cards = this.$store.state.show_list_item
-      } 
+    computed: {
+        checkShowListItems() {
+            this.cards = this.$store.state.show_list_item;
+        }
     },
     methods: {
         nextToDetail(card) {            

@@ -3,6 +3,7 @@
         <div v-if="!$store.state.deviceMode">
             <v-pagination v-model="page" :length="paging" :total-visible="7"></v-pagination>
         </div>
+        {{ checkListItems }}
     </div>
 </template>
 <script>
@@ -17,8 +18,8 @@ export default {
     mounted() {
         window.addEventListener('scroll', this.handleScroll);
     },
-    watch: {
-        '$store.state.list_item' : function() {
+    computed: {
+        checkListItems() {
             if(!this.$store.state.deviceMode){
                 let sum_paging = this.$store.state.list_item.length/12;
                 this.paging = sum_paging > 1 ? Math.ceil(sum_paging) : 1;
