@@ -189,7 +189,6 @@ export default {
                 this.items.dates = null
                 this.items.timeFirst = null
                 this.items.timeEnd = null
-                this.items.discount = null
             }
         },
         'dates': function () {
@@ -215,8 +214,7 @@ export default {
     created() {
         EventBus.$on('editItem', (itemEdit) => {
             let items = { ...itemEdit }
-            
-            this.items = { ...items }
+            this.items = items
             this.itemsImg = items.imgs
             this.dates = items.dates
             this.modeStatus = true
@@ -250,7 +248,7 @@ export default {
                     createdAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
                     updatedAt: this.$fireModule.firestore.FieldValue.serverTimestamp(),
                     deletedAt: null
-                }
+                }                
                 result = await createItems(this.items)
                 EventBus.$emit('refreshEditItem')
             } else {
@@ -276,7 +274,10 @@ export default {
 
         reset() {
             this.$refs.form.reset()
+            this.items = []
             this.itemsImg = []
+            this.dates = []
+            this.jpgUpload = []
             this.modeStatus = false
         }
     }
