@@ -58,13 +58,13 @@
                     <v-textarea v-model="items.detail" auto-grow :rules="[v => !!v || 'โปรดระบุข้อมูล']" label="Detail"
                         required></v-textarea>
 
-                    <v-text-field v-model="items.price" type="number" :rules="nameRules" label="Price" required
+                    <v-text-field v-model="items.price" type="number" :rules="floatRules" label="Price" required
                         hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.stockItems" type="number" :rules="nameRules" label="units" required
+                    <v-text-field v-model="items.stockItems" type="number" :rules="numberRules" label="units" required
                         hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.discount" type="number" label="ส่วนลด" append-icon="mdi-percent"
+                    <v-text-field v-model="items.discount" type="number" :rules="floatDiscountRules" label="ส่วนลด" append-icon="mdi-percent"
                         hide-spin-buttons></v-text-field>
 
                     <div v-if="items.discount" class="text-center border p-3 rounded-lg">
@@ -97,13 +97,13 @@
                         </div>
                     </div>
 
-                    <v-text-field v-model="items.view" type="number" :rules="nameRules" label="view" required
+                    <v-text-field v-model="items.view" type="number" :rules="numberRules" label="view" required
                         hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.seller" type="number" :rules="nameRules" label="ยอดขาย" required
+                    <v-text-field v-model="items.seller" type="number" :rules="numberRules" label="ยอดขาย" required
                         hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.star" type="float" :rules="nameRules" label="star 1-5"
+                    <v-text-field v-model="items.star" type="number" :rules="nameRules" label="star 1-5"
                         required></v-text-field>
 
                     <v-checkbox v-model="items.goodSell" label="สินค้าขายดี" value="true"></v-checkbox>
@@ -118,11 +118,10 @@
             <div class="mt-10" :style="!$store.state.deviceMode ? 'width: 75%' : ''">
                 <review ref="review"></review>
             </div>
-            <LoadingItem v-if="loading"></LoadingItem>
         </div>
 
         <div class="m-5 text-center">
-            <v-btn color="success" @click="validate" :disabled="!valid" :loading="doing" class="px-1 pe-2">
+            <v-btn color="success" @click="validate" :disabled="!valid" :loading="loading" class="px-1 pe-2">
                 <span class="mdi mdi-database-plus me-2 text-h6"></span>
                 {{ modeStatus ? 'UPDATE' : 'ADD' }} ITEMS
             </v-btn>
@@ -131,9 +130,7 @@
                 CLEAR
             </v-btn>
         </div>
-        <v-overlay :value="doing">
-            <v-progress-circular indeterminate size="64"></v-progress-circular>
-        </v-overlay>
+        <LoadingItem v-if="loading"></LoadingItem>
         <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 
@@ -151,13 +148,23 @@ import LoadingItem from '~/components/LoadingItem.vue';
 export default {
     data() {
         return {
-            doing: false,
             valid: true,
             loading: true,
             items: [],
             nameRules: [
                 v => !!v || 'โปรดระบุข้อมูล',
                 v => (v && v.length <= 50) || 'โปรดระบุข้อมูลไม่เกิน 50 ตัวอักษร',
+            ],
+            numberRules: [
+                v => !!v || 'โปรดระบุข้อมูล',
+                v => /^[0-9]+$/.test(v) || 'โปรดระบุข้อมูลเป็นตัวเลข',
+            ],
+            floatRules: [
+                v => !!v || 'โปรดระบุข้อมูล',
+                v => /^[0-9]+(\.[0-9]+)?$/.test(v) || 'โปรดระบุข้อมูลเป็นตัวเลข',
+            ],
+            floatDiscountRules: [
+                v => (v === null || v === '' || /^[0-9]+(\.[0-9]+)?$/.test(v)) || 'โปรดระบุข้อมูลเป็นตัวเลข',
             ],
             timeZone: 'Asia/Bangkok',
             menu: false,
@@ -236,7 +243,7 @@ export default {
         },
 
         async save() {
-            this.doing = true;
+            this.loading = true;
             let id = uuidv4()
             let result = false
 
@@ -257,7 +264,7 @@ export default {
                 EventBus.$emit('refreshEditItem')
             }
 
-            this.doing = false;
+            this.loading = false;
             if (result) {
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.colorAlart = 'green'

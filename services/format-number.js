@@ -11,3 +11,8 @@ export function formatInt(num){
     // 1,000.00 | 1,000,000.00 | 1,000,000.00
     return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");            
 }
+
+export function formatText(text) {
+    if(text.length > 20) return text.substring(0, 20) + '...'
+    return text
+}

@@ -10,17 +10,28 @@ export async function createItems(itemsMain) {
         }
 
         await firebase.database().ref(`items/${items.id}`).set({
-            stockItems : items.stockItems,
-            view : items.view,
-            seller : items.seller
+            stockItems :  parseInt(items.stockItems),
+            view : parseInt(items.view),
+            seller : parseInt(items.seller)
         })
 
-        delete items.stockItems
-        delete items.view
-        delete items.seller
-
-        await firebase.firestore().collection('items').doc().set({
-            ...items
+        await firebase.firestore().collection('items').doc().set({            
+            createdAt : items.createdAt,
+            createdUser : items.createdUser,
+            dates : items.dates,
+            deletedAt : items.deletedAt,
+            detail : items.detail,
+            discount : parseFloat(items.discount),          
+            goodSell : Boolean(items.goodSell),
+            id : items.id,
+            imgs : items.imgs,
+            name : items.name,
+            price : parseFloat(items.price),
+            star : parseFloat(items.star),
+            timeEnd : items.timeEnd,
+            timeFirst : items.timeFirst,
+            top : Boolean(items.top),
+            updatedAt : items.updatedAt
         })
         return true
     } catch (error) {
@@ -49,12 +60,9 @@ export async function getItemsAll() {
         let data = docs.map(doc => ({idDocs: doc.id, ...doc.data()}))
         //stockitems
         for(const x in data){
-            let stockItems = await firebase.database().ref(`items/${data[x].id}`).get()
-            if(stockItems.exists()){
-                data[x] = {...data[x] , ...stockItems.val()}
-            }
+            let stockItems = await firebase.database().ref(`items/${data[x].id}`).get()                           
+            data[x] = {...data[x] , ...stockItems.val()}
         }
-
         return data 
 
     } catch (error) {
@@ -97,20 +105,28 @@ export async function updateItems(itemUpdate) {
     let items = {...itemUpdate}
     try {
         await firebase.database().ref(`items/${items.id}`).update({
-            stockItems : items.stockItems,
-            view : items.view,
-            seller : items.seller
+            stockItems : parseInt(items.stockItems),
+            view : parseInt(items.view),
+            seller : parseInt(items.seller)
         })
 
-        let idDocs = items.idDocs
-
-        delete items.stockItems
-        delete items.view
-        delete items.seller
-        delete items.idDocs
-
-        await firebase.firestore().collection('items').doc(idDocs).update({
-            ...items
+        await firebase.firestore().collection('items').doc(items.idDocs).update({
+            createdAt : items.createdAt,
+            createdUser : items.createdUser,
+            dates : items.dates,
+            deletedAt : items.deletedAt,
+            detail : items.detail,
+            discount : parseFloat(items.discount),          
+            goodSell : Boolean(items.goodSell),
+            id : items.id,
+            imgs : items.imgs,
+            name : items.name,
+            price : parseFloat(items.price),
+            star : parseFloat(items.star),
+            timeEnd : items.timeEnd,
+            timeFirst : items.timeFirst,
+            top : Boolean(items.top),
+            updatedAt : items.updatedAt
         })
         return true
     } catch (error) {

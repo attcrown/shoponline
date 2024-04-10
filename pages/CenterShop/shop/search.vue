@@ -13,6 +13,7 @@
     </div>
 </template>
 <script>
+import { getItemShopAll } from '~/services/shop-firebase';
 export default {
     data() {
         return {
@@ -65,11 +66,12 @@ export default {
 
     },
     mounted() {
-
+        this.sendListItems()
     },
     methods: {
-        sendListItems() {
-            this.$store.commit('SET_LISTITEMS', this.cards);
+        async sendListItems() {
+            const result = await getItemShopAll() 
+            this.$store.commit('SET_LISTITEMS', result);
         }
     }
 }
