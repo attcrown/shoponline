@@ -15,7 +15,7 @@ export async function getItemShopAll() {
     for (const x in data) {
         let stockItemsRef = await firebase.database().ref(`items/${data[x].id}`).get()
         let dataStock = stockItemsRef.val();
-        if(dataStock && parseInt(dataStock.stockItems) > 0){
+        if(dataStock && dataStock.stockItems > 0){
             data[x] = { ...data[x], ...dataStock }
         }
     }

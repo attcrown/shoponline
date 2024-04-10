@@ -103,12 +103,12 @@
                     <v-text-field v-model="items.seller" type="number" :rules="numberRules" label="ยอดขาย" required
                         hide-spin-buttons></v-text-field>
 
-                    <v-text-field v-model="items.star" type="number" :rules="nameRules" label="star 1-5"
+                    <v-text-field v-model="items.star" type="number" :rules="floatRules" label="star 1-5"
                         required></v-text-field>
 
-                    <v-checkbox v-model="items.goodSell" label="สินค้าขายดี" value="true"></v-checkbox>
+                    <v-checkbox v-model="items.goodSell" label="สินค้าขายดี"></v-checkbox>
 
-                    <v-checkbox v-model="items.top" label="Top" value="true" class="mt-0"></v-checkbox>
+                    <v-checkbox v-model="items.top" label="Top" class="mt-0"></v-checkbox>
 
                 </v-form>
             </div>
@@ -164,7 +164,7 @@ export default {
                 v => /^[0-9]+(\.[0-9]+)?$/.test(v) || 'โปรดระบุข้อมูลเป็นตัวเลข',
             ],
             floatDiscountRules: [
-                v => (v === null || v === '' || /^[0-9]+(\.[0-9]+)?$/.test(v)) || 'โปรดระบุข้อมูลเป็นตัวเลข',
+                v => (v === undefined || v === '' || /^[0-9]+(\.[0-9]+)?$/.test(v)) || 'โปรดระบุข้อมูลเป็นตัวเลข',
             ],
             timeZone: 'Asia/Bangkok',
             menu: false,

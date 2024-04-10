@@ -28,7 +28,6 @@ export default {
                 this.paging = sum_paging > 1 ? Math.ceil(sum_paging) : 1;
                 this.$store.commit('SET_SHOWLISTITEMS', this.$store.state.list_item.slice(0,6*this.page));
             }
-
         }
     },
     beforeDestroy() {

@@ -5,7 +5,9 @@
                 <v-text-field v-model="input_search" label="ค้าหาสินค้า" prepend-icon="mdi-magnify" dark
                     style="max-width: 500px;">
                 </v-text-field>
-                <v-btn small rounded elevation="4" class="ms-2" style="font-size: 16px;" @click="sendListItems()">
+                <v-btn small rounded elevation="4" class="ms-2" 
+                    :loading="loadSearch" style="font-size: 16px;" 
+                    @click="searchNewItems()">
                     ค้นหา
                 </v-btn>
             </div>
@@ -17,62 +19,30 @@ import { getItemShopAll } from '~/services/shop-firebase';
 export default {
     data() {
         return {
+            loadSearch: false,
             property: 'value',
-            input_search: null,
-            cards: [
-                { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes1', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips1', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines1', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes2', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips2', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines2', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes3', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips3', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines3', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes4', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips4', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines4', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes5', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips5', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines5', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes6', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips6', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines6', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes7', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips7', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines7', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes8', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips8', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines8', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes9', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips9', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines9', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes10', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips10', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines10', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes11', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips11', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines11', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-                { title: 'Pre-fab homes12', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg' },
-                { title: 'Favorite road trips12', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg' },
-                { title: 'Best airlines12', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg' },
-            ],
+            input_search: '',
         };
-    },
-    computed: {
-
     },
     mounted() {
         this.sendListItems()
     },
     methods: {
         async sendListItems() {
+            if(this.$store.state.list_item?.length > 0) {
+                console.log('loadFirst items') 
+                return
+            }
+            this.searchNewItems()
+        },
+        async searchNewItems() {
+            this.loadSearch = true
             const result = await getItemShopAll() 
             this.$store.commit('SET_LISTITEMS', result);
-        }
+            console.log('loadNew items')
+            this.loadSearch = false
+        },
+
     }
 }
 </script>

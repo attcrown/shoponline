@@ -27,15 +27,25 @@
                                     <p style="margin-bottom: -3px;">{{ card.name }}</p>
                                     <v-rating v-model="card.star" background-color="white" color="yellow accent-4" dense
                                         half-increments hover size="18" readonly></v-rating>
-                                    <v-chip v-if="card.top" class="ps-1 pe-1" color="red" label outlined x-small>Top</v-chip>
+                                    
+                                    <v-chip v-if="card.top" class="ps-1 pe-1" color="#B71C1C" dark label x-small>Top</v-chip>
                                     <v-chip v-if="card.goodSell" class="ps-1 pe-1" color="green" label outlined x-small>สินค้าขายดี</v-chip>
+                                    <v-chip v-if="!card.goodSell && !card.top" class="ps-1 pe-1" color="white" label outlined x-small></v-chip>
                                 </v-card-text>
 
-                                <v-card-actions style="margin-top: -20px; color: #FF9800;">
+                                <v-card-actions 
+                                    v-if="!$store.state.deviceMode"
+                                    style="margin-top: -20px; color: #FF9800;">
                                     ฿{{ formatBathService(card.price) }}
-                                    <v-spacer></v-spacer>
-                                    <p style="font-size: 8px; color: rgb(73, 73, 73); margin-bottom: -4px;">ขายแล้ว {{ formatIntService(card.seller) }} ชิ้น</p> 
+                                    <v-spacer></v-spacer>                                    
+                                    <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">ขายแล้ว {{ formatIntService(card.seller) }} ชิ้น</p> 
                                 </v-card-actions>
+                                <div 
+                                    v-if="$store.state.deviceMode"
+                                    style="margin-top: -20px; margin-left: 10px; color: #FF9800;">
+                                    ฿{{ formatBathService(card.price) }}
+                                    <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">ขายแล้ว {{ formatIntService(card.seller) }} ชิ้น</p>
+                                </div>
                             </v-card>
                         </v-hover>
                     </v-col>
