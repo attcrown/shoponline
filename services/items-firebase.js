@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 
 export async function createItems(itemsMain) {
-    let items = itemsMain
+    let items = {...itemsMain}
     try {
         for(let x in items.imgs){
             let name = new Date().getTime()
@@ -9,7 +9,7 @@ export async function createItems(itemsMain) {
             items.imgs[x].value = `${name}.jpg`
         }
 
-        firebase.database().ref(`items/${items.id}`).set({
+        await firebase.database().ref(`items/${items.id}`).set({
             stockItems : items.stockItems,
             view : items.view,
             seller : items.seller
@@ -19,7 +19,7 @@ export async function createItems(itemsMain) {
         delete items.view
         delete items.seller
 
-        firebase.firestore().collection('items').doc().set({
+        await firebase.firestore().collection('items').doc().set({
             ...items
         })
         return true
@@ -63,7 +63,8 @@ export async function getItemsAll() {
     }
 }
 
-export async function delItem(items) {
+export async function delItem(itemDel) {
+    let items = {...itemDel}
     if(!items || !items.id) return false
     try {
         await firebase.database().ref(`items/${items.id}`).remove()       
@@ -92,7 +93,8 @@ export async function delItem(items) {
     return true
 }
 
-export async function updateItems(items) {
+export async function updateItems(itemUpdate) {
+    let items = {...itemUpdate}
     try {
         await firebase.database().ref(`items/${items.id}`).update({
             stockItems : items.stockItems,

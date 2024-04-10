@@ -213,7 +213,9 @@ export default {
         }
     },
     created() {
-        EventBus.$on('editItem', (items) => {
+        EventBus.$on('editItem', (itemEdit) => {
+            let items = { ...itemEdit }
+            
             this.items = { ...items }
             this.itemsImg = items.imgs
             this.dates = items.dates
