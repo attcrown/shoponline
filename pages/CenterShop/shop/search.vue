@@ -29,7 +29,7 @@ export default {
     },
     methods: {
         async sendListItems() {
-            if(this.$store.state.list_item?.length > 0) return
+            if(await this.$store.state.list_item?.length > 0) return
             this.searchNewItems()
         },
         async searchNewItems() {

@@ -3,13 +3,13 @@
         <v-card outlined style="border: 0px;">
             <v-card-title style="padding: 0px;">
                 <v-chip v-if="items.top" label color="#B71C1C" text-color="white" small class="px-1 me-2"><i
-                        class="mdi mdi-shopping me-1"></i>Top</v-chip> 
+                        class="mdi mdi-shopping me-1"></i>Top</v-chip>
                 <v-chip v-if="items.goodSell" label color="orange" text-color="white" small class="px-1 me-2">
                     <i class="mdi mdi-charity me-1"></i>สินค้าขายดี</v-chip>
                 &nbsp; {{ items.name }}
             </v-card-title>
             <div class="d-flex align-center">
-                <v-rating  v-model="rating" background-color="white" color="yellow accent-4" dense half-increments hover
+                <v-rating v-model="rating" background-color="white" color="yellow accent-4" dense half-increments hover
                     style="margin-top: -15px; margin-bottom: -15px;" size="18" readonly></v-rating>
 
                 <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
@@ -19,7 +19,8 @@
 
                 <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
 
-                <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">{{ items.view ? items.view : 0 }} view</p>
+                <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">{{ items.view ? items.view : 0
+                    }} view</p>
             </div>
 
             <v-divider style="border: 1px solid #B71C1C; margin-top: 4px"></v-divider>
@@ -52,6 +53,18 @@
                             <div v-if="String(seconds).length == 1">0</div>
                             {{ seconds }}
                         </v-chip>
+
+                        <v-tooltip bottom v-if="items.discount && items.dates">
+                            <template v-slot:activator="{ on }">
+                                <v-icon v-on="on">
+                                    mdi-help-circle-outline
+                                </v-icon>
+                            </template>
+                            จัดโปรโมชั่น
+                            <div v-for="pro in items.dates" :key="pro.discount">
+                                {{ pro }} : {{ items.timeFirst }}-{{ items.timeEnd }}
+                            </div>
+                        </v-tooltip>
                     </div>
                 </div>
             </v-navigation-drawer>
@@ -60,12 +73,11 @@
                 <span style="text-decoration: line-through; color: rgb(171, 171, 171);"
                     :style="$store.state.deviceMode ? 'font-size: 11px;' : 'font-size: 16px;'"
                     v-if="items.discount && items.price">
-                    ฿{{ formatBath(priceUnit(items.price)) }}
+                    ฿{{ formatBath(priceUnit(items.price, countItems)) }}
                 </span>
-                
-                <span class="ms-3" style="color: #0240aa;" 
-                    :style="$store.state.deviceMode ? 'font-size: 16px;' : ''">
-                    ฿{{ formatBath(sale(items.price, items.discount))  }}
+
+                <span class="ms-3" style="color: #0240aa;" :style="$store.state.deviceMode ? 'font-size: 16px;' : ''">
+                    ฿{{ formatBath(sale(items.price, items.discount, countItems)) }}
                 </span>
 
                 <v-chip dark color="#B71C1C" class="px-1 ms-3" small label v-if="items.discount">
@@ -85,10 +97,7 @@
 
                 <input type="number" style="border: 1px solid rgb(171, 171, 171);                      
                         width: 60px; text-align: end;
-                        border-radius: 5px;" 
-                        class="text-center"
-                        v-model="countItems"
-                        ></input>
+                        border-radius: 5px;" class="text-center" v-model="countItems"></input>
 
                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa" @click="countItems++">
                     <v-icon>
@@ -108,10 +117,11 @@
                     เพิ่มใส่ตะกร้า
                 </v-btn>
             </v-card-actions>
-        </v-card>        
+        </v-card>
     </div>
 </template>
 <script>
+import { priceCalculate, unitCalculate } from '~/services/calculate-service.js'
 export default {
     data() {
         return {
@@ -137,7 +147,7 @@ export default {
             }
         },
         'items.star': function () {
-            this.rating = parseFloat(this.items.star) 
+            this.rating = parseFloat(this.items.star)
         }
     },
     mounted() {
@@ -163,17 +173,15 @@ export default {
                 this.seconds--
             }
         },
-        sale(price, discount) {
-            if (!discount) return this.priceUnit(price)
-            return this.priceUnit(price) - this.priceUnit(price) * (discount / 100)
+        sale(price, discount ,countItems) {
+            return priceCalculate(price, discount ,countItems)
         },
-        priceUnit(price) {
-            if (!price) return 0
-            return price * this.countItems
+        priceUnit(price, countItems) {
+            return unitCalculate(price, countItems)
         },
-        formatBath(price){
+        formatBath(price) {
             // 1,000.00 | 1,000,000.00 | 1,000,000.00
-            return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");            
+            return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
     }
 }
@@ -185,6 +193,7 @@ export default {
     font-weight: 100;
     font-size: 25px;
 }
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     -webkit-appearance: none;

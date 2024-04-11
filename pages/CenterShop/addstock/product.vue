@@ -141,10 +141,10 @@ import { createItems, updateItems } from '~/services/items-firebase';
 import { v4 as uuidv4 } from 'uuid';
 import draggable from "vuedraggable";
 import { processImg } from "~/services/img-sizing";
-import { checkDateNow } from '~/services/formatDatetime';
 import AlertButtom from '~/components/AlertButtom.vue';
 import review from './review.vue'
 import LoadingItem from '~/components/LoadingItem.vue';
+import { formatDatetime } from '~/services/formatDatetime';
 export default {
     data() {
         return {
@@ -164,7 +164,7 @@ export default {
                 v => /^[0-9]+(\.[0-9]+)?$/.test(v) || 'โปรดระบุข้อมูลเป็นตัวเลข',
             ],
             floatDiscountRules: [
-                v => (v === undefined || v === '' || /^[0-9]+(\.[0-9]+)?$/.test(v)) || 'โปรดระบุข้อมูลเป็นตัวเลข',
+                v => (v === null || v === '' || /^[0-9]+(\.[0-9]+)?$/.test(v)) || 'โปรดระบุข้อมูลเป็นตัวเลข',
             ],
             timeZone: 'Asia/Bangkok',
             menu: false,
@@ -197,6 +197,12 @@ export default {
                 this.items.timeFirst = null
                 this.items.timeEnd = null
             }
+        },
+        'items.timeFirst': function () {
+            this.checkTimeDiscountFirst(this.items.timeFirst ,this.items.timeEnd)
+        },
+        'items.timeEnd': function () {
+            this.checkTimeDiscountEnd(this.items.timeFirst ,this.items.timeEnd)
         },
         'dates': function () {
             this.items.dates = this.dates
@@ -278,7 +284,26 @@ export default {
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
             }
         },
-
+        checkTimeDiscountFirst(timeFirst ,timeEnd) {
+            if(!timeFirst && !timeEnd) return
+            if(timeFirst > timeEnd) {
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'เวลาเริ่มต้นต้องน้อยกว่าเวลาสิ้นสุด'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+                this.items.timeFirst = null                
+            }
+        },
+        checkTimeDiscountEnd(timeFirst ,timeEnd) {
+            if(!timeFirst && !timeEnd) return
+            if(timeEnd < timeFirst) {
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'เวลาเริ่มต้นต้องน้อยกว่าเวลาสิ้นสุด'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+                this.items.timeEnd = null
+            }
+        },
         reset() {
             this.$refs.form.reset()
             this.items = []

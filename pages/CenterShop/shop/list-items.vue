@@ -20,13 +20,15 @@
                             <v-card :elevation="hover ? 16 : 2" :class="!$store.state.deviceMode ? 'm-1' : 'mb-4'" @click="nextToDetail(card)">
                                 <v-img :src="card?.imgs[0]?.src" class="white--text align-end"
                                     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="200px">
-                                    <v-card-title v-text="formatTextService(card.name)"></v-card-title>
+                                    <v-card-title>
+                                        <v-chip v-if="card.discount" color="orange" dark label small>Sale {{ card.discount }}%</v-chip>
+                                    </v-card-title>
                                 </v-img>
 
                                 <v-card-text>
-                                    <p style="margin-bottom: -3px;">{{ card.name }}</p>
+                                    <p style="margin-bottom: -3px;">{{ formatTextService(card.name) }}</p>
                                     <v-rating v-model="card.star" background-color="white" color="yellow accent-4" dense
-                                        half-increments hover size="18" readonly></v-rating>
+                                        half-increments hover size="18" readonly></v-rating>                                    
                                     
                                     <v-chip v-if="card.top" class="ps-1 pe-1" color="#B71C1C" dark label x-small>Top</v-chip>
                                     <v-chip v-if="card.goodSell" class="ps-1 pe-1" color="green" label outlined x-small>สินค้าขายดี</v-chip>
@@ -35,15 +37,29 @@
 
                                 <v-card-actions 
                                     v-if="!$store.state.deviceMode"
-                                    style="margin-top: -20px; color: #FF9800;">
-                                    ฿{{ formatBathService(card.price) }}
-                                    <v-spacer></v-spacer>                                    
+                                    style="margin-top: -20px; color: #FF9800;">                                    
+                                    ฿{{ formatBathPro(card.price ,card.discount ,null) }}                                     
+                                    <span style="text-decoration: line-through; color: rgb(171, 171, 171); font-size: 10px;"                            
+                                        class="ms-2"
+                                        v-if="card.discount">
+                                        ฿{{ formatBathService(card.price) }}
+                                    </span>
+
+                                    <v-spacer></v-spacer> 
+
                                     <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">ขายแล้ว {{ formatIntService(card.seller) }} ชิ้น</p> 
                                 </v-card-actions>
-                                <div 
-                                    v-if="$store.state.deviceMode"
+                                <div v-if="$store.state.deviceMode"
                                     style="margin-top: -20px; margin-left: 10px; color: #FF9800;">
-                                    ฿{{ formatBathService(card.price) }}
+
+                                    ฿{{ formatBathPro(card.price ,card.discount ,null) }} 
+
+                                    <div style="text-decoration: line-through; 
+                                        color: rgb(171, 171, 171); 
+                                        font-size: 10px;">
+                                        {{ card.discount ? `฿${formatBathService(card.price)}` : '&nbsp' }}
+                                    </div>
+
                                     <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">ขายแล้ว {{ formatIntService(card.seller) }} ชิ้น</p>
                                 </div>
                             </v-card>
@@ -57,6 +73,8 @@
 </template>
 <script>
 import {formatBath ,formatInt ,formatText} from '~/services/format-number';
+import { priceCalculate } from '~/services/calculate-service.js'
+
 export default {
     data: () => ({
         rating: 4.3,
@@ -74,6 +92,10 @@ export default {
         },
         formatBathService(price) {
             return formatBath(price)
+        },
+        formatBathPro(price ,discount ,countUnit) {
+            const result = priceCalculate(price,discount ,countUnit)
+            return formatBath(result)
         },
         formatIntService(price) {
             return formatInt(price)
