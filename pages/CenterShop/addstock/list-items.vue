@@ -85,7 +85,7 @@
             </v-data-table>
         </v-card>
         <AlertButtom ref="AlertButtom"></AlertButtom>
-        <LoadingItem ref="LoadingItem"></LoadingItem>
+        <LoadingItem v-if="loading"></LoadingItem>
     </div>
 </template>
 <script>
@@ -138,7 +138,6 @@ export default {
             let result = await getItemsAll()
             this.desserts = result
             this.loading = false
-            this.$refs.LoadingItem.overlay = false
         },
         formatTimestamp(timestamp) {
             return formatTimestamp(timestamp)
@@ -177,9 +176,9 @@ export default {
         async deleteConfirm(itemsSend) {
             const items = itemsSend
 
-            this.$refs.LoadingItem.overlay = true
+            this.loading = true
             const result = await delItem(items)
-            this.$refs.LoadingItem.overlay = false
+            this.loading = false
 
             if (result) {
                 this.$refs.AlertButtom.snackbar = true
