@@ -12,7 +12,8 @@ export function formatInt(num){
     return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");            
 }
 
-export function formatText(text) {
-    if(text.length > 20) return text.substring(0, 20) + '...'
+export function formatText(text ,deviceMode) {
+    if(!deviceMode && text.length > 20) return text.substring(0, 20) + '...'
+    if(deviceMode && text.length > 15) return text.substring(0, 10) + '...'
     return text
 }

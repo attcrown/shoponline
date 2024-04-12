@@ -101,7 +101,7 @@ export default {
             return formatInt(price)
         },
         formatTextService(text) {
-            return formatText(text)
+            return formatText(text , this.$store.state.deviceMode)
         }
     }
 }
