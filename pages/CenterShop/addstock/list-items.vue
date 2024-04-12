@@ -96,10 +96,7 @@ import LoadingItem from '~/components/LoadingItem.vue';
 import { formatBath, formatInt } from '~/services/format-number';
 import { formatTimestamp } from '~/services/formatDatetime';
 import { getItemsAll, delItem } from '~/services/items-firebase';
-import {
-    priceCalculate,
-    unitCalculate
-} from '~/services/calculate-service.js'
+import { priceCalculate } from '~/services/calculate-service.js'
 
 export default {
     components: {
