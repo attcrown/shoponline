@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div :class="!$store.state.deviceMode ? 'd-flex justify-center mt-5' : ''">
-            <div :style="!$store.state.deviceMode ? 'width: 1200px; display: flex' : ''">            
+        <div :class="!$store.state.deviceMode ? 'd-flex justify-center mt-8' : 'mx-2'">
+            <div :style="!$store.state.deviceMode ? 'width: 1000px; display: flex' : ''">            
                 <div :style="!$store.state.deviceMode ? 'width: 400px;' : 'width: 100%;'">
                     <controlReviewImg ref="controlReview"></controlReviewImg>
                 </div>
@@ -44,7 +44,7 @@ export default {
             try {
                 db.ref(`items/${pathId}`).on('value', (snapshot) => {
                     const data = snapshot.val();
-                    
+
                     this.items.seller = data.seller
                     this.items.stockItems = data.stockItems
                     this.items.view = data.view
