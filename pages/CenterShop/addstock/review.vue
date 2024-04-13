@@ -15,8 +15,8 @@
     </div>
 </template>
 <script>
-import controlReviewImg from './module/controlReviewImg.vue'
-import controlDetail from './module/controlDetail.vue'
+import controlReviewImg from '~/modules/controlReviewImg.vue'
+import controlDetail from '~/modules/controlDetail.vue'
 export default {
     data() {
         return {
