@@ -55,7 +55,7 @@
 
                 <template v-slot:item.stockItems="{ item }">
                     <div>
-                        {{ formatInt(item.stockItems ? item.stockItems : 0) }}
+                        {{ formatInt(item.stockItems) }}
                     </div>
                 </template>
 
@@ -113,8 +113,9 @@ export default {
                     sortable: false,
                     value: 'name',
                 },
+                { text: 'Stock', value: 'stockItems', align: 'start' },
                 { text: 'Seller', value: 'seller', align: 'start' },
-                { text: 'Price', value: 'price', align: 'center' },
+                { text: 'Price', value: 'price', align: 'start' },
                 { text: 'View', value: 'view', align: 'start' },
                 { text: 'Update', value: 'updatedAt', align: 'center' },
                 { text: '', value: 'action', sortable: false, align: 'end' },

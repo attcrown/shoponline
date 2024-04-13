@@ -39,8 +39,8 @@
                                  label="Last name" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-text-field class="mx-4" v-model="personalData.nick_name" :counter="50" :rules="nameRules"
-                                 label="nick name" required></v-text-field>
+                            <v-text-field class="mx-4" v-model="personalData.user_name" :counter="50" :rules="nameRules"
+                                 label="username" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="3">
                             <v-text-field v-model="personalData.birthday" label="birth day" prepend-icon="mdi-calendar"
@@ -112,7 +112,6 @@
 </template>
 
 <script>
-import firebase from 'firebase/compat/app';
 import AlertButtom from '~/components/AlertButtom.vue';
 import { processImg } from '../../../services/img-sizing.js';
 import { saveImgFirebase } from '../../../services/save-img-firebase.js';
@@ -155,8 +154,10 @@ export default {
         async searchDetail() {
             if (!this.$store.state.uid) return
             try {
-                const doc = await firebase.firestore().collection('users').doc(this.$store.state.uid).get();            
+                // const doc = await firebase.firestore().collection('users').doc(this.$store.state.uid).get();            
+                const doc = await this.$fire.firestore.collection('users').doc(this.$store.state.uid).get();
                 this.personalData = doc.data()
+                this.personalData.user_name = await this.$store.state.displayName                
                 this.locationAll = this.personalData.location ? this.personalData.location.split("|") : []
             } catch (error) {
                 this.alertFail("ไม่พบข้อมูลผู้ใช้งาน")
@@ -182,22 +183,29 @@ export default {
             if (this.$refs.form.validate()) {
                 this.personalData.location = this.locationAll.join("|")
                 const db = this.$fire.firestore
+                const auth = this.$fireModule.auth();
                 try {
                     await db.collection('users').doc(this.$store.state.uid)
                         .update({
                             first_name: this.personalData.first_name,
                             last_name: this.personalData.last_name,
-                            nick_name: this.personalData.nick_name,
                             prefix: this.personalData.prefix,
                             birthday: this.personalData.birthday,
                             location: this.personalData.location
                         });
+
+                    //update auth
+                    const user = auth.currentUser;
+                    await user.updateProfile({
+                        displayName: this.personalData.user_name
+                    })
+
+                    this.$store.commit('UPDATE_DISPLAYNAME', this.personalData.user_name);
                     
                     // save img to firebase
                     if(this.personalData.avatar){                        
                         const result = await saveImgFirebase(
-                            // firebase , files , uid ,path
-                            firebase , 
+                            // files , uid ,path
                             this.personalData.avatar ,
                             this.$store.state.uid ,
                             `user/${this.$store.state.uid}/avatar.jpg`)

@@ -38,6 +38,10 @@ export const mutations = {
 
     UPDATE_IMG_PHOTO(state, data) {
         state.photoURL = data || null;
+    },
+
+    UPDATE_DISPLAYNAME(state, data) {
+        state.displayName = data || null;
     }
 };
 

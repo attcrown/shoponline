@@ -17,7 +17,12 @@ export async function getItemShopAll() {
         let dataStock = stockItemsRef.val();
         if(dataStock && dataStock.stockItems > 0){
             data[x] = { ...data[x], ...dataStock }
+        }else{
+            delete data[x]            
         }
     }
+
+    // กรอกเอาค่าว่างใน Array ออก
+    data = data.filter((item) => item !== null && item !== undefined);
     return data;
 }
