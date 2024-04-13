@@ -88,7 +88,7 @@ export default {
     methods: {
         nextToDetail(card) {            
             this.$store.commit('SET_DETAILITEM', card);
-            this.$router.push('/CenterShop/detailshop');
+            this.$router.push(`/CenterShop/detailshop/#${card.id}#${card.idDocs}`);
         },
         formatBathService(price) {
             return formatBath(price)
