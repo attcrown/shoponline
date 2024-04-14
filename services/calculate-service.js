@@ -35,17 +35,17 @@ export function unitCalculate(priceSend ,countItemsSend) {
     return price * countItems
 }
 
-export async function dateCalculate(datesSend ,timeFirstSend ,timeEndSend , dateNowSend) {
+export function dateCalculate(datesSend ,timeFirstSend ,timeEndSend , dateNowSend) {
     const dates = datesSend
     const timeFirst = timeFirstSend
     const timeEnd = timeEndSend
-    const dateNow = dateNowSend
+    const dateNow = dateNowSend || checkDateNow();
     
     if(!dates || !timeFirst || !timeEnd || !dateNow) return {status:false , far:null}
     
     for(const x in dates){
-        const datePromotionStart = await formatDatetime(dates[x],timeFirst)
-        const datePromotionEnd = await formatDatetime(dates[x],timeEnd)
+        const datePromotionStart = formatDatetime(dates[x],timeFirst)
+        const datePromotionEnd = formatDatetime(dates[x],timeEnd)
         
         if(dateNow <= datePromotionEnd && dateNow >= datePromotionStart) {        
             const far =  datePromotionEnd.diff(dateNow,['years','months','days','hours','minutes','seconds'])

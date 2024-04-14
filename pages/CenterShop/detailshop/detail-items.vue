@@ -18,6 +18,7 @@
 import AlertButtom from '~/components/AlertButtom.vue';
 import controlDetail from '~/modules/controlDetail.vue';
 import controlReviewImg from '~/modules/controlReviewImg.vue';
+import { dateCalculate } from '~/services/calculate-service.js'
 export default {
     data() {
         return {
@@ -44,7 +45,6 @@ export default {
             try {
                 db.ref(`items/${pathId}`).on('value', (snapshot) => {
                     const data = snapshot.val();
-
                     this.items.seller = data.seller
                     this.items.stockItems = data.stockItems
                     this.items.view = data.view
@@ -52,10 +52,18 @@ export default {
 
                 const dataDocs = await dbDocs.collection(`items/`).doc(pathDocs).get()
                 const itemsDocs = dataDocs.data()
+
+                const result = dateCalculate(itemsDocs.dates ,itemsDocs.timeFirst ,itemsDocs.timeEnd);
+                if(!result.status){
+                    delete itemsDocs.discount
+                }else{
+                    this.$refs.controlDetail.seconds = parseInt(result.far.seconds) 
+                    this.$refs.controlDetail.min = parseInt(result.far.minutes)
+                    this.$refs.controlDetail.hour = parseInt(result.far.hours)
+                }
+
                 this.items = { ...this.items, ...itemsDocs}
 
-               
-                console.log(this.items)
                 this.$refs.controlDetail.items = this.items
                 this.$refs.controlReview.itemsImg = this.items.imgs
             } catch (error) {

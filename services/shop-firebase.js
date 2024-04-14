@@ -1,4 +1,5 @@
 import firebase from "firebase/compat/app";
+import { dateCalculate } from "./calculate-service";
 
 export async function getItemShopAll() {
     const item = await firebase
@@ -12,7 +13,14 @@ export async function getItemShopAll() {
     const docs = item.docs;
     let data = docs.map((doc) => ({ idDocs: doc.id, ...doc.data() }));
 
+    
     for (const x in data) {
+        const result = dateCalculate(data[x].dates ,data[x].timeFirst ,data[x].timeEnd);
+        
+        if(!result.status){
+            delete data[x].discount
+        }
+
         let stockItemsRef = await firebase.database().ref(`items/${data[x].id}`).get()
         let dataStock = stockItemsRef.val();
         if(dataStock && dataStock.stockItems > 0){

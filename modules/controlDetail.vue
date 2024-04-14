@@ -127,9 +127,9 @@ export default {
         return {
             rating: 4.3,
             items: [],
-            seconds: 5,
-            min: 0,
-            hour: 1,
+            seconds: 2,
+            min: 59,
+            hour: 2,
             countItems: 1,
         }
     },
@@ -148,10 +148,12 @@ export default {
         },
         'items.star': function () {
             this.rating = parseFloat(this.items.star)
+        },
+        'items.discount': function () {
+            this.settimeSeconds()
         }
     },
-    mounted() {
-        this.settimeSeconds()
+    mounted() {        
         window.addEventListener('resize', this.checkSizeTablet)
     },
 
@@ -160,9 +162,10 @@ export default {
             if (this.seconds === 0) {
                 if (this.min == 0) {
                     if (this.hour == 0) {
+                        this.items.discount = 0
                         return
                     } else {
-                        this.hour--
+                        this.hour--                        
                     }
                     this.min = 59
                 } else {
