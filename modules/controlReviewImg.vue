@@ -12,9 +12,7 @@
                 hide-delimiters
                 show-arrows-on-hover 
                 delimiter-icon="mdi-minus">
-                <v-carousel-item v-for="(item, i) in itemsImg" :key="i"
-                    class="rounded-lg" 
-                    style="background-color: rgba(0, 0, 0, 0.2);">
+                <v-carousel-item v-for="(item, i) in itemsImg" :key="i" class="rounded-lg">
                     <img :src="item.src" width="100%" height="100%" class="carousel-img rounded-lg" />
                 </v-carousel-item>
             </v-carousel>

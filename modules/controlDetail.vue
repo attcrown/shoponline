@@ -149,9 +149,9 @@ export default {
         'items.star': function () {
             this.rating = parseFloat(this.items.star)
         },
-        'items.discount': function () {
-            this.settimeSeconds()
-        }
+        // 'items.discount': function () {
+        //     this.settimeSeconds()
+        // }
     },
     mounted() {        
         window.addEventListener('resize', this.checkSizeTablet)
