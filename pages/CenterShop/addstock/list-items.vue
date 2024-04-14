@@ -8,7 +8,7 @@
                 <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line
                     style="max-width: 400px;" hide-details dark></v-text-field>
             </v-card-title>
-            <v-data-table sort-by="updatedAt" sort-desc :headers="headers" :items="desserts" :search="search"
+            <v-data-table :headers="headers" :items="desserts" :search="search"
                 :loading="loading">
                 <template v-slot:item.action="{ item }">
                     <div class="mx-0 px-0">

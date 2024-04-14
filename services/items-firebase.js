@@ -53,7 +53,7 @@ async function saveImgItems(img ,id ,name){
 
 export async function getItemsAll() {
     try {
-        const item = await firebase.firestore().collection('items').get()
+        const item = await firebase.firestore().collection('items').orderBy('updatedAt','desc').get()
         if(item.empty) return []
 
         const docs = item.docs
