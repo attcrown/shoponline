@@ -6,6 +6,7 @@ export async function getItemShopAll() {
         .firestore()
         .collection("items")
         .where("deletedAt", "==", null)
+        .orderBy("updatedAt", "desc")
         .get();
 
     if (item.empty) return [];

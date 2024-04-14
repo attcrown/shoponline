@@ -61,8 +61,8 @@
                                 </v-icon>
                             </template>
                             จัดโปรโมชั่น
-                            <div v-for="pro in items.dates" :key="pro.discount">
-                                {{ pro }} : {{ items.timeFirst }}-{{ items.timeEnd }}
+                            <div v-for="(dates, index) in sortedFormattedDates" :key="index">
+                                {{ dates }} : {{ items.timeFirst }}-{{ items.timeEnd }}
                             </div>
                         </v-tooltip>
                     </div>
@@ -127,10 +127,17 @@ export default {
         return {
             rating: 4.3,
             items: [],
-            seconds: 2,
+            seconds: 39,
             min: 59,
-            hour: 2,
+            hour: 1,
             countItems: 1,
+        }
+    },
+    computed: {
+        sortedFormattedDates() {
+            // ["2024-03-01","2024-03-04" ]
+            this.items.dates = this.items.dates.sort((a, b) => new Date(a) - new Date(b))
+            return this.items.dates
         }
     },
     watch: {
@@ -148,10 +155,7 @@ export default {
         },
         'items.star': function () {
             this.rating = parseFloat(this.items.star)
-        },
-        // 'items.discount': function () {
-        //     this.settimeSeconds()
-        // }
+        }
     },
     mounted() {        
         window.addEventListener('resize', this.checkSizeTablet)
