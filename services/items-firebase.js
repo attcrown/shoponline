@@ -116,8 +116,6 @@ export async function updateItems(itemUpdate ,imgOld) {
                 const result = await saveImgItems(imgsNew[x].value ,items.id ,name)
                 imgsNew[x].src = result
                 imgsNew[x].value = `${name}.jpg`
-    
-                console.log('update img success')
             }
             AllFileNameJpg.push(imgsNew[x].value)
         }
