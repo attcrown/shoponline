@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 
-export async function saveImgFirebase(files , uid ,path) {
-    console.log(firebase , files , uid)
+export async function saveImgFirebase(files ,path) {
+
     const storageRef = firebase.storage().ref();
     const imageRef = storageRef.child(path);
     

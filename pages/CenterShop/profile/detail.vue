@@ -205,9 +205,8 @@ export default {
                     // save img to firebase
                     if(this.personalData.avatar){                        
                         const result = await saveImgFirebase(
-                            // files , uid ,path
+                            // files ,path
                             this.personalData.avatar ,
-                            this.$store.state.uid ,
                             `user/${this.$store.state.uid}/avatar.jpg`)
 
                         this.$store.commit('UPDATE_IMG_PHOTO', result);
