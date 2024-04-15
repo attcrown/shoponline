@@ -118,7 +118,7 @@ export default {
                 {
                     icon: "mdi-cart-plus",
                     title: "Add stock",
-                    to: "/CenterShop/addstock"
+                    to: "/BackShop/addstock"
                 },
                 {
                     icon: "mdi-account-edit",

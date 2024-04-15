@@ -22,7 +22,7 @@
                 </template>
                 <template v-slot:item.name="{ item }">
                     <div class="d-flex align-center">
-                        <div style="width: 40px; height: 40px;" class="me-2">
+                        <div style="width: 40px; height: 40px;" class="me-2" v-if="item.imgs[0]?.src">
                             <v-img class="rounded-lg" style="width: 40px; height: 40px;"
                                 :src="item.imgs[0].src"></v-img>
                         </div>

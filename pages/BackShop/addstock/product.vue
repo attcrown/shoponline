@@ -217,7 +217,6 @@ export default {
                     break
                 }
                 this.itemsImg.push({ src: URL.createObjectURL(result), value: result })
-                this.jpgUpload = []
             }
         },
         'itemsImg': function () {
@@ -227,7 +226,7 @@ export default {
     },
     created() {
         EventBus.$on('editItem', (itemEdit) => {
-            let items = { ...itemEdit }
+            const items = {...itemEdit}
             this.items = items
             this.itemsImg = items.imgs
             this.itemsImgOld = {...items.imgs}
@@ -247,13 +246,22 @@ export default {
             this.$refs.fileInput.$refs.input.click();
         },
         validate() {
-            if (this.$refs.form.validate()) this.save()
+            if(this.$refs.form.validate()) this.save()
         },
 
         async save() {
             this.loading = true;
             let id = uuidv4()
             let result = false
+
+            if(!this.items.imgs || this.items.imgs.length <= 0){
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.text = 'บันทึกข้อมูลไม่สําเร็จ กรุณาเพิ่มรูปภาพ'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+                this.loading = false;
+                return
+            } 
 
             if (!this.modeStatus) {
                 this.items = {

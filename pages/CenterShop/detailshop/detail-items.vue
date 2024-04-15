@@ -10,7 +10,6 @@
                 </div>
             </div>
         </div>
-
         <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
