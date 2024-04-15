@@ -144,7 +144,6 @@ import { processImg } from "~/services/img-sizing";
 import AlertButtom from '~/components/AlertButtom.vue';
 import review from './review.vue'
 import LoadingItem from '~/components/LoadingItem.vue';
-import { formatDatetime } from '~/services/formatDatetime';
 export default {
     data() {
         return {
@@ -172,6 +171,7 @@ export default {
 
             jpgUpload: [],
             itemsImg: [],
+            itemsImgOld: [],
             unitImg: 6,
             modeStatus: false,
         }
@@ -217,6 +217,7 @@ export default {
                     break
                 }
                 this.itemsImg.push({ src: URL.createObjectURL(result), value: result })
+                this.jpgUpload = []
             }
         },
         'itemsImg': function () {
@@ -229,6 +230,7 @@ export default {
             let items = { ...itemEdit }
             this.items = items
             this.itemsImg = items.imgs
+            this.itemsImgOld = {...items.imgs}
             this.dates = items.dates
             this.modeStatus = true
         })
@@ -266,7 +268,7 @@ export default {
                 EventBus.$emit('refreshEditItem')
             } else {
                 this.items.updatedAt = this.$fireModule.firestore.FieldValue.serverTimestamp()
-                result = await updateItems(this.items)
+                result = await updateItems(this.items ,this.itemsImgOld)
                 EventBus.$emit('refreshEditItem')
             }
 
@@ -308,6 +310,7 @@ export default {
             this.$refs.form.reset()
             this.items = []
             this.itemsImg = []
+            this.itemsImgOld = []
             this.dates = []
             this.jpgUpload = []
             this.modeStatus = false

@@ -101,15 +101,39 @@ export async function delItem(itemDel) {
     return true
 }
 
-export async function updateItems(itemUpdate) {
-    let items = {...itemUpdate}
+export async function updateItems(itemUpdate ,imgOld) {
+    const items = itemUpdate
+    const itemsImgOld = imgOld
+    const imgsNew = items.imgs
+    let AllFileNameJpg = []
+
     try {
+        // ตรวจสอบการเพิ่มรูปภาพใหม่
+        for(const x in imgsNew){            
+            // imgsNew === file Blob
+            if(imgsNew[x].value instanceof Blob){
+                const name = new Date().getTime()
+                const result = await saveImgItems(imgsNew[x].value ,items.id ,name)
+                imgsNew[x].src = result
+                imgsNew[x].value = `${name}.jpg`
+    
+                console.log('update img success')
+            }
+            AllFileNameJpg.push(imgsNew[x].value)
+        }
+        //ตรวจสอบรูปภาพนำออก
+        for(const x in itemsImgOld){
+            if(!AllFileNameJpg.includes(itemsImgOld[x].value)){
+                firebase.storage().ref(`items/${items.id}/${itemsImgOld[x].value}`).delete()
+            }
+        }
+        // อัพเดทข้อมูล Realtime
         await firebase.database().ref(`items/${items.id}`).update({
             stockItems : parseInt(items.stockItems),
             view : parseInt(items.view),
             seller : parseInt(items.seller)
         })
-
+        // อัพเดทข้อมูล Firestore
         await firebase.firestore().collection('items').doc(items.idDocs).update({
             createdAt : items.createdAt,
             createdUser : items.createdUser,
