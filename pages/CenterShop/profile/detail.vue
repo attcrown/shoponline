@@ -71,19 +71,25 @@
                                  label="ถนน" required></v-text-field>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-text-field class="mx-4" v-model="locationAll[4]" :rules="nameRules"
-                                 label="แขวง/ตําบล" required></v-text-field>
+                            <v-autocomplete v-model="locationAll[4]" 
+                                :items="tambons" item-text="name_th" @change="changeTambon($event)"
+                                :rules="selectRules" label="แขวง/ตําบล" class="mx-4">
+                            </v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-text-field class="mx-4" v-model="locationAll[5]" :rules="nameRules"
-                                 label="เขต/อําเภอ" required></v-text-field>
+                            <v-autocomplete class="mx-4" v-model="locationAll[5]"
+                                :items="amphures" item-text="name_th" 
+                                :rules="selectRules" @change="changeAmphures($event)"
+                                label="เขต/อําเภอ" required></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-text-field class="mx-4" v-model="locationAll[6]" :rules="nameRules"
-                                 label="จังหวัด" required></v-text-field>
+                            <v-autocomplete class="mx-4" 
+                                :items="provinces" item-text="name_th" 
+                                v-model="locationAll[6]" :rules="selectRules"
+                                label="จังหวัด" required></v-autocomplete>
                         </v-col>
                         <v-col cols="12" md="3">
-                            <v-text-field class="mx-4" v-model="locationAll[7]" :rules="nameRules"
+                            <v-text-field class="mx-4" v-model="locationAll[7]" :rules="[v => !!v || 'โปรดระบุข้อมูล']"
                                  label="รหัสไปรษณีย์" type="number" required></v-text-field>
                         </v-col>
                     </v-row>
@@ -115,6 +121,9 @@
 import AlertButtom from '~/components/AlertButtom.vue';
 import { processImg } from '../../../services/img-sizing.js';
 import { saveImgFirebase } from '../../../services/save-img-firebase.js';
+import { AMPHURES } from '../../../services/location/thailand_amphures.js';
+import { PROVINCES } from '../../../services/location/thailand_provinces.js';
+import { TAMBONS } from '../../../services/location/thailand_tambons.js';
 
 export default {
     data() {
@@ -135,7 +144,10 @@ export default {
             ],
             selectRules: [
                 v => !!v || 'กรุณาระบุ'
-            ]
+            ],
+            amphures : AMPHURES,
+            provinces : PROVINCES,
+            tambons : TAMBONS
         }
     },
     watch: {
@@ -231,6 +243,27 @@ export default {
             }
             this.personalData.avatar = await processImg(this.avatar)
             this.previewAvatar = URL.createObjectURL(this.personalData.avatar)
+        },
+
+        changeTambon(item){
+            if(!item) return
+            const tambon = this.tambons.find(x => x.name_th == item)
+            // เขต/อําเภอ
+            const amphures = this.amphures.find(x => x.id == tambon.amphure_id)
+            this.locationAll[5] = amphures.name_th
+            // จังหวัด
+            const provinces = this.provinces.find(x => x.id == amphures.province_id)
+            this.locationAll[6] = provinces.name_th
+            // รหัสไปรษณีย์
+            this.locationAll[7] = parseInt(tambon.zip_code) 
+        },
+        changeAmphures(item){
+            if(!item) return
+            const amphures = this.amphures.find(x => x.name_th == item)
+
+            // จังหวัด
+            const provinces = this.provinces.find(x => x.id == amphures.province_id)
+            this.locationAll[6] = provinces.name_th
         }
     },
 }
