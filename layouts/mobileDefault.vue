@@ -82,6 +82,11 @@ export default {
             Mnavbar: false,
             items: [
                 {
+                    icon: "mdi-cart-plus",
+                    title: "Add stock",
+                    to: "/BackShop/addstock"
+                },
+                {
                     icon: "mdi-account-edit",
                     title: "ข้อมูลส่วนตัว",
                     to: "/CenterShop/profile"
