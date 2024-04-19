@@ -15,12 +15,11 @@
                 <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
 
                 <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">
-                    ขายแล้ว {{ items.seller ? items.seller : 0 }} ชิ้น</p>
+                    ขายแล้ว {{ items.seller }} ชิ้น</p>
 
                 <v-divider class="mx-2" vertical style="border: 1px solid rgb(73, 73, 73); height: 30px"></v-divider>
 
-                <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">{{ items.view ? items.view : 0
-                    }} view</p>
+                <p style="font-size: 12px; color: rgb(73, 73, 73); margin-bottom: -4px;">{{ items.view }} view</p>
             </div>
 
             <v-divider style="border: 1px solid #B71C1C; margin-top: 4px"></v-divider>
@@ -105,23 +104,29 @@
                     </v-icon>
                 </v-btn>
 
-                เหลือ {{ items.stockItems ? items.stockItems : 0 }} ชิ้น
+                เหลือ {{ items.stockItems }} ชิ้น
             </v-card-text>
 
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn small color="#0240aa" dark style="font-size: 16px;">ซื้อ</v-btn>
-                <v-btn small color="#0240aa" outlined style="font-size: 16px;">
+                <v-btn small color="#0240aa" dark 
+                    style="font-size: 16px;">
+                    ซื้อ
+                </v-btn>
+                <v-btn small color="#0240aa" outlined 
+                    style="font-size: 16px;" @click="addCart()">
                     <span class="mdi mdi-cart-plus text-h5"></span>
                     เพิ่มใส่ตะกร้า
                 </v-btn>
             </v-card-actions>
         </v-card>
+        <AlertButtom ref="AlertButtom"></AlertButtom>
     </div>
 </template>
 <script>
 import { priceCalculate, unitCalculate } from '~/services/calculate-service.js'
+import AlertButtom from '~/components/AlertButtom.vue'
 export default {
     data() {
         return {
@@ -133,12 +138,15 @@ export default {
             countItems: 1,
         }
     },
+    components: {
+        AlertButtom
+    },
     computed: {
         sortedFormattedDates() {
             // ["2024-03-01","2024-03-04" ]
             this.items.dates = this.items.dates.sort((a, b) => new Date(a) - new Date(b))
             return this.items.dates
-        }
+        }        
     },
     watch: {
         'seconds': function () {
@@ -189,6 +197,20 @@ export default {
         formatBath(price) {
             // 1,000.00 | 1,000,000.00 | 1,000,000.00
             return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        addCart() {
+            if (this.items.stockItems < 1) {
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.text = 'สินค้าหมด'
+                this.$refs.AlertButtom.colorAlart = 'red'
+                this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+                return
+            }else{
+                this.$refs.AlertButtom.snackbar = true
+                this.$refs.AlertButtom.text = 'เพิ่มใส่ตะกร้าเรียบร้อย'
+                this.$refs.AlertButtom.colorAlart = 'green'
+                this.$refs.AlertButtom.icon = 'mdi mdi-cart-plus'
+            }
         }
     }
 }

@@ -42,13 +42,6 @@ export default {
             const dbDocs = this.$fire.firestore;
 
             try {
-                db.ref(`items/${pathId}`).on('value', (snapshot) => {
-                    const data = snapshot.val();
-                    this.items.seller = data.seller
-                    this.items.stockItems = data.stockItems
-                    this.items.view = data.view
-                })
-
                 const dataDocs = await dbDocs.collection(`items/`).doc(pathDocs).get()
                 const itemsDocs = dataDocs.data()
 
@@ -61,10 +54,17 @@ export default {
                     this.$refs.controlDetail.hour = parseInt(result.far.hours)
                 }
 
-                this.items = { ...this.items, ...itemsDocs}
+                this.$refs.controlDetail.items =  itemsDocs
+                this.$refs.controlReview.itemsImg = itemsDocs.imgs
 
-                this.$refs.controlDetail.items = this.items
-                this.$refs.controlReview.itemsImg = this.items.imgs
+                db.ref(`items/${pathId}`).on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    this.items.seller = data.seller || 0
+                    this.items.stockItems = data.stockItems || 0
+                    this.items.view = data.view || 0
+
+                    this.$refs.controlDetail.items =  {...itemsDocs , ...this.items}
+                })
             } catch (error) {
                 this.items = []
                 this.$refs.AlertButtom.snackbar = true
