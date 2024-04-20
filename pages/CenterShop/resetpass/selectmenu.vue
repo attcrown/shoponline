@@ -26,16 +26,7 @@ export default {
         });
     },
 
-    mounted() {
-        this.checkMobile();
-        window.addEventListener('resize', this.checkMobile);
-    },
-
     methods: {
-        checkMobile() {
-            // ตรวจสอบขนาดหน้าจอและกำหนดค่าให้ isMobile
-            this.deviceMode = window.innerWidth <= 768; // ตั้งค่าให้เป็น mobile ถ้าขนาดน้อยกว่าหรือเท่ากับ 768 pixels
-        },
         sendRemail(item){
             PostRemail.$emit('ShowEmail', item, (callback) => {
                 console.log(callback);
