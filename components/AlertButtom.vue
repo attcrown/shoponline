@@ -1,11 +1,11 @@
 <template>
   <div class="text-center ma-2 fontsPro">
-    <v-snackbar v-model="snackbar" :color="colorAlart">
+    <v-snackbar outlined text v-model="snackbar" :color="colorAlart">
       <div class="d-flex align-center">
         <span :class="icon" class="text-h6"></span> &nbsp; {{ text }}
       </div>
       <template v-slot:action="{ attrs }">
-        <v-btn dark text v-bind="attrs" @click="snackbar = false"> Close </v-btn>
+        <v-btn dark text v-bind="attrs" @click="snackbar = false" :color="colorAlart"> Close </v-btn>
       </template>
     </v-snackbar>
   </div>

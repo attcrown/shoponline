@@ -163,6 +163,11 @@ export default {
         },
         'items.star': function () {
             this.rating = parseFloat(this.items.star)
+        },
+        'items.stockItems': function (newVal) {
+            if (parseInt(newVal) < this.countItems) {
+                this.countItems = parseInt(newVal)
+            }
         }
     },
     mounted() {        
