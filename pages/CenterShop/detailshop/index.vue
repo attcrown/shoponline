@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import {publicStatus} from '../../../services/public-status';
+import {publicStatus} from '../../../services/check-status';
 import detailItems from './detail-items.vue';
 export default {
     layout: 'default',

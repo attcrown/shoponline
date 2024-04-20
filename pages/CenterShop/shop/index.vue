@@ -23,7 +23,7 @@ import search from './search.vue';
 import carousel from './carousel.vue';
 import listitems from './list-items.vue';
 import pagination from './pagination.vue';
-import { publicStatus } from '../../../services/public-status';
+import { publicStatus } from '../../../services/check-status';
 export default {
     layout: 'default',
     async mounted() {
