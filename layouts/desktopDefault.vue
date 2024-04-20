@@ -16,7 +16,7 @@
                 หน้าหลัก
                 <v-icon>mdi mdi-home</v-icon>
             </v-btn>
-            <v-btn text color="white" style="font-size: 17px;" @click="$router.push('/CenterShop/shop')">
+            <v-btn text color="white" style="font-size: 17px;" @click="$router.push('/PrivateShop/basket')">
                 ตะกร้าสินค้า
                 <v-icon>mdi mdi-cart-heart</v-icon>
             </v-btn>
