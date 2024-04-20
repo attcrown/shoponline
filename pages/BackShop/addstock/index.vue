@@ -1,5 +1,5 @@
 <template>
-    <div class="fontsProAdd">
+    <div class="fontsProAdd" v-if="show">
         <product></product>
         <listItems class="mt-5"></listItems>
     </div>
@@ -7,21 +7,27 @@
 <script>
 import listItems from './list-items.vue'
 import product from './product.vue'
-import { checkStatus } from '../../../services/check-status';
+import { addItemsStatus } from '../../../services/check-status';
 
 export default {
     layout: 'default',
-    mounted() {
-        this.checkStatusRank();
+    data() {
+        return {
+            show : false
+        }
+    },
+    async mounted() {
+        await this.checkStatus();
     },
     components: {
         product,
         listItems
     },
     methods: {
-        checkStatusRank() {
+        async checkStatus() {
             const auth = this.$fireModule.auth();
-            checkStatus(auth, this.$store, this.$router);
+            const result = await addItemsStatus(auth, this.$store, this.$router);
+            this.show = result
         }
     }
 }
