@@ -17,3 +17,9 @@ export function formatText(text ,deviceMode) {
     if(deviceMode && text.length > 14) return text.substring(0, 14) + '...'
     return text
 }
+
+export function formatTextBasket(text ,deviceMode) {
+    if(!deviceMode) return text
+    if(deviceMode && text.length > 25) return text.substring(0, 25) + '...'
+    return text
+}
