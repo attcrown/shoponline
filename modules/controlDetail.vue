@@ -215,7 +215,7 @@ export default {
                 const result = await saveBasket(this.countItems , this.items)
                 if(!result) {
                     this.$refs.AlertButtom.snackbar = true
-                    this.$refs.AlertButtom.text = 'สินค้าเกินจำนวนในตะกร้า'
+                    this.$refs.AlertButtom.text = 'จำนวนสินค้าเกินจำนวนที่กําหนด'
                     this.$refs.AlertButtom.colorAlart = 'red'
                     this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
                     return
