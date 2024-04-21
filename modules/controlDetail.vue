@@ -126,6 +126,7 @@
 </template>
 <script>
 import { priceCalculate, unitCalculate } from '~/services/calculate-service.js'
+import { saveBasket } from '~/services/basket-firebase'
 import AlertButtom from '~/components/AlertButtom.vue'
 export default {
     data() {
@@ -203,7 +204,7 @@ export default {
             // 1,000.00 | 1,000,000.00 | 1,000,000.00
             return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        addCart() {
+        async addCart() {
             if (this.items.stockItems < 1) {
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.text = 'สินค้าหมด'
@@ -211,10 +212,19 @@ export default {
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
                 return
             }else{
+                const result = await saveBasket(this.countItems , this.items)
+                if(!result) {
+                    this.$refs.AlertButtom.snackbar = true
+                    this.$refs.AlertButtom.text = 'สินค้าเกินจำนวนในตะกร้า'
+                    this.$refs.AlertButtom.colorAlart = 'red'
+                    this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
+                    return
+                }
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.text = 'เพิ่มใส่ตะกร้าเรียบร้อย'
                 this.$refs.AlertButtom.colorAlart = 'green'
                 this.$refs.AlertButtom.icon = 'mdi mdi-cart-plus'
+                return
             }
         }
     }

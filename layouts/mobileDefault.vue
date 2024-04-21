@@ -8,11 +8,11 @@
 
         <div v-if="$store.state?.displayName" class="d-flex align-center text-center">
             <div class="me-3">
-                <v-icon @click="$router.push('/')" color="white" size="24px">mdi-home</v-icon>
+                <v-icon @click="$router.push('/CenterShop/shop')" color="white" size="24px">mdi-home</v-icon>
                 <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">หน้าหลัก</p>
             </div>
             <div class="me-3">
-                <v-icon @click="$router.push('/')" color="white" size="24px">mdi-cart-heart</v-icon>
+                <v-icon @click="$router.push('/PrivateShop/basket')" color="white" size="24px">mdi-cart-heart</v-icon>
                 <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">ตะกร้าสินค้า</p>
             </div>
             <div class="me-3">

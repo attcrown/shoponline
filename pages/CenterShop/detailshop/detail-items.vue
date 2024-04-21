@@ -43,7 +43,8 @@ export default {
 
             try {
                 const dataDocs = await dbDocs.collection(`items/`).doc(pathDocs).get()
-                const itemsDocs = dataDocs.data()
+                let itemsDocs = dataDocs.data()
+                itemsDocs = {...itemsDocs , idDocs:pathDocs}
 
                 const result = dateCalculate(itemsDocs.dates ,itemsDocs.timeFirst ,itemsDocs.timeEnd);
                 if(!result.status){

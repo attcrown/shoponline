@@ -13,7 +13,7 @@ export function formatInt(num){
 }
 
 export function formatText(text ,deviceMode) {
-    if(!deviceMode && text.length > 20) return text.substring(0, 20) + '...'
-    if(deviceMode && text.length > 15) return text.substring(0, 15) + '...'
+    if(!deviceMode && text.length > 27) return text.substring(0, 27) + '...'
+    if(deviceMode && text.length > 14) return text.substring(0, 14) + '...'
     return text
 }
