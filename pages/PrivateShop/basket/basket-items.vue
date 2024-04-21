@@ -181,8 +181,7 @@ export default {
         async delBasketConfirm(index) {
             const result = await delBasket(index)
             if (result) {
-                this.itemsAll.splice(this.itemsAll.indexOf(index), 1)
-                this.selectItems = this.itemsAll
+                this.itemsAll.splice(this.itemsAll.findIndex(item => item.idDocs === index), 1);
                 this.selectItems = []
             } else {
                 this.$refs.AlertButtom.snackbar = true
