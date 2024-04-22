@@ -21,8 +21,8 @@ jobs:
       - name: Deploy on hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-            repoToken: '${{ secrets.GIT_ACTION_TOKEN }}'
-            firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
-            projectId: 'goshop-9e571'
+            repoToken: "${{ secrets.GIT_ACTION_TOKEN }}"
+            firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
+            projectId: goshop-9e571
             channelId: live
             target: exchange-shop-th
