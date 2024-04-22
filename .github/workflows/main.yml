@@ -1,0 +1,20 @@
+name: Deploy Product
+on: 
+  workflow_dispatch:
+
+jobs: 
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v4
+        with:
+            node-version: '18'
+      - name: build node project
+        run: yarn install
+      - name: generate project
+        run: yarn generate
+      - name: build project
+        run: yarn build
+      - name: Deploy on hosting
+        run: firebase deploy
