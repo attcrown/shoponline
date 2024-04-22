@@ -2,6 +2,8 @@ import firebase from 'firebase/compat/app';
 
 export async function createItems(itemsMain) {
     let items = {...itemsMain}
+    const dbDocs = firebase.firestore();
+    const db = firebase.database();
     try {
         for(let x in items.imgs){
             let name = new Date().getTime()
@@ -9,13 +11,13 @@ export async function createItems(itemsMain) {
             items.imgs[x].value = `${name}.jpg`
         }
 
-        await firebase.database().ref(`items/${items.id}`).set({
+        await db.ref(`items/${items.id}`).set({
             stockItems :  parseInt(items.stockItems),
             view : parseInt(items.view),
             seller : parseInt(items.seller)
         })
 
-        await firebase.firestore().collection('items').doc().set({            
+        await dbDocs.collection('items').doc().set({            
             createdAt : items.createdAt,
             createdUser : items.createdUser,
             dates : items.dates || null,
@@ -42,7 +44,8 @@ export async function createItems(itemsMain) {
 }
     
 async function saveImgItems(img ,id ,name){
-    const storageRef = firebase.storage().ref();
+    const storage = firebase.storage();
+    const storageRef = storage.ref();
     const imageRef = storageRef.child(`items/${id}/${name}.jpg`);
     // บันทึกรูป
     await imageRef.put(img);
@@ -52,15 +55,18 @@ async function saveImgItems(img ,id ,name){
 }
 
 export async function getItemsAll() {
+    const db = firebase.database();
+    const dbDocs = firebase.firestore();
+
     try {
-        const item = await firebase.firestore().collection('items').orderBy('updatedAt','desc').get()
+        const item = await dbDocs.collection('items').orderBy('updatedAt','desc').get()
         if(item.empty) return []
 
         const docs = item.docs
         let data = docs.map(doc => ({idDocs: doc.id, ...doc.data()}))
         //stockitems
         for(const x in data){
-            let stockItems = await firebase.database().ref(`items/${data[x].id}`).get()                           
+            let stockItems = await db.ref(`items/${data[x].id}`).get()                           
             data[x] = {...data[x] , ...stockItems.val()}
         }
         return data 
@@ -72,27 +78,32 @@ export async function getItemsAll() {
 }
 
 export async function delItem(itemDel) {
+    const db = firebase.database();
+    const dbDocs = firebase.firestore();
+    const storage = firebase.storage();
+
     let items = {...itemDel}
+
     if(!items || !items.id) return false
     try {
-        await firebase.database().ref(`items/${items.id}`).remove()       
+        await db.ref(`items/${items.id}`).remove()       
     } catch (error) {
         console.log(error)
     }
 
     try {
         for(const x in items.imgs){
-           await firebase.storage().ref(`items/${items.id}/${items.imgs[x].value}`).delete()
+           await storage.ref(`items/${items.id}/${items.imgs[x].value}`).delete()
         }
     } catch (error) {
         console.log(error)
     }
 
     try{
-        const result = await firebase.firestore().collection('items').where('id', '==', items.id).get()
+        const result = await dbDocs.collection('items').where('id', '==', items.id).get()
         if(!result.empty){
             result.forEach(async (doc) => {
-                await firebase.firestore().collection('items').doc(doc.id).delete();
+                await dbDocs.collection('items').doc(doc.id).delete();
             });
         }
     }catch (error) {
@@ -102,6 +113,10 @@ export async function delItem(itemDel) {
 }
 
 export async function updateItems(itemUpdate ,imgOld) {
+    const db = firebase.database();
+    const dbDocs = firebase.firestore();
+    const storage = firebase.storage();
+    
     const items = itemUpdate
     const itemsImgOld = imgOld
     const imgsNew = items.imgs
@@ -122,17 +137,17 @@ export async function updateItems(itemUpdate ,imgOld) {
         //ตรวจสอบรูปภาพนำออก
         for(const x in itemsImgOld){
             if(!AllFileNameJpg.includes(itemsImgOld[x].value)){
-                firebase.storage().ref(`items/${items.id}/${itemsImgOld[x].value}`).delete()
+                storage.ref(`items/${items.id}/${itemsImgOld[x].value}`).delete()
             }
         }
         // อัพเดทข้อมูล Realtime
-        await firebase.database().ref(`items/${items.id}`).update({
+        await db.ref(`items/${items.id}`).update({
             stockItems : parseInt(items.stockItems),
             view : parseInt(items.view),
             seller : parseInt(items.seller)
         })
         // อัพเดทข้อมูล Firestore
-        await firebase.firestore().collection('items').doc(items.idDocs).update({
+        await dbDocs.collection('items').doc(items.idDocs).update({
             createdAt : items.createdAt,
             createdUser : items.createdUser,
             dates : items.dates || null,
