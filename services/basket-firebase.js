@@ -64,6 +64,7 @@ export async function getBasketAll() {
     const auth = firebase.auth();
     const dbDocs = firebase.firestore();
     const db = firebase.database();
+    
     try {
         let sumData = [];
         const user = auth.currentUser;
