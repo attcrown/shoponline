@@ -12,12 +12,12 @@ jobs:
             node-version: '18'
       - name: build node project
         run: yarn install
-      # - name: Unit Test
-      #   run: yarn test
-      # - name: generate project
-      #   run: yarn generate
-      # - name: build project
-      #   run: yarn build
+      - name: Unit Test
+        run: yarn test
+      - name: generate project
+        run: yarn generate
+      - name: build project
+        run: yarn build
       - name: Deploy on hosting
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
