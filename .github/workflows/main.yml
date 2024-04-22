@@ -12,6 +12,8 @@ jobs:
             node-version: '18'
       - name: build node project
         run: yarn install
+      - name: Unit Test
+        run: yarn test
       - name: generate project
         run: yarn generate
       - name: build project
