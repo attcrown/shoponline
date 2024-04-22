@@ -205,7 +205,7 @@ export default {
 
         async getBasket() {
             const result = await getBasketAll()
-            this.itemsAll = result;
+            this.itemsAll = result || [];
             return
         },
 
