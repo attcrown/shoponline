@@ -2,12 +2,15 @@ import firebase from "firebase/compat/app";
 import { Timestamp } from "firebase/firestore";
 
 export async function saveBasket(countItems ,item) {
+    const auth = firebase.auth();
+    const dbDocs = firebase.firestore();
+
     try {
-        const user = firebase.auth().currentUser;
+        const user = auth.currentUser;
         if(!user || !user.uid){
             return {status : false , msg : "กรุณาเข้าสู่ระบบ"}
         }
-        const basketRef = firebase.firestore().collection('basket').doc(user.uid);
+        const basketRef = dbDocs.collection('basket').doc(user.uid);
         // ตรวจเช็คค่าเก่าของใน ตะกร้า item.idDocs
         const result = await basketRef.get();
         const data = result.data();
@@ -41,10 +44,13 @@ export async function saveBasket(countItems ,item) {
 }
 
 export async function delBasket(itemId) {
+    const auth = firebase.auth();
+    const dbDocs = firebase.firestore();
+
     try {
         if(!itemId) return false
-        const user = firebase.auth().currentUser;
-        await firebase.firestore().collection('basket').doc(user.uid).update({
+        const user = auth.currentUser;
+        await dbDocs.collection('basket').doc(user.uid).update({
             [itemId]: firebase.firestore.FieldValue.delete()
         });
         return true;
@@ -55,22 +61,25 @@ export async function delBasket(itemId) {
 }
 
 export async function getBasketAll() {
+    const auth = firebase.auth();
+    const dbDocs = firebase.firestore();
+    const db = firebase.database();
     try {
         let sumData = [];
-        const user = firebase.auth().currentUser;
-        const result = await firebase.firestore().collection('basket').doc(user.uid).get();
+        const user = auth.currentUser;
+        const result = await dbDocs.collection('basket').doc(user.uid).get();
         if (!result.exists) return null
         
         const data = result.data();
         for(const idDocs in data) {
-            const item = await firebase.firestore().collection('items').doc(idDocs).get();
+            const item = await dbDocs.collection('items').doc(idDocs).get();
             let itemData = item.data();
 
             delete itemData.updatedAt;
             delete itemData.createdAt;
 
             data[idDocs] = { ...data[idDocs], ...itemData, idDocs: idDocs };
-            const itemReal = await firebase.database().ref(`items/${data[idDocs].id}`).get();
+            const itemReal = await db.ref(`items/${data[idDocs].id}`).get();
             if(itemReal.exists) data[idDocs] = {...data[idDocs] , ...itemReal.val()};
             sumData.push(data[idDocs]);
         }
