@@ -20,12 +20,12 @@ export default {
         return {
             slides: [
                 {
-                    link: '/CenterShop/profile',
+                    // link: '/CenterShop/profile',
                     img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_MB1.jpg?alt=media&token=b6f47784-b2fe-4330-bea2-b7d47604ea1b',
                     img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_DK1.jpg?alt=media&token=b80f4f40-baf7-4953-b874-9cd4f337bb65'
                 },
                 {
-                    link: '/BackShop/addstock',
+                    // link: '/BackShop/addstock',
                     img_url_mobile: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_MB2.jpg?alt=media&token=61a54c3f-2bed-4f24-8706-f4484023e1cc',
                     img_url_desktop: 'https://firebasestorage.googleapis.com/v0/b/goshop-9e571.appspot.com/o/contentPageShop%2Fadvert_DK2.png?alt=media&token=0c12273d-0d4b-4dc2-a755-6074fe95d2fe'
 
