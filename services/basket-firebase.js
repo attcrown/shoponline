@@ -15,22 +15,22 @@ export async function saveBasket(countItemsend ,item) {
         const basketRef = dbDocs.collection('basket').doc(user.uid);
         const result = await basketRef.get();
         const data = result.data();
-
+    
         let sumBasket = 0;
 
         if( data && data[item.idDocs] ){
-            const basketCountItems = data[item.idDocs].countItems;
+            const basketCountItems = parseInt(data[item.idDocs].countItems);
             const addNewBasketCountItems = countItems + basketCountItems;
 
             if(item.stockItems === basketCountItems){
                 return {status : false , msg : "จํานวนสินค้าไม่เพียงพอ"}
             }
 
-            if(item.stockItems < addNewBasketCountItems){
+            if(item.stockItems <= addNewBasketCountItems){
                 sumBasket = item.stockItems
             }
 
-            if(item.stockItems > addNewBasketCountItems){
+            if(item.stockItems >= addNewBasketCountItems){
                 sumBasket = addNewBasketCountItems
             }
 
