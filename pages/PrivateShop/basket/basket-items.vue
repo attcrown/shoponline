@@ -29,7 +29,7 @@
                                     class="me-3 mb-3 rounded-lg">
                                 </v-img>
                                 <div style="color: #0240aa;">
-                                    <div v-if="dateCalculateBasket(item.dates ,item.timeFirst ,item.timeEnd , null)">
+                                    <div v-if="dateCalculateBasket(item).status">
                                         <v-chip dark color="#B71C1C" class="px-1 mb-3" small label>
                                             {{ item.discount }}% ส่วนลด<i class="mdi mdi-sale ms-1"></i>
                                         </v-chip>
@@ -40,9 +40,21 @@
                                 </div>
                             </div>
                             <v-spacer></v-spacer>
-                            <div v-if="!$store.state.deviceMode">                                
-                                <div style="color: #0240aa;" class="text-end m-3">
-                                    ราคารวม {{ formatBathPro(item.price) }} ฿
+                            <div v-if="!$store.state.deviceMode">   
+                                <div v-if="dateCalculateBasket(item).status" 
+                                    style="text-decoration: line-through; 
+                                    color: rgb(171, 171, 171); 
+                                    font-size: 14px;"
+                                    class="text-end me-4 mb-0">
+                                    {{ formatBathPro(priceUnit(item.price ,item.countItems)) }} ฿
+                                </div>  
+                                <div v-if="!dateCalculateBasket(item).status" 
+                                    style="color: #0240aa;" class="text-end m-3">
+                                    ราคารวม {{ formatBathPro(priceUnit(item.price , item.countItems)) }} ฿
+                                </div>                             
+                                <div v-if="dateCalculateBasket(item).status"
+                                    style="color: #0240aa;" class="text-end m-3">
+                                    ราคารวม {{ formatBathPro(sale(item.price , item.discount, item.countItems)) }} ฿
                                 </div>                              
                                 จำนวนสินค้า
                                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa"
@@ -74,7 +86,7 @@
 
                                 จำนวนสินค้า
                                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa"
-                                    @click="item.countItems--">
+                                    @click="plusUnit(item)">
                                     <v-icon>
                                         mdi-minus
                                     </v-icon>
@@ -83,7 +95,7 @@
                                     width: 60px; text-align: end;
                                     border-radius: 5px;" class="text-center" v-model="item.countItems"></input>
                                 <v-btn fab class="mx-2" width="25px" height="25px" dark color="#0240aa"
-                                    @click="item.countItems++">
+                                    @click="minusUnit(item)">
                                     <v-icon>
                                         mdi-plus
                                     </v-icon>
@@ -126,10 +138,13 @@ export default {
         }
     },
     watch: {
-        'selectItems': function () {
-            this.selectItems.length === this.itemsAll.length ? this.selectItemsAll = true : this.selectItemsAll = false
-            this.sumPriceSelect()
-        }
+        'selectItems': {
+            handler: function () {
+                this.selectItems.length === this.itemsAll.length ? this.selectItemsAll = true : this.selectItemsAll = false
+                this.sumPriceSelect()
+            },
+            deep: true
+        },
     },
     async mounted() {
         await this.getBasket();
@@ -192,15 +207,29 @@ export default {
         },
         sumPriceSelect() {
             let result = 0
-            this.selectItems.forEach(element => {
-                result += parseFloat(element.price)
-            })
+            for(const x in this.selectItems){
+                const data = this.selectItems[x]
+                const checkDiscount = this.dateCalculateBasket(data)
+                if(checkDiscount){
+                    result += parseFloat(this.sale(data.price, data.discount, data.countItems))
+                }else{
+                    result += parseFloat(this.priceUnit(data.price, data.countItems))
+                }
+            }            
             this.$refs.navPrice.sumPrice = formatBath(result)
             this.$refs.navPrice.selectItems = this.selectItems
         },
 
         formatBathPro(price) {
             return formatBath(price)
+        },
+
+        priceUnit(price, countItems) {
+            return unitCalculate(price, countItems)
+        },
+
+        sale(price, discount ,countItems) {
+            return priceCalculate(price, discount ,countItems)
         },
 
         async getBasket() {
@@ -213,8 +242,19 @@ export default {
             return formatTextBasket(text, this.$store.state.deviceMode)
         },
 
-        dateCalculateBasket(dates ,timeFirst ,timeEnd , dateNow) {
-            return dateCalculate(dates ,timeFirst ,timeEnd , dateNow).status
+        dateCalculateBasket(items) {
+            const item = items
+            return dateCalculate(item.dates ,item.timeFirst ,item.timeEnd , null)
+        },
+
+        plusUnit(item) {
+            item.countItems++
+            this.sumPriceSelect();
+        },
+
+        minusUnit(item) {
+            item.countItems--
+            this.sumPriceSelect();
         }
     }
 }
