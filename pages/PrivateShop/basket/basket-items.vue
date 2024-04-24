@@ -209,7 +209,7 @@ export default {
             let result = 0
             for(const x in this.selectItems){
                 const data = this.selectItems[x]
-                const checkDiscount = this.dateCalculateBasket(data)
+                const checkDiscount = this.dateCalculateBasket(data).status
                 if(checkDiscount){
                     result += parseFloat(this.sale(data.price, data.discount, data.countItems))
                 }else{
