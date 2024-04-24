@@ -114,7 +114,7 @@
                     style="font-size: 16px;">
                     ซื้อ
                 </v-btn>
-                <v-btn small color="#0240aa" outlined 
+                <v-btn small color="#0240aa" outlined :loading="loadingCard"
                     style="font-size: 16px;" @click="addCart()">
                     <span class="mdi mdi-cart-plus text-h5"></span>
                     เพิ่มใส่ตะกร้า
@@ -137,6 +137,7 @@ export default {
             min: 59,
             hour: 1,
             countItems: 1,
+            loadingCard: false
         }
     },
     components: {
@@ -205,12 +206,13 @@ export default {
             return price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         async addCart() {
+            this.loadingCard = true
             if (this.items.stockItems < 1) {
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.text = 'สินค้าหมด'
                 this.$refs.AlertButtom.colorAlart = 'red'
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-                return
+                return this.loadingCard = false
             }else{
                 const result = await saveBasket(this.countItems , this.items)
                 if(!result.status) {
@@ -218,13 +220,13 @@ export default {
                     this.$refs.AlertButtom.text = result.msg
                     this.$refs.AlertButtom.colorAlart = 'red'
                     this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-                    return
+                    return this.loadingCard = false
                 }
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.text = result.msg
                 this.$refs.AlertButtom.colorAlart = 'green'
                 this.$refs.AlertButtom.icon = 'mdi mdi-cart-plus'
-                return
+                return this.loadingCard = false
             }
         }
     }
