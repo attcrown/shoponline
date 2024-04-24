@@ -1,26 +1,42 @@
 import firebase from "firebase/compat/app";
 import { Timestamp } from "firebase/firestore";
 
-export async function saveBasket(countItems ,item) {
+export async function saveBasket(countItemsend ,item) {
+    const countItems = parseInt(countItemsend)
     const auth = firebase.auth();
     const dbDocs = firebase.firestore();
-
     try {
         const user = auth.currentUser;
         if(!user || !user.uid){
             return {status : false , msg : "กรุณาเข้าสู่ระบบ"}
         }
-        const basketRef = dbDocs.collection('basket').doc(user.uid);
+
         // ตรวจเช็คค่าเก่าของใน ตะกร้า item.idDocs
+        const basketRef = dbDocs.collection('basket').doc(user.uid);
         const result = await basketRef.get();
         const data = result.data();
+
+        let sumBasket = 0;
+
         if( data && data[item.idDocs] ){
-            if(item.stockItems < (data[item.idDocs].countItems + (parseInt(countItems)))){
+            const basketCountItems = data[item.idDocs].countItems;
+            const addNewBasketCountItems = countItems + basketCountItems;
+
+            if(item.stockItems === basketCountItems){
                 return {status : false , msg : "จํานวนสินค้าไม่เพียงพอ"}
             }
+
+            if(item.stockItems < addNewBasketCountItems){
+                sumBasket = item.stockItems
+            }
+
+            if(item.stockItems > addNewBasketCountItems){
+                sumBasket = addNewBasketCountItems
+            }
+
             await basketRef.update({
                 [item.idDocs]: {
-                    countItems: data[item.idDocs].countItems + (parseInt(countItems) || 1),
+                    countItems: parseInt(sumBasket),
                     createdAt: data[item.idDocs].createdAt,
                     updatedAt: Timestamp.now()
                 }
@@ -31,17 +47,19 @@ export async function saveBasket(countItems ,item) {
         // ไม่มีค่าเก่าสร้างใหม่
         await basketRef.set({
             [item.idDocs]: {
-                countItems: parseInt(countItems) || 1,
+                countItems: countItems || 1,
                 createdAt: Timestamp.now(),
                 updatedAt: Timestamp.now()
             }
         }, { merge: true });
+
         return {status : true , msg : "เพิ่มสินค้าเรียบร้อย"}
     } catch (error) {
         console.log(error);
         return {status : false , msg : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"}
     }
 }
+
 
 export async function delBasket(itemId) {
     const auth = firebase.auth();
