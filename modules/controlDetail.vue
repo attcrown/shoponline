@@ -148,7 +148,7 @@ export default {
             // ["2024-03-01","2024-03-04" ]
             this.items.dates = this.items.dates.sort((a, b) => new Date(a) - new Date(b))
             return this.items.dates
-        }        
+        }
     },
     watch: {
         'seconds': function () {

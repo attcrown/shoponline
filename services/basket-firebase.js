@@ -2,9 +2,12 @@ import firebase from "firebase/compat/app";
 import { Timestamp } from "firebase/firestore";
 
 export async function saveBasket(countItemsend ,item) {
-    const countItems = parseInt(countItemsend)
     const auth = firebase.auth();
     const dbDocs = firebase.firestore();
+    
+    const countItems = parseInt(countItemsend)
+    if(!countItems || !item || !item.idDocs) return {status : false , msg : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"}
+    
     try {
         const user = auth.currentUser;
         if(!user || !user.uid){

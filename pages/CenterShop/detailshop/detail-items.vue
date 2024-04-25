@@ -34,10 +34,8 @@ export default {
             let pathSubId = path.split('#')
             const pathId = pathSubId[1]
             const pathDocs = pathSubId[2]
-
             const db = this.$fire.database;
             const dbDocs = this.$fire.firestore;
-
             try {
                 const dataDocs = await dbDocs.collection(`items/`).doc(pathDocs).get()
                 let itemsDocs = dataDocs.data()
@@ -51,20 +49,12 @@ export default {
                     this.$refs.controlDetail.min = parseInt(result.far.minutes)
                     this.$refs.controlDetail.hour = parseInt(result.far.hours)
                 }
-
                 this.$refs.controlDetail.items =  itemsDocs
                 this.$refs.controlReview.itemsImg = itemsDocs.imgs
 
                 db.ref(`items/${pathId}`).on('value', (snapshot) => {
-                    let itemReal = []
-                    const data = snapshot.val();
-                    itemReal.seller = data.seller || 0
-                    itemReal.stockItems = data.stockItems || 0
-                    itemReal.view = data.view || 0
-
-                    this.$refs.controlDetail.items.view = itemReal.view
-                    this.$refs.controlDetail.items.seller = itemReal.seller
-                    this.$refs.controlDetail.items.stockItems = itemReal.stockItems
+                    const data = snapshot.val()
+                    this.$refs.controlDetail.items = { ...this.$refs.controlDetail.items , ...data }
                 })
             } catch (error) {
                 console.log(error)
