@@ -20,7 +20,7 @@
 
         <!-- add IMG & Control -->
         <div class="d-flex align-center justify-center">
-            <div v-if="itemsImg.length > 0" class="d-flex mt-3" style="overflow-x: auto;">
+            <div v-if="itemsImg.length > 1" class="d-flex mt-3" style="overflow-x: auto;">
                 <div v-for="item in itemsImg" :key="item.src">
                     <v-img :src="item.src" type="button" style="width: 90px; height: 90px;" class="me-3 mb-3 rounded-lg"
                         @mouseover="showReviewImg(item) ,isHovering = item"

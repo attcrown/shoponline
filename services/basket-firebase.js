@@ -24,14 +24,12 @@ export async function saveBasket(countItemsend ,item) {
 
             if(item.stockItems === basketCountItems){
                 return {status : false , msg : "จํานวนสินค้าไม่เพียงพอ"}
-            }
-
-            if(item.stockItems <= addNewBasketCountItems){
+            }else if(item.stockItems <= addNewBasketCountItems){
                 sumBasket = item.stockItems
-            }
-
-            if(item.stockItems >= addNewBasketCountItems){
+            }else if(item.stockItems >= addNewBasketCountItems){
                 sumBasket = addNewBasketCountItems
+            }else{
+                return {status : false , msg : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"}
             }
 
             await basketRef.update({
