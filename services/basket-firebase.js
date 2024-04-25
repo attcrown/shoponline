@@ -1,66 +1,61 @@
 import firebase from "firebase/compat/app";
 import { Timestamp } from "firebase/firestore";
 
-export async function saveBasket(countItemsend ,item) {
+export async function saveBasket(countItemsend, item) {
     const auth = firebase.auth();
     const dbDocs = firebase.firestore();
-    
-    const countItems = parseInt(countItemsend)
-    if(!countItems || !item || !item.idDocs) return {status : false , msg : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"}
-    
+
+    const countItems = parseInt(countItemsend);
+    if (!countItems || !item || !item.idDocs) return { status: false, msg: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" };
+
     try {
         const user = auth.currentUser;
-        if(!user || !user.uid){
-            return {status : false , msg : "กรุณาเข้าสู่ระบบ"}
+        if (!user || !user.uid) {
+            return { status: false, msg: "กรุณาเข้าสู่ระบบ" };
         }
-
-        // ตรวจเช็คค่าเก่าของใน ตะกร้า item.idDocs
+        // ใช้ Transaction เพื่อควบคุมการอัปเดตข้อมูลในตะกร้าให้ถูกต้อง
         const basketRef = dbDocs.collection('basket').doc(user.uid);
-        const result = await basketRef.get();
-        const data = result.data();
-    
-        let sumBasket = 0;
+        await dbDocs.runTransaction(async (transaction) => {
+            const result = await transaction.get(basketRef);
+            const data = result.data();
+            let sumBasket = 0;
+            if (data && data[item.idDocs]) {
+                const basketCountItems = parseInt(data[item.idDocs].countItems);
+                const addNewBasketCountItems = countItems + basketCountItems;
 
-        if( data && data[item.idDocs] ){
-            const basketCountItems = parseInt(data[item.idDocs].countItems);
-            const addNewBasketCountItems = countItems + basketCountItems;
-
-            if(item.stockItems === basketCountItems){
-                return {status : false , msg : "จํานวนสินค้าไม่เพียงพอ"}
-            }else if(item.stockItems <= addNewBasketCountItems){
-                sumBasket = item.stockItems
-            }else if(item.stockItems >= addNewBasketCountItems){
-                sumBasket = addNewBasketCountItems
-            }else{
-                return {status : false , msg : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"}
-            }
-
-            await basketRef.update({
-                [item.idDocs]: {
-                    countItems: parseInt(sumBasket),
-                    createdAt: data[item.idDocs].createdAt,
-                    updatedAt: Timestamp.now()
+                if (item.stockItems === basketCountItems) {
+                    throw new Error("จํานวนสินค้าเหลือเพียง " + item.stockItems + " ชิ้น");
+                } else if (item.stockItems <= addNewBasketCountItems) {
+                    sumBasket = item.stockItems;
+                } else if (item.stockItems >= addNewBasketCountItems) {
+                    sumBasket = addNewBasketCountItems;
+                } else {
+                    throw new Error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
                 }
-            })
-            return {status : true , msg : "เพิ่มสินค้าเรียบร้อย"}
-        }
 
-        // ไม่มีค่าเก่าสร้างใหม่
-        await basketRef.set({
-            [item.idDocs]: {
-                countItems: countItems || 1,
-                createdAt: Timestamp.now(),
-                updatedAt: Timestamp.now()
+                transaction.update(basketRef, {
+                    [item.idDocs]: {
+                        countItems: parseInt(sumBasket),
+                        createdAt: data[item.idDocs].createdAt,
+                        updatedAt: Timestamp.now()
+                    }
+                });
+            } else {
+                transaction.set(basketRef, {
+                    [item.idDocs]: {
+                        countItems: countItems || 1,
+                        createdAt: Timestamp.now(),
+                        updatedAt: Timestamp.now()
+                    }
+                }, { merge: true });
             }
-        }, { merge: true });
+        });
 
-        return {status : true , msg : "เพิ่มสินค้าเรียบร้อย"}
+        return { status: true, msg: "เพิ่มสินค้าเรียบร้อย" };
     } catch (error) {
-        console.log(error);
-        return {status : false , msg : "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง"}
+        return { status: false, msg: error };
     }
 }
-
 
 export async function delBasket(itemId) {
     const auth = firebase.auth();
@@ -109,5 +104,50 @@ export async function getBasketAll() {
     } catch (error) {
         console.log(error);
         return null
+    }
+}
+
+export async function updateBasket(item){
+    const dbDocs = firebase.firestore();
+    const db = firebase.database();    
+    const auth = firebase.auth();
+
+    const countItems = parseInt(item.countItems);
+    const user = auth.currentUser;
+
+    if (!user || !user.uid)  return { status: false, msg: "กรุณาเข้าสู่ระบบ" };
+    if (!item || !item.idDocs) return { status: false, msg: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" };
+    if(!countItems || countItems < 0) return { status: false, msg: "จำนวนสินค้าไม่ถูกต้อง" };
+
+    try {
+        const basketRef = dbDocs.collection('basket').doc(user.uid);
+        await dbDocs.runTransaction(async (transaction) => {
+            const result = await transaction.get(basketRef);
+            const data = result.data();
+
+            const getStockItems = await db.ref(`items/${item.id}`).once("value");
+            const stockItems = getStockItems.val();
+
+            let sumBasket = 0;
+
+            if (stockItems.stockItems < countItems) {
+                item.stockItems = stockItems.stockItems;
+                throw new Error("จํานวนสินค้าเหลือเพียง " + stockItems.stockItems + " ชิ้น");
+            } else if (stockItems.stockItems >= countItems) {
+                sumBasket = countItems;
+            } else {
+                throw new Error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
+            }
+            transaction.update(basketRef, {
+                [item.idDocs]: {
+                    countItems: parseInt(sumBasket),
+                    createdAt: data[item.idDocs].createdAt,
+                    updatedAt: Timestamp.now()
+                }
+            });
+        });
+        return { status: true, msg: "อัพเดทสำเร็จ" };
+    } catch (error) {
+        return { status: false, msg: error };
     }
 }

@@ -33,8 +33,8 @@ export default {
             let path = this.$router.currentRoute.hash
             let pathSubId = path.split('#')
             const pathId = pathSubId[1]
-            const pathDocs = pathSubId[2]
-            const db = this.$fire.database;
+            const pathDocs = pathSubId[2]     
+            const db = this.$fire.database;       
             const dbDocs = this.$fire.firestore;
             try {
                 const dataDocs = await dbDocs.collection(`items/`).doc(pathDocs).get()
@@ -48,14 +48,16 @@ export default {
                     this.$refs.controlDetail.seconds = parseInt(result.far.seconds) 
                     this.$refs.controlDetail.min = parseInt(result.far.minutes)
                     this.$refs.controlDetail.hour = parseInt(result.far.hours)
+  
                 }
                 this.$refs.controlDetail.items =  itemsDocs
-                this.$refs.controlReview.itemsImg = itemsDocs.imgs
-
+                this.$refs.controlReview.itemsImg = itemsDocs.imgs                 
+                
                 db.ref(`items/${pathId}`).on('value', (snapshot) => {
                     const data = snapshot.val()
+                    if(!data || !this.$refs.controlDetail) return
                     this.$refs.controlDetail.items = { ...this.$refs.controlDetail.items , ...data }
-                })
+                })        
             } catch (error) {
                 console.log(error)
                 this.$refs.AlertButtom.snackbar = true
