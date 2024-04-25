@@ -18,17 +18,14 @@ import AlertButtom from '~/components/AlertButtom.vue';
 import controlDetail from '~/modules/controlDetail.vue';
 import controlReviewImg from '~/modules/controlReviewImg.vue';
 import { dateCalculate } from '~/services/calculate-service.js'
+import { updateView } from '~/services/items-firebase.js'
 export default {
-    data() {
-        return {
-            items: []
-        };
-    },
     components: {
         AlertButtom, controlDetail, controlReviewImg
     },
     async mounted() {
         this.searchDetailShop();
+        this.upView();
     },
     methods: {
         async searchDetailShop() {
@@ -59,20 +56,33 @@ export default {
                 this.$refs.controlReview.itemsImg = itemsDocs.imgs
 
                 db.ref(`items/${pathId}`).on('value', (snapshot) => {
+                    let itemReal = []
                     const data = snapshot.val();
-                    this.items.seller = data.seller || 0
-                    this.items.stockItems = data.stockItems || 0
-                    this.items.view = data.view || 0
+                    itemReal.seller = data.seller || 0
+                    itemReal.stockItems = data.stockItems || 0
+                    itemReal.view = data.view || 0
 
-                    this.$refs.controlDetail.items =  {...itemsDocs , ...this.items}
+                    this.$refs.controlDetail.items.view = itemReal.view
+                    this.$refs.controlDetail.items.seller = itemReal.seller
+                    this.$refs.controlDetail.items.stockItems = itemReal.stockItems
                 })
             } catch (error) {
-                this.items = []
+                console.log(error)
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.colorAlart = 'red'
                 this.$refs.AlertButtom.text = 'ไม่พบข้อมูลสินค้าในระบบ'
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
             }
+        },
+        upView() {
+            // read path
+            let path = this.$router.currentRoute.hash
+            let pathSubId = path.split('#')
+            const pathId = pathSubId[1]
+            const pathDocs = pathSubId[2]
+            setTimeout(() => {
+                updateView(pathId);
+            }, 10000);
         }
     },
 }

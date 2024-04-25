@@ -172,6 +172,18 @@ export async function updateItems(itemUpdate ,imgOld) {
     }
 }
 
+export async function updateView(id) {
+    const db = firebase.database();
+    try {
+        await db.ref(`items/${id}`).transaction((currentData) => {
+            if (currentData === null) return
+            return { ...currentData, view: (currentData.view || 0) + 1 };
+        });
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 
 
 
