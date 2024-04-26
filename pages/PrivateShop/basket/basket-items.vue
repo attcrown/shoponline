@@ -16,7 +16,9 @@
                     <div v-for="(item, index) in itemsAll " :key="index">
                         <v-card class="p-0 mt-3 mb-5">
                             <v-card-title class="ps-3 p-0">
-                                <v-checkbox v-model="selectItems" :value="item"
+                                <v-checkbox 
+                                    v-model="selectItems" 
+                                    :value="item"
                                     :label="formatTextSize(item.name)"></v-checkbox>
                                 <v-spacer></v-spacer>
                                 <v-btn icon color="error" @click="deleteItem(item.idDocs)">
@@ -127,6 +129,7 @@ export default {
             selectItemsAll: false,
             itemsAll: [],
             selectItems: [],
+            previousItem :[],
         }
     },
     watch: {
@@ -136,7 +139,7 @@ export default {
                 this.sumPriceSelect()
             },
             deep: true
-        },
+        }
     },
     async mounted() {
         await this.getBasket();

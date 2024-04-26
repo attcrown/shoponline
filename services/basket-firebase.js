@@ -115,8 +115,11 @@ export async function updateBasket(item){
     const countItems = parseInt(item.countItems);
     const user = auth.currentUser;
 
-    if (!user || !user.uid)  return { status: false, msg: "กรุณาเข้าสู่ระบบ" };
-    if (!item || !item.idDocs) return { status: false, msg: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" };
+    let textAlert = '';
+    let sumBasket = 0;
+    let newValueItem = {};
+
+    if (!user || !user.uid || !item || !item.idDocs) return { status: false, msg: "เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง" };
     if(!countItems || countItems < 0) return { status: false, msg: "จำนวนสินค้าไม่ถูกต้อง" };
 
     try {
@@ -127,14 +130,21 @@ export async function updateBasket(item){
 
             const getStockItems = await db.ref(`items/${item.id}`).once("value");
             const stockItems = getStockItems.val();
+            newValueItem = stockItems;
 
-            let sumBasket = 0;
+            if(stockItems.stockItems < 1) {
+                item.seller = newValueItem.seller
+                item.view = newValueItem.view
+                item.stockItems = newValueItem.stockItems
+                throw new Error("สินค้าหมด");
+            }
 
             if (stockItems.stockItems < countItems) {
-                item.stockItems = stockItems.stockItems;
-                throw new Error("จํานวนสินค้าเหลือเพียง " + stockItems.stockItems + " ชิ้น");
+                sumBasket = stockItems.stockItems;
+                textAlert = "จำนวนสินค้าเหลือเพียง " + stockItems.stockItems + " ชิ้น"
             } else if (stockItems.stockItems >= countItems) {
                 sumBasket = countItems;
+                textAlert = "อัพเดทสำเร็จ"
             } else {
                 throw new Error("เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง");
             }
@@ -146,7 +156,12 @@ export async function updateBasket(item){
                 }
             });
         });
-        return { status: true, msg: "อัพเดทสำเร็จ" };
+        item.countItems = sumBasket
+        item.seller = newValueItem.seller
+        item.view = newValueItem.view
+        item.stockItems = newValueItem.stockItems
+
+        return { status: true, msg: textAlert};
     } catch (error) {
         return { status: false, msg: error };
     }
