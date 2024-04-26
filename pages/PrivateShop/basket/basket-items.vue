@@ -67,6 +67,7 @@
                                         <input type="number" style="border: 1px solid rgb(171, 171, 171);                      
                                         width: 60px; text-align: end;
                                         border-radius: 5px;" class="text-center" v-model="item.countItems"
+                                            @focusin="previousCountItem = item.countItems"
                                             @focusout="updateBasketing(item)"></input>
                                     </div>
                                 </div>
@@ -92,6 +93,7 @@
                                     <input type="number" style="border: 1px solid rgb(171, 171, 171);                      
                                     width: 60px; text-align: end;
                                     border-radius: 5px;" class="text-center" v-model="item.countItems"
+                                        @focusin="previousCountItem = item.countItems"
                                         @focusout="updateBasketing(item)"></input>
                                 </div>
                             </v-card-actions>
@@ -129,7 +131,7 @@ export default {
             selectItemsAll: false,
             itemsAll: [],
             selectItems: [],
-            previousItem :[],
+            previousCountItem : 1,
         }
     },
     watch: {
@@ -256,7 +258,7 @@ export default {
                 this.$refs.AlertButtom.colorAlart = 'red'
                 this.$refs.AlertButtom.text = result.msg
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert-circle'
-                return item.countItems = 1
+                return item.countItems = this.previousCountItem
             }
         },
 
