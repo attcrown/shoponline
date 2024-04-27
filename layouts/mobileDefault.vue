@@ -16,7 +16,7 @@
                 <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">ตะกร้าสินค้า</p>
             </div>
             <div class="me-3">
-                <v-icon @click="$router.push('/')" color="white" size="24px">mdi-invoice-list</v-icon>
+                <v-icon @click="$router.push('/PrivateShop/store')" color="white" size="24px">mdi-invoice-list</v-icon>
                 <p style="margin-bottom: -8px; font-size: 12px; color:rgba(255, 255, 255, 0.754)">คลังของฉัน</p>
             </div>
             <div class="me-3">
