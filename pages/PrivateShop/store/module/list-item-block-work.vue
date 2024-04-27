@@ -17,7 +17,7 @@
                             color="success" small 
                             class="ms-4"
                             style="width: 88px;">
-                            WORKING {{dots}}
+                            WORKING{{dots}}
                         </v-chip>
                     </v-card-subtitle>
                     <v-card-text class="text-end">

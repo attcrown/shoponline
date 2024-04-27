@@ -2,7 +2,9 @@
     <div class="fontsStore">
         <div :class="!$store.state.deviceMode ? 'd-flex' : ''">
             <v-hover v-slot="{ hover }">
-                <v-card :elevation="hover ? 10 : 1"
+                <v-card :elevation="hover ? 10 : 
+                    showPriceAllShadow ? 10 : 1"
+                    :style="showPriceAllShadow ? 'outline: #388E3C solid 2px;' :''"
                     @click="showPriceAll()"                
                     class="rounded-xl m-3"
                     :class="!$store.state.deviceMode ? 'me-0' : ''"
@@ -27,7 +29,9 @@
                 :class="!$store.state.deviceMode ? 'ms-2' : ''" 
                 :style="!$store.state.deviceMode ? 'width: 100%;' : ''">
                 <v-hover v-slot="{ hover }">
-                    <v-card :elevation="hover ? 10 : 1"
+                    <v-card :elevation="hover ? 10 : 
+                        showBlockWorkShadow ? 10 : 1"
+                        :style="showBlockWorkShadow ? 'outline: #FFA726 solid 2px;' :''"
                         @click="showBlockWorking()"
                         class="rounded-xl"
                         :width="!$store.state.deviceMode ? '50%' : '54%'"                    
@@ -48,7 +52,9 @@
                     </v-card>
                 </v-hover>
                 <v-hover v-slot="{ hover }">
-                    <v-card :elevation="hover ? 10 : 1"
+                    <v-card :elevation="hover ? 10 : 
+                        showBlockStopShadow ? 10 : 1"
+                        :style="showBlockStopShadow ? 'outline: #E65100 solid 2px;' :''"
                         @click="showBlockStop()"
                         class="rounded-xl"
                         :width="!$store.state.deviceMode ? '49%' : '45%'"
@@ -80,7 +86,10 @@ export default {
         return {
             priceAll: 0 ,
             work: 0, 
-            close: 0
+            close: 0,
+            showPriceAllShadow: false,
+            showBlockWorkShadow: true,
+            showBlockStopShadow: false
         }
     },
     methods: {
@@ -89,12 +98,21 @@ export default {
         },
         showPriceAll(){
             EventBus.$emit('showPriceAll')
+            this.showPriceAllShadow = true
+            this.showBlockWorkShadow = false
+            this.showBlockStopShadow = false
         },
         showBlockWorking(){
             EventBus.$emit('showBlockWork')
+            this.showBlockWorkShadow = true
+            this.showBlockStopShadow = false
+            this.showPriceAllShadow = false
         },
         showBlockStop(){
             EventBus.$emit('showBlockStop')
+            this.showBlockStopShadow = true
+            this.showBlockWorkShadow = false
+            this.showPriceAllShadow = false
         }
     }
 
