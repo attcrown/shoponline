@@ -4,9 +4,9 @@
         <storeDashBoard ref="storeDashBoard"></storeDashBoard>
         <hr style="border: 2px solid #CFD8DC;" class="m-3">
         <!-- List Items Doing -->
-        <listItemBlockWork v-if="showBlockWork" ref="listItemBlockWorkRef"></listItemBlockWork>
-        <listItemBlockStop v-if="showBlockStop" ref="listItemBlockStopRef"></listItemBlockStop>
-        <priceItemsAll v-if="showPriceAll" ref="priceItemsAllRef"></priceItemsAll>
+        <listItemBlockWork v-show="showBlockWork" ref="listItemBlockWorkRef"></listItemBlockWork>
+        <listItemBlockStop v-show="showBlockStop" ref="listItemBlockStopRef"></listItemBlockStop>
+        <priceItemsAll v-show="showPriceAll" ref="priceItemsAllRef"></priceItemsAll>
     </div>
 </template>
 <script>
@@ -57,7 +57,7 @@ export default {
             this.$refs.storeDashBoard.work = 50
             this.$refs.storeDashBoard.close = 10
 
-            let items = [
+            let itemsWork = [
                 {
                     id : "EDti-1231sda-213",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
@@ -80,7 +80,18 @@ export default {
                     endAt : '2023-01-01 00:00:00'
                 },
             ]
-            this.$refs.listItemBlockWorkRef.items = items
+            this.$refs.listItemBlockWorkRef.items = itemsWork
+
+            let itemsStop = [
+                {
+                    id : "EDti-1231sda-213",
+                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
+                    count : 10,
+                    createdAt : '2021-01-01 00:00:00', 
+                    endAt : '2023-01-01 00:00:00'
+                }
+            ]
+            this.$refs.listItemBlockStopRef.items = itemsStop
 
             this.loading = false
         }
