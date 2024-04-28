@@ -4,9 +4,9 @@
         <storeDashBoard ref="storeDashBoard"></storeDashBoard>
         <hr style="border: 2px solid #CFD8DC;" class="m-3">
         <!-- List Items Doing -->
-        <listItemBlockWork v-if="showBlockWork" ref="listItemBlockWork"></listItemBlockWork>
-        <listItemBlockStop v-if="showBlockStop" ref="listItemBlockStop"></listItemBlockStop>
-        <priceItemsAll v-if="showPriceAll" ref="priceItemsAll"></priceItemsAll>
+        <listItemBlockWork v-if="showBlockWork" ref="listItemBlockWorkRef"></listItemBlockWork>
+        <listItemBlockStop v-if="showBlockStop" ref="listItemBlockStopRef"></listItemBlockStop>
+        <priceItemsAll v-if="showPriceAll" ref="priceItemsAllRef"></priceItemsAll>
     </div>
 </template>
 <script>
@@ -56,6 +56,31 @@ export default {
             this.$refs.storeDashBoard.priceAll = 234563.75
             this.$refs.storeDashBoard.work = 50
             this.$refs.storeDashBoard.close = 10
+
+            let items = [
+                {
+                    id : "EDti-1231sda-213",
+                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
+                    count : 10,
+                    createdAt : '2021-01-01 00:00:00', 
+                    endAt : '2023-01-01 00:00:00'
+                },
+                {
+                    id : "EDti-1231sda-21323asdawd",
+                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
+                    count : 25,
+                    createdAt : '2021-01-01 00:00:00', 
+                    endAt : '2023-01-01 00:00:00'
+                },
+                {
+                    id : "EDti-1231sda-21311-sdaa-aasdsd",
+                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
+                    count : 15,
+                    createdAt : '2021-01-01 00:00:00', 
+                    endAt : '2023-01-01 00:00:00'
+                },
+            ]
+            this.$refs.listItemBlockWorkRef.items = items
 
             this.loading = false
         }

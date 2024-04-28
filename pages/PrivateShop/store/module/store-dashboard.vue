@@ -3,7 +3,7 @@
         <div :class="!$store.state.deviceMode ? 'd-flex' : ''">
             <v-hover v-slot="{ hover }">
                 <v-card :elevation="hover ? 10 : 
-                    showPriceAllShadow ? 10 : 1"
+                    showPriceAllShadow ? 20 : 1"
                     :style="showPriceAllShadow ? 'outline: #388E3C solid 2px;' :''"
                     @click="showPriceAll()"                
                     class="rounded-xl m-3"
@@ -30,7 +30,7 @@
                 :style="!$store.state.deviceMode ? 'width: 100%;' : ''">
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 : 
-                        showBlockWorkShadow ? 10 : 1"
+                        showBlockWorkShadow ? 20 : 1"
                         :style="showBlockWorkShadow ? 'outline: #FFA726 solid 2px;' :''"
                         @click="showBlockWorking()"
                         class="rounded-xl"
@@ -53,7 +53,7 @@
                 </v-hover>
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 : 
-                        showBlockStopShadow ? 10 : 1"
+                        showBlockStopShadow ? 20 : 1"
                         :style="showBlockStopShadow ? 'outline: #E65100 solid 2px;' :''"
                         @click="showBlockStop()"
                         class="rounded-xl"
