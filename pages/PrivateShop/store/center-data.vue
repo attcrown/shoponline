@@ -16,6 +16,9 @@ import listItemBlockWork from './module/list-item-block-work.vue'
 import listItemBlockStop from './module/list-item-block-stop.vue'
 import priceItemsAll from './module/price-items-all.vue'
 import LoadingItem from '~/components/LoadingItem.vue'
+import { percenBlockWorking } from '~/services/store-service'
+import { formatDatetime } from '~/services/formatDatetime'
+
 export default {
     data() {
         return {
@@ -56,41 +59,66 @@ export default {
             this.$refs.storeDashBoard.priceAll = 234563.75
             this.$refs.storeDashBoard.work = 50
             this.$refs.storeDashBoard.close = 10
-
             let itemsWork = [
                 {
                     id : "EDti-1231sda-213",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
-                    count : 10,
-                    createdAt : '2021-01-01 00:00:00', 
-                    endAt : '2023-01-01 00:00:00'
+                    block : 10,
+                    createdAt : formatDatetime('2024-04-10', '12:00'),                    
+                    cost : 0.55,
+                    contract : 1095
                 },
                 {
                     id : "EDti-1231sda-21323asdawd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
-                    count : 25,
-                    createdAt : '2021-01-01 00:00:00', 
-                    endAt : '2023-01-01 00:00:00'
+                    block : 25,
+                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    cost : 0.55,
+                    contract : 1095
                 },
                 {
                     id : "EDti-1231sda-21311-sdaa-aasdsd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
-                    count : 15,
-                    createdAt : '2021-01-01 00:00:00', 
-                    endAt : '2023-01-01 00:00:00'
+                    block : 15,
+                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    cost : 0.55,
+                    contract : 1095
                 },
             ]
-            this.$refs.listItemBlockWorkRef.items = itemsWork
 
             let itemsStop = [
                 {
-                    id : "EDti-1231sda-213",
+                    id : "EDti-1231sda-21311-sdaa-aasdsd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
-                    count : 10,
-                    createdAt : '2021-01-01 00:00:00', 
-                    endAt : '2023-01-01 00:00:00'
-                }
+                    block : 15,
+                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    cost : 0.55,
+                    contract : 1095
+                },
+                {
+                    id : "EDti-1231sda-21311-sdaa-adsd",
+                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
+                    block : 15,
+                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    cost : 0.55,
+                    contract : 1095
+                },
             ]
+
+            // for(const x in itemsWork){
+            //     let result = await percenBlockWorking(itemsWork[x])
+            //     if(result.status){
+            //         itemsWork[x] = result
+            //     }
+            // }
+
+            // for(const x in itemsStop){
+            //     let result = await percenBlockWorking(itemsStop[x])
+            //     if(result.status){
+            //         itemsStop[x] = result
+            //     }
+            // }
+            this.$refs.listItemBlockWorkRef.items = itemsWork
             this.$refs.listItemBlockStopRef.items = itemsStop
 
             this.loading = false

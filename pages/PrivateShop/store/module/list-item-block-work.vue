@@ -7,7 +7,7 @@
                     <v-card-title style="color: #43A047">
                         {{ formatText(item.name) }}
                         <v-spacer></v-spacer>
-                        {{ item.count }} <span class="mdi mdi-box-shadow"></span>
+                        {{ item.block }} <span class="mdi mdi-box-shadow"></span>
                     </v-card-title>
                     <v-card-subtitle class="d-flex justify-space-between align-center">                        
                         <div>
@@ -37,7 +37,7 @@
                             </v-progress-circular>
                         </div>
                         <div class="text-end">
-                            เริ่มทำงาน {{ item.createdAt }} <br>
+                            เริ่มทำงาน {{ formatTimestampStore(item.createdAt) }} <br>
                             สิ้นสุดทำงาน {{ item.endAt }}
                         </div>                        
                     </v-card-text>
@@ -50,6 +50,7 @@
 <script>
 import AlertButtom from '~/components/AlertButtom.vue';
 import { formatText } from '~/services/format-number';
+import { formatTimestamp } from '~/services/formatDatetime';
 export default {
     data() {
         return {
@@ -85,6 +86,9 @@ export default {
             this.$refs.AlertButtom.colorAlart = 'success'
             this.$refs.AlertButtom.text = 'คัดลอก ID สําเร็จ'
             this.$refs.AlertButtom.icon = 'mdi mdi-check-circle-outline'
+        },
+        formatTimestampStore(timestamp) {
+            return formatTimestamp(timestamp)
         }
     }
 }

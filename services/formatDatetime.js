@@ -30,3 +30,10 @@ export function formatTimestamp(timestampSend) {
     const date = DateTime.fromMillis(timestamp.toMillis(),{zone: 'Asia/Bangkok'}).toFormat('dd/MM/yyyy HH:mm:ss');
     return date
 }
+
+export function formatTimestampFirebase(timestamp) {
+    const timestampFrom = timestamp
+    const milliseconds = timestampFrom.toMillis();
+    const dateTimeInBangkok = DateTime.fromMillis(milliseconds, { zone: 'Asia/Bangkok' });
+    return dateTimeInBangkok
+}
