@@ -66,7 +66,7 @@ export default {
                     block : 10,
                     createdAt : formatDatetime('2023-10-10', '12:00'),                    
                     cost : 0.55,
-                    contract : 900
+                    contract : 500
                 },
                 {
                     id : "EDti-1231sda-21323asdawd",
@@ -82,7 +82,7 @@ export default {
                     block : 15,
                     createdAt : formatDatetime('2023-12-10', '16:00'),
                     cost : 0.55,
-                    contract : 900
+                    contract : 700
                 },
             ]
 
@@ -106,7 +106,6 @@ export default {
             ]
 
             for(const x in itemsWork){
-                console.log(itemsWork[x])
                 let result = percenBlockWorking(itemsWork[x])
                 if(result.status){  
                     itemsWork[x] = result

@@ -38,8 +38,9 @@
                         </div>
                         <div class="text-end">
                             เริ่มทำงาน {{ formatTimestampStore(item.createdAt) }} <br>
-                            ทำงานไปแล้ว {{ item.checkStartToNowDay.days }}D {{ parseInt(item.checkStartToNowDay.hours) }}Hr. <br>
-                            สิ้นสุกการทำงานในอีก {{ item.farDay }} วัน
+                            ทำงานไปแล้ว {{ item.checkStartToNowDay.days }}Day
+                            {{ parseInt(item.checkStartToNowDay.hours) }}Hr. <br>
+                            สัญญา {{ item.contract }}Day
                         </div>                        
                     </v-card-text>
                 </v-card>
