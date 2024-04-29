@@ -4,7 +4,7 @@ export function percenBlockWorking(items) {
     const item = {...items}
     const nowDayTime = item.nowAt || checkDateNow() // ตรวจสอบวันที่ปัจจุบัน
 
-    const checkStartToNowDay = nowDayTime.diff(item.createAt, ['days','hours'])
+    const checkStartToNowDay = nowDayTime.diff(item.createdAt, ['days','hours'])
     const farDay = calcuateFarDay(checkStartToNowDay, item.contract)
     const profitNow = calcuateProfitNow(checkStartToNowDay ,item.cost ,item.block) 
     const profitAll = calcuateProfitAll(item.contract ,item.cost ,item.block)
@@ -24,7 +24,7 @@ export function percenBlockWorking(items) {
     if(!farDay && farDay != 0 || 
         !profitNow && profitNow != 0 || 
         !profitAll && profitAll != 0 || 
-        !percenStore && percenStore != 0) return {status:false}
+        !percenStore && percenStore != 0) return {...result ,status:false}
         
     return result;
 }

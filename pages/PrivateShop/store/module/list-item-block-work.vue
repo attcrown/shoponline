@@ -30,15 +30,16 @@
                                 :rotate="360"
                                 :size="100"
                                 :width="25"
-                                value="10"
+                                :value="item.percenStore"
                                 color="primary"
                                 >
-                                10%
+                                {{ item.percenStore }}%
                             </v-progress-circular>
                         </div>
                         <div class="text-end">
                             เริ่มทำงาน {{ formatTimestampStore(item.createdAt) }} <br>
-                            สิ้นสุดทำงาน {{ item.endAt }}
+                            ทำงานไปแล้ว {{ item.checkStartToNowDay.days }}D {{ parseInt(item.checkStartToNowDay.hours) }}Hr. <br>
+                            สิ้นสุกการทำงานในอีก {{ item.farDay }} วัน
                         </div>                        
                     </v-card-text>
                 </v-card>

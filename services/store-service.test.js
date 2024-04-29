@@ -6,7 +6,7 @@ import { formatDatetime} from "./formatDatetime";
 
 test("percenBlockWorking test1", () => {
     const item = {
-        createAt: formatDatetime('2024-04-23' ,'10:00'),
+        createdAt: formatDatetime('2024-04-23' ,'10:00'),
         nowAt: formatDatetime('2026-04-23' ,'10:00'),
         contract: 1095,
         cost : 0.55,
@@ -23,7 +23,7 @@ test("percenBlockWorking test1", () => {
 
 test("percenBlockWorking test2", () => {
     const item = {
-        createAt: formatDatetime('2024-04-23' ,'10:00'),
+        createdAt: formatDatetime('2024-04-23' ,'10:00'),
         nowAt: formatDatetime('2024-03-23' ,'10:00'),
         contract: 1095,
         cost : 0.55,
@@ -35,7 +35,7 @@ test("percenBlockWorking test2", () => {
 
 test("percenBlockWorking test3", () => {
     const item = {
-        createAt: formatDatetime('2024-04-20' ,'10:00'),
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
         nowAt: formatDatetime('2024-04-28' ,'10:00'),
         contract: 10,
         cost : 0.55,
@@ -52,7 +52,7 @@ test("percenBlockWorking test3", () => {
 
 test("percenBlockWorking test4", () => {
     const item = {
-        createAt: formatDatetime('2024-04-20' ,'10:00'),
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
         nowAt: formatDatetime('2024-04-28' ,'10:00'),
         contract: -60,
         cost : 0.55,
@@ -65,7 +65,7 @@ test("percenBlockWorking test4", () => {
 
 test("percenBlockWorking test5", () => {
     const item = {
-        createAt: formatDatetime('2024-04-20' ,'10:00'),
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
         nowAt: formatDatetime('2027-04-20' ,'09:00'),
         contract: 1095,
         cost : 0.55,
@@ -82,7 +82,7 @@ test("percenBlockWorking test5", () => {
 
 test("percenBlockWorking test6", () => {
     const item = {
-        createAt: formatDatetime('2024-04-20' ,'10:00'),
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
         nowAt: formatDatetime('2027-04-20' ,'09:00'),
         contract: -1095,
         cost : -0.55,

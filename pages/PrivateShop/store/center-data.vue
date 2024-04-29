@@ -64,15 +64,15 @@ export default {
                     id : "EDti-1231sda-213",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
                     block : 10,
-                    createdAt : formatDatetime('2024-04-10', '12:00'),                    
+                    createdAt : formatDatetime('2023-10-10', '12:00'),                    
                     cost : 0.55,
-                    contract : 1095
+                    contract : 900
                 },
                 {
                     id : "EDti-1231sda-21323asdawd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
                     block : 25,
-                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    createdAt : formatDatetime('2023-11-10', '15:00'),
                     cost : 0.55,
                     contract : 1095
                 },
@@ -80,9 +80,9 @@ export default {
                     id : "EDti-1231sda-21311-sdaa-aasdsd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
                     block : 15,
-                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    createdAt : formatDatetime('2023-12-10', '16:00'),
                     cost : 0.55,
-                    contract : 1095
+                    contract : 900
                 },
             ]
 
@@ -91,7 +91,7 @@ export default {
                     id : "EDti-1231sda-21311-sdaa-aasdsd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
                     block : 15,
-                    createdAt : formatDatetime('2024-04-10', '12:00'),
+                    createdAt : formatDatetime('2024-01-10', '12:00'),
                     cost : 0.55,
                     contract : 1095
                 },
@@ -105,19 +105,21 @@ export default {
                 },
             ]
 
-            // for(const x in itemsWork){
-            //     let result = await percenBlockWorking(itemsWork[x])
-            //     if(result.status){
-            //         itemsWork[x] = result
-            //     }
-            // }
+            for(const x in itemsWork){
+                console.log(itemsWork[x])
+                let result = percenBlockWorking(itemsWork[x])
+                if(result.status){  
+                    itemsWork[x] = result
+                }
+            }
 
-            // for(const x in itemsStop){
-            //     let result = await percenBlockWorking(itemsStop[x])
-            //     if(result.status){
-            //         itemsStop[x] = result
-            //     }
-            // }
+            for(const x in itemsStop){
+                let result = await percenBlockWorking(itemsStop[x])
+                if(result.status){
+                    itemsStop[x] = result
+                }
+            }
+
             this.$refs.listItemBlockWorkRef.items = itemsWork
             this.$refs.listItemBlockStopRef.items = itemsStop
 
