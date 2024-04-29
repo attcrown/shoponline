@@ -1,17 +1,16 @@
-import { checkDateNow} from './formatDatetime'
+import { checkDateNow , formatTimestampFirebase} from './formatDatetime'
 import { PRECEN_STORE } from './const'
 export function percenBlockWorking(items) {
     const item = {...items}
     const nowDayTime = item.nowAt || checkDateNow() // ตรวจสอบวันที่ปัจจุบัน
-
-    const checkStartToNowDay = nowDayTime.diff(item.createdAt, ['days','hours'])
+    const convertTimeStapFirebase = formatTimestampFirebase(item.createdAt)
+    const checkStartToNowDay = nowDayTime.diff(convertTimeStapFirebase, ['days','hours'])
     const farDay = calcuateFarDay(checkStartToNowDay, item.contract)
     const profitNow = calcuateProfitNow(checkStartToNowDay ,item.cost ,item.block) 
     const profitAll = calcuateProfitAll(item.contract ,item.cost ,item.block)
     const percenStore = calcuatePercenStore(checkStartToNowDay ,item.contract)
     
     const result = {
-        status : true,
         farDay : farDay,
         profitNow : profitNow,
         profitAll : profitAll,
@@ -21,19 +20,16 @@ export function percenBlockWorking(items) {
         ...item
     }
     
-    if(!farDay && farDay != 0 || 
-        !profitNow && profitNow != 0 || 
-        !profitAll && profitAll != 0 || 
-        !percenStore && percenStore != 0) return {...result ,status:false}
-        
-    return result;
+    if(farDay < 0 || profitNow < 0 || profitAll < 0 || percenStore < 0) {
+        return {...result ,status:false}
+    }
+    return {...result ,status:true};
 }
 
 function calcuateFarDay(dateNowToStart , contract) {
     if(!dateNowToStart || !contract) return null
     if(!dateNowToStart.days) return 0
     const result = parseInt(contract) - parseInt(dateNowToStart.days)
-    if(parseInt(result) < 0) return null
     return parseInt(result)
 }
 
@@ -48,23 +44,17 @@ function calcuateProfitNow(time , cost ,block) {
         sum += time.hours * parseFloat(cost)
     }
     const result = (sum*block).toFixed(2)
-
-    if(parseFloat(result) < 0) return null
     return parseFloat(result)
 }
 
 function calcuateProfitAll(contract , cost ,block) {
     if(!contract || !cost || !block) return null
     const result = (parseInt(contract) * 24 * parseFloat(cost) * block).toFixed(2)
-
-    if(parseFloat(result) < 0) return null
     return parseFloat(result)
 }
 
 function calcuatePercenStore(dateNowToStart, contract) {
     if(!dateNowToStart || !contract) return null
     const result = (parseInt(dateNowToStart.days) * PRECEN_STORE / parseInt(contract))
-    
-    if(parseInt(result) < 0) return null
     return parseInt(result)
 }

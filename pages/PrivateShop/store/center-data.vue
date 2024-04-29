@@ -56,17 +56,16 @@ export default {
     },
     methods: {
         async getDataStore() {
-            this.$refs.storeDashBoard.priceAll = 234563.75
-            this.$refs.storeDashBoard.work = 50
-            this.$refs.storeDashBoard.close = 10
-            let itemsWork = [
+            let itemsWork = []
+            let itemsStop = []
+            let items = [
                 {
                     id : "EDti-1231sda-213",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
                     block : 10,
-                    createdAt : formatDatetime('2023-10-10', '12:00'),                    
+                    createdAt : formatDatetime('2022-10-10', '12:00'),                    
                     cost : 0.55,
-                    contract : 500
+                    contract : 1095
                 },
                 {
                     id : "EDti-1231sda-21323asdawd",
@@ -82,47 +81,71 @@ export default {
                     block : 15,
                     createdAt : formatDatetime('2023-12-10', '16:00'),
                     cost : 0.55,
-                    contract : 700
+                    contract : 1095
                 },
-            ]
-
-            let itemsStop = [
                 {
-                    id : "EDti-1231sda-21311-sdaa-aasdsd",
+                    id : "EDti-1231da-1311-sdaa-aasdsd",
+                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
+                    block : 15,
+                    createdAt : formatDatetime('2024-01-10', '07:00'),
+                    cost : 0.55,
+                    contract : 30
+                },
+                {
+                    id : "EDti-1231sda-21311-sdasd",
                     name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
                     block : 15,
                     createdAt : formatDatetime('2024-01-10', '12:00'),
                     cost : 0.55,
-                    contract : 1095
-                },
-                {
-                    id : "EDti-1231sda-21311-sdaa-adsd",
-                    name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
-                    block : 15,
-                    createdAt : formatDatetime('2024-04-10', '12:00'),
-                    cost : 0.55,
-                    contract : 1095
+                    contract : 60
                 },
             ]
 
-            for(const x in itemsWork){
-                let result = percenBlockWorking(itemsWork[x])
+            for(const x in items){
+                let result = percenBlockWorking(items[x])
                 if(result.status){  
-                    itemsWork[x] = result
-                }
-            }
-
-            for(const x in itemsStop){
-                let result = await percenBlockWorking(itemsStop[x])
-                if(result.status){
-                    itemsStop[x] = result
+                    itemsWork.push(result)
+                }else{
+                    itemsStop.push(result)
                 }
             }
 
             this.$refs.listItemBlockWorkRef.items = itemsWork
             this.$refs.listItemBlockStopRef.items = itemsStop
 
+            this.$refs.storeDashBoard.priceAll = this.sumPriceCostAll(itemsWork ,itemsStop)
+            this.$refs.storeDashBoard.work = this.blockWork(itemsWork)
+            this.$refs.storeDashBoard.close = this.blockStop(itemsStop)
+
             this.loading = false
+        },
+        sumPriceCostAll(itemsWork , itemsStop){
+            const itemWork = itemsWork
+            const itemStop = itemsStop
+            let sum = 0
+            for(const x in itemWork){
+                sum += itemWork[x].profitNow
+            }
+            for(const x in itemStop){
+                sum += itemStop[x].profitAll
+            }
+            return sum
+        },
+        blockWork(itemsWork){
+            const block = itemsWork
+            let sum = 0
+            for(const x in block){
+                sum += block[x].block
+            }
+            return sum
+        },
+        blockStop(itemsStop){
+            const block = itemsStop
+            let sum = 0
+            for(const x in block){
+                sum += block[x].block
+            }
+            return sum
         }
     }
 }

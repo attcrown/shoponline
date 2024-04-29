@@ -36,7 +36,7 @@
                         </div>
                         <div class="text-end">
                             เริ่มทำงาน {{ formatTimestampStore(item.createdAt) }} <br>
-                            สิ้นสุดทำงาน {{ item.endAt }}
+                            สัญญา {{ item.contract }}Day
                         </div>                        
                     </v-card-text>
                 </v-card>

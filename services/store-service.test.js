@@ -92,3 +92,31 @@ test("percenBlockWorking test6", () => {
     expect(result.status).toBe(false)
 })
 
+test("percenBlockWorking test7", () => {
+    const item = {
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
+        nowAt: formatDatetime('2024-04-20' ,'10:00'),
+        contract: 10,
+        cost : 0.55,
+        block : 1
+    }
+    const result = percenBlockWorking(item)
+    expect(result.status).toBe(true)
+    expect(result.percenStore).toBe(0)
+    expect(result.farDay).toBe(0)
+    expect(result.profitNow).toBe(0)
+    expect(result.profitAll).toBe(132)
+    expect(result.checkStartToNowDay.days).toBe(0)
+})
+
+test("percenBlockWorking test8", () => {
+    const item = {
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
+        nowAt: formatDatetime('2024-04-10' ,'10:00'),
+        contract: 10,
+        cost : 0.55,
+        block : 1
+    }
+    const result = percenBlockWorking(item)
+    expect(result.status).toBe(false)
+})
