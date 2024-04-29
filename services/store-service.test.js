@@ -1,6 +1,7 @@
 import { test , expect } from "vitest";
 import { percenBlockWorking } from "./store-service";
 import { formatDatetime} from "./formatDatetime";
+import { PENDING , WORKING , STOP } from "./const";
 
 //formatTimestampFirebase(Timestamp.now())
 
@@ -13,7 +14,7 @@ test("percenBlockWorking test1", () => {
         block : 50
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(true)
+    expect(result.status).toBe(WORKING)
     expect(result.percenStore).toBe(66)
     expect(result.farDay).toBe(365)
     expect(result.profitNow).toBe(481800)
@@ -30,7 +31,7 @@ test("percenBlockWorking test2", () => {
         block : 50
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(false)
+    expect(result.status).toBe(PENDING)
 })
 
 test("percenBlockWorking test3", () => {
@@ -42,7 +43,7 @@ test("percenBlockWorking test3", () => {
         block : 50
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(true)
+    expect(result.status).toBe(WORKING)
     expect(result.percenStore).toBe(80)
     expect(result.farDay).toBe(2)
     expect(result.profitNow).toBe(5280)
@@ -59,7 +60,7 @@ test("percenBlockWorking test4", () => {
         block : 50
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(false)
+    expect(result.status).toBe(STOP)
 })
 
 
@@ -72,7 +73,7 @@ test("percenBlockWorking test5", () => {
         block : 50
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(true)
+    expect(result.status).toBe(WORKING)
     expect(result.percenStore).toBe(99)
     expect(result.farDay).toBe(1)
     expect(result.profitNow).toBe(722672.5)
@@ -89,7 +90,7 @@ test("percenBlockWorking test6", () => {
         block : -50
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(false)
+    expect(result.status).toBe(STOP)
 })
 
 test("percenBlockWorking test7", () => {
@@ -101,7 +102,7 @@ test("percenBlockWorking test7", () => {
         block : 1
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(true)
+    expect(result.status).toBe(WORKING)
     expect(result.percenStore).toBe(0)
     expect(result.farDay).toBe(0)
     expect(result.profitNow).toBe(0)
@@ -112,11 +113,24 @@ test("percenBlockWorking test7", () => {
 test("percenBlockWorking test8", () => {
     const item = {
         createdAt: formatDatetime('2024-04-20' ,'10:00'),
-        nowAt: formatDatetime('2024-04-10' ,'10:00'),
+        nowAt: formatDatetime('2024-04-10' ,'23:00'),
         contract: 10,
         cost : 0.55,
         block : 1
     }
     const result = percenBlockWorking(item)
-    expect(result.status).toBe(false)
+    expect(result.status).toBe(PENDING)
+})
+
+test("percenBlockWorking test8", () => {
+    const item = {
+        createdAt: formatDatetime('2024-04-20' ,'10:00'),
+        nowAt: formatDatetime('2024-01-10' ,'10:00'),
+        contract: 10,
+        cost : 0.55,
+        block : 1
+    }
+    const result = percenBlockWorking(item)
+    console.log(result)
+    expect(result.status).toBe(PENDING)
 })

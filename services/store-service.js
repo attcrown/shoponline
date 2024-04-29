@@ -1,5 +1,5 @@
 import { checkDateNow , formatTimestampFirebase} from './formatDatetime'
-import { PRECEN_STORE } from './const'
+import { PRECEN_STORE , PENDING , WORKING , STOP } from './const'
 export function percenBlockWorking(items) {
     const item = {...items}
     const nowDayTime = item.nowAt || checkDateNow() // ตรวจสอบวันที่ปัจจุบัน
@@ -19,11 +19,13 @@ export function percenBlockWorking(items) {
         nowDayTime : nowDayTime,
         ...item
     }
-    
+    if(checkStartToNowDay && (checkStartToNowDay.days < 0 || checkStartToNowDay.hours < 0)) {
+        return {...result ,status:PENDING}
+    }    
     if(farDay < 0 || profitNow < 0 || profitAll < 0 || percenStore < 0) {
-        return {...result ,status:false}
+        return {...result ,status:STOP}
     }
-    return {...result ,status:true};
+    return {...result ,status:WORKING};
 }
 
 function calcuateFarDay(dateNowToStart , contract) {

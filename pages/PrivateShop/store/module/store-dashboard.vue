@@ -8,13 +8,37 @@
                     @click="showPriceAll()"                
                     class="rounded-xl m-3"
                     :class="!$store.state.deviceMode ? 'me-0' : ''"
-                    :width="!$store.state.deviceMode ? '100%' : ''"
+                    :width="!$store.state.deviceMode ? '70%' : ''"
                     color="green lighten-4">
                     <v-card-title style="color: #388E3C;">
                         รายได้ทั้งหมด
                     </v-card-title>
                     <v-card-subtitle style="color: #388E3C;">
                         แสดงยอดรวมทั้งหมดที่คุณได้รับ
+                    </v-card-subtitle>
+                    <v-card-text 
+                        class="text-end"
+                        style="color: #388E3C;
+                        font-weight: bold;
+                        font-size: 20px;">
+                        {{ formatBathSend(priceAll) }} ฿
+                    </v-card-text>
+                </v-card>
+            </v-hover>
+            <v-hover v-slot="{ hover }">
+                <v-card :elevation="hover ? 10 : 
+                    showBlockPendShadow ? 20 : 1"
+                    :style="showBlockPendShadow ? 'outline: #388E3C solid 2px;' :''"
+                    @click="showBlockPend()"                
+                    class="rounded-xl m-3"
+                    :class="!$store.state.deviceMode ? 'me-0 ms-2' : ''"
+                    :width="!$store.state.deviceMode ? '30%' : ''"
+                    color="green lighten-4">
+                    <v-card-title style="color: #388E3C;">
+                        Block Pending
+                    </v-card-title>
+                    <v-card-subtitle style="color: #388E3C;">
+                        รอ Block ทำงาน
                     </v-card-subtitle>
                     <v-card-text 
                         class="text-end"
@@ -89,7 +113,8 @@ export default {
             close: 0,
             showPriceAllShadow: false,
             showBlockWorkShadow: true,
-            showBlockStopShadow: false
+            showBlockStopShadow: false,
+            showBlockPendShadow: false
         }
     },
     methods: {
@@ -113,6 +138,13 @@ export default {
             this.showBlockStopShadow = true
             this.showBlockWorkShadow = false
             this.showPriceAllShadow = false
+        },
+        showBlockPend(){
+            EventBus.$emit('showBlockPend')
+            this.showBlockStopShadow = false
+            this.showBlockWorkShadow = false
+            this.showPriceAllShadow = false
+
         }
     }
 
