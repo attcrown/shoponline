@@ -8,7 +8,7 @@
                     <v-card :elevation="hover ? 10 :
                         showPriceAllShadow ? 20 : 1" :style="showPriceAllShadow ? 'outline: #388E3C solid 2px;' : ''"
                         @click="showPriceAll()" class="rounded-xl" :class="!$store.state.deviceMode ? 'me-0' : ''"
-                        :width="!$store.state.deviceMode ? '50%' : '61%'" color="green lighten-4">
+                        :width="!$store.state.deviceMode ? '50%' : '55%'" color="green lighten-4">
                         <v-card-title style="color: #388E3C;">
                             รายได้ทั้งหมด
                         </v-card-title>
@@ -27,7 +27,7 @@
                         showBlockPendShadow ? 20 : 1" :style="showBlockPendShadow ? 'outline: #303F9F solid 2px;' : ''"
                         @click="showBlockPend()" class="rounded-xl"
                         :class="!$store.state.deviceMode ? 'me-0 ms-2' : ''"
-                        :width="!$store.state.deviceMode ? '49%' : '38%'" color="blue lighten-4">
+                        :width="!$store.state.deviceMode ? '49%' : '44%'" color="blue lighten-4">
                         <v-card-title style="color: #303F9F;">
                             {{ !$store.state.deviceMode ? 'Block Pending' : 'Pending' }}
                         </v-card-title>
