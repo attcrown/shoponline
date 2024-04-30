@@ -1,7 +1,7 @@
 <template>
     <div>
         <LoadingItem v-if="loading"></LoadingItem>
-        <storeDashBoard ref="storeDashBoard"></storeDashBoard>
+        <storeDashBoard ref="storeDashBoard"></storeDashBoard>        
         <hr style="border: 2px solid #CFD8DC;" class="m-3">
         <!-- List Items Doing -->
         <listItemBlockWork v-show="showBlockWork" ref="listItemBlockWorkRef"></listItemBlockWork>
@@ -147,6 +147,7 @@ export default {
             this.$refs.storeDashBoard.priceAll = this.sumPriceCostAll(itemsWork ,itemsStop)
             this.$refs.storeDashBoard.work = this.blockWork(itemsWork)
             this.$refs.storeDashBoard.close = this.blockStop(itemsStop)
+            this.$refs.storeDashBoard.pend = this.blockPend(itemsPend)
 
             this.loading = false
         },
@@ -174,6 +175,14 @@ export default {
             const block = itemsStop
             let sum = 0
             for(const x in block){
+                sum += block[x].block
+            }
+            return sum
+        },
+        blockPend(itemsPend){
+            const block = itemsPend
+            let sum = 0
+            for(const x in block){                
                 sum += block[x].block
             }
             return sum

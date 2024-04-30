@@ -4,7 +4,7 @@
             <v-col v-for="item in items" :key="item.id"
                 :cols="!$store.state.deviceMode ? 4 : 12">
                 <v-card class="rounded-xl mb-4">
-                    <v-card-title style="color: #BF360C">
+                    <v-card-title style="color: #303F9F">
                         {{ formatText(item.name) }}
                         <v-spacer></v-spacer>
                         {{ item.block }} <span class="mdi mdi-box-shadow"></span>
@@ -16,9 +16,9 @@
                                 <v-icon>mdi-content-copy</v-icon>
                             </v-btn>
                         </div>                        
-                        <v-chip label color="#BF360C" 
-                            dark small>
-                            STOP
+                        <v-chip label color="#303F9F" 
+                            dark small outlined>
+                            PENDING
                         </v-chip>
                     </v-card-subtitle>
                     <v-card-text 
@@ -28,10 +28,10 @@
                                 :rotate="360"
                                 :size="100"
                                 :width="25"
-                                value="100"
-                                color="#BF360C"
+                                value="0"
+                                color="#303F9F"
                                 >
-                                100%
+                                0%
                             </v-progress-circular>
                         </div>
                         <div class="text-end">
