@@ -1,14 +1,12 @@
 <template>
     <div class="fontsStore">
-        <div :class="!$store.state.deviceMode ? 'd-flex' : ''">
-            <div class="d-flex justify-space-between m-3" 
-                :class="!$store.state.deviceMode ? 'ms-2 me-0' : ''"
-                :style="!$store.state.deviceMode ? 'width: 100%;' : ''">
+        <v-row dense class="m-3" v-if="!$store.state.deviceMode" >
+            <v-col cols="12" md="3">
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 :
                         showPriceAllShadow ? 20 : 1" :style="showPriceAllShadow ? 'outline: #388E3C solid 2px;' : ''"
-                        @click="showPriceAll()" class="rounded-xl" :class="!$store.state.deviceMode ? 'me-0' : ''"
-                        :width="!$store.state.deviceMode ? '50%' : '55%'" color="green lighten-4">
+                        @click="showPriceAll()" class="rounded-xl me-0"
+                        color="green lighten-4">
                         <v-card-title style="color: #388E3C;">
                             รายได้ทั้งหมด
                         </v-card-title>
@@ -22,14 +20,14 @@
                         </v-card-text>
                     </v-card>
                 </v-hover>
+            </v-col>
+            <v-col cols="12" md="3">
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 :
                         showBlockPendShadow ? 20 : 1" :style="showBlockPendShadow ? 'outline: #303F9F solid 2px;' : ''"
-                        @click="showBlockPend()" class="rounded-xl"
-                        :class="!$store.state.deviceMode ? 'me-0 ms-2' : ''"
-                        :width="!$store.state.deviceMode ? '49%' : '44%'" color="blue lighten-4">
+                        @click="showBlockPend()" class="rounded-xl" color="blue lighten-4">
                         <v-card-title style="color: #303F9F;">
-                            {{ !$store.state.deviceMode ? 'Block Pending' : 'Pending' }}
+                            Block Pending
                         </v-card-title>
                         <v-card-subtitle style="color: #303F9F;">
                             รอ Block ทำงาน
@@ -37,21 +35,19 @@
                         <v-card-text class="text-end" style="color: #303F9F;
                         font-weight: bold;
                         font-size: 20px;">
-                            {{ pend }} <span class="mdi mdi-box-shadow"></span>
+                            {{ pend }} <span class="mdi mdi-help-box-multiple"></span>
                         </v-card-text>
                     </v-card>
                 </v-hover>
-            </div>
-
-            <div class="d-flex justify-space-between m-3" :class="!$store.state.deviceMode ? 'ms-2' : ''"
-                :style="!$store.state.deviceMode ? 'width: 100%;' : ''">
+            </v-col>
+            <v-col cols="12" md="3">
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 :
-                        showBlockWorkShadow ? 20 : 1" :style="showBlockWorkShadow ? 'outline: #FFA726 solid 2px;' : ''"
-                        @click="showBlockWorking()" class="rounded-xl" :width="!$store.state.deviceMode ? '50%' : '50%'"
-                        color="orange lighten-5">
+                        showBlockWorkShadow ? 20 : 1" 
+                        :style="showBlockWorkShadow ? 'outline: #FFA726 solid 2px;' : ''"
+                        @click="showBlockWorking()" class="rounded-xl" color="orange lighten-5">
                         <v-card-title style="color: #FFA726;">
-                            {{ !$store.state.deviceMode ? 'Block Working' : 'Working' }}
+                            Block Working
                         </v-card-title>
                         <v-card-subtitle style="color: #FFA726;">
                             Block ที่ทำงานอยู่
@@ -63,13 +59,15 @@
                         </v-card-text>
                     </v-card>
                 </v-hover>
+            </v-col>
+            <v-col cols="12" md="3">
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 :
                         showBlockStopShadow ? 20 : 1" :style="showBlockStopShadow ? 'outline: #E65100 solid 2px;' : ''"
-                        @click="showBlockStop()" class="rounded-xl" :width="!$store.state.deviceMode ? '49%' : '49%'"
+                        @click="showBlockStop()" class="rounded-xl"
                         color="deep-orange lighten-4">
                         <v-card-title style="color: #E65100;">
-                            {{ !$store.state.deviceMode ? 'Block Stop' : 'Stop' }}
+                            Block Stop
                         </v-card-title>
                         <v-card-subtitle style="color: #E65100;">
                             Block ที่หมดอายุ
@@ -81,6 +79,47 @@
                         </v-card-text>
                     </v-card>
                 </v-hover>
+            </v-col>
+        </v-row>
+
+        <div v-if="$store.state.deviceMode" style="background-color: white;">
+            <div class="d-flex justify-space-around align-center pt-4">
+                <v-btn large icon @click="showPriceAll()" :color="showPriceAllShadow ? '#388E3C' : ''">
+                    <v-icon>
+                        mdi-hand-coin
+                    </v-icon>
+                </v-btn>                
+                <v-btn large icon @click="showBlockPend()" :color="showBlockPendShadow ? '#303F9F' : ''">
+                    <v-icon>
+                        mdi-help-box-multiple
+                    </v-icon>
+                </v-btn>
+                <v-btn large icon @click="showBlockWorking()" :color="showBlockWorkShadow ? '#FFA726' : ''">
+                    <v-icon>
+                        mdi-box-shadow
+                    </v-icon>
+                </v-btn>
+                <v-btn large icon @click="showBlockStop()" :color="showBlockStopShadow ? '#E65100' : ''">
+                    <v-icon>
+                        mdi-package-variant-closed-remove
+                    </v-icon>
+                </v-btn>
+            </div>
+            <div v-if="showBlockWorkShadow" class="text-center mt-3" style="color: #FFA726;">
+                <h3>Block Working</h3> 
+                block ที่ทำงานอยู่ {{ work }} <span class="mdi mdi-box-shadow"></span>
+            </div>
+            <div v-if="showBlockStopShadow" class="text-center mt-3" style="color: #E65100;">
+                <h3>Block Stop</h3>
+                block ที่หมดอายุ {{ close }} <span class="mdi mdi-package-variant-closed-remove"></span>
+            </div>
+            <div v-if="showBlockPendShadow" class="text-center mt-3" style="color: #303F9F;">
+                <h3>Block Pending</h3>
+                block ที่รอทำงาน {{ pend }} <span class="mdi mdi-help-box-multiple"></span>
+            </div>
+            <div v-if="showPriceAllShadow" class="text-center mt-3" style="color: #388E3C;">
+                <h3>Price All</h3>
+                ราคาทั้งหมด {{ formatBathSend(priceAll) }} ฿
             </div>
         </div>
     </div>

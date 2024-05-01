@@ -7,7 +7,7 @@
                     <v-card-title style="color: #BF360C">
                         {{ formatText(item.name) }}
                         <v-spacer></v-spacer>
-                        {{ item.block }} <span class="mdi mdi-box-shadow"></span>
+                        {{ item.block }} <span class="mdi mdi-package-variant-closed-remove"></span>
                     </v-card-title>
                     <v-card-subtitle class="d-flex justify-space-between align-center">                        
                         <div>

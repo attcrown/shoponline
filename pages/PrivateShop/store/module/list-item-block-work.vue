@@ -37,8 +37,8 @@
                             </v-progress-circular>
                         </div>
                         <div class="text-end">
-                            เริ่มทำงาน {{ formatTimestampStore(item.createdAt) }} <br>
-                            ทำงานไปแล้ว {{ item.checkStartToNowDay.days }}Day
+                            ทำงานไปแล้ว <br>
+                            {{ item.checkStartToNowDay.days }}Day
                             {{ parseInt(item.checkStartToNowDay.hours) }}Hr. <br>
                             สัญญา {{ item.contract }}Day
                         </div>                        
