@@ -10,6 +10,12 @@ yarn-error.log*
 # Lock
 yarn.lock
 
+# firebase
+.firebase
+.firebaserc
+
+.editorconfig
+
 # Runtime data
 pids
 *.pid
