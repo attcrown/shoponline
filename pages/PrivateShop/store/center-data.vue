@@ -1,11 +1,11 @@
 <template>
     <div>
         <storeDashBoard ref="storeDashBoard"
-            :style="!$store.state.deviceMode ? '' : 
+            :style="!$store.state.deviceMode ? '' :
             'position: fixed; width: 100%; z-index: 100; top: 0;'">
-        </storeDashBoard>        
+        </storeDashBoard>
         <hr style="border: 2px solid #CFD8DC;"
-            :style="!$store.state.deviceMode ? '' : 'margin-top: 140px;'">      
+            :style="!$store.state.deviceMode ? '' : 'margin-top: 140px;'">
         <!-- List Items Doing -->
         <listItemBlockWork v-show="showBlockWork" ref="listItemBlockWorkRef"></listItemBlockWork>
         <listItemBlockStop v-show="showBlockStop" ref="listItemBlockStopRef"></listItemBlockStop>
@@ -26,7 +26,6 @@ import listItemBlockPend from './module/list-item-block-pend'
 import priceItemsAll from './module/price-items-all.vue'
 import LoadingItem from '~/components/LoadingItem.vue'
 import { percenBlockWorking } from '~/services/store-service'
-import { formatDatetime } from '~/services/formatDatetime'
 import { WORKING , STOP , PENDING } from '~/services/const'
 import { TESTDATASTORE } from '~/services/testData/constStore'
 
@@ -88,7 +87,7 @@ export default {
 
             for(const x in items){
                 let result = percenBlockWorking(items[x])
-                if(result.status === WORKING){  
+                if(result.status === WORKING){
                     itemsWork.push(result)
                 }else if(result.status === STOP){
                     itemsStop.push(result)
@@ -139,7 +138,7 @@ export default {
         blockPend(itemsPend){
             const block = itemsPend
             let sum = 0
-            for(const x in block){                
+            for(const x in block){
                 sum += block[x].block
             }
             return sum

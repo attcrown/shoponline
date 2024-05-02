@@ -2,22 +2,27 @@
     <div class="fontsStore">
         <v-row dense class="m-3" v-if="!$store.state.deviceMode" >
             <v-col cols="12" md="3">
-                <v-hover v-slot="{ hover }">
+                <v-hover v-slot="{ hover }" class="rounded-xl">
                     <v-card :elevation="hover ? 10 :
-                        showPriceAllShadow ? 20 : 1" :style="showPriceAllShadow ? 'outline: #388E3C solid 2px;' : ''"
+                        showPriceAllShadow ? 20 : 1"
+                        :style="showPriceAllShadow ? 'outline: #388E3C solid 2px;' : ''"
                         @click="showPriceAll()" class="rounded-xl me-0"
                         color="green lighten-4">
-                        <v-card-title style="color: #388E3C;">
-                            รายได้ทั้งหมด
-                        </v-card-title>
-                        <v-card-subtitle style="color: #388E3C;">
-                            แสดงยอดรวมทั้งหมด
-                        </v-card-subtitle>
-                        <v-card-text class="text-end" style="color: #388E3C;
-                        font-weight: bold;
-                        font-size: 20px;">
-                            {{ formatBathSend(priceAll) }} ฿
-                        </v-card-text>
+                        <v-img class="white--text align-end rounded-xl"
+                            max-height="125px" :src="require('~/assets/img-store/pigmoney1.jpg')"
+                            gradient="to bottom, rgba(200, 230, 201,0.8), rgba(200, 230, 201,0.8)">
+                            <v-card-title style="color: #388E3C;">
+                                รายได้ทั้งหมด
+                            </v-card-title>
+                            <v-card-subtitle style="color: #388E3C;">
+                                แสดงยอดรวมทั้งหมด
+                            </v-card-subtitle>
+                            <v-card-text class="text-end" style="color: #388E3C;
+                            font-weight: bold;
+                            font-size: 20px;">
+                                {{ formatBathSend(priceAll) }} ฿
+                            </v-card-text>
+                        </v-img>
                     </v-card>
                 </v-hover>
             </v-col>
@@ -26,37 +31,45 @@
                     <v-card :elevation="hover ? 10 :
                         showBlockPendShadow ? 20 : 1" :style="showBlockPendShadow ? 'outline: #303F9F solid 2px;' : ''"
                         @click="showBlockPend()" class="rounded-xl" color="blue lighten-4">
-                        <v-card-title style="color: #303F9F;">
-                            Block Pending
-                        </v-card-title>
-                        <v-card-subtitle style="color: #303F9F;">
-                            รอ Block ทำงาน
-                        </v-card-subtitle>
-                        <v-card-text class="text-end" style="color: #303F9F;
-                        font-weight: bold;
-                        font-size: 20px;">
-                            {{ pend }} <span class="mdi mdi-help-box-multiple"></span>
-                        </v-card-text>
+                        <v-img class="white--text align-end rounded-xl"
+                            max-height="125px" :src="require('~/assets/img-store/blockPend1.jpg')"
+                            gradient="to bottom, rgba(187, 222, 251,0.8), rgba(187, 222, 251,0.8)">
+                            <v-card-title style="color: #303F9F;">
+                                Block Pending
+                            </v-card-title>
+                            <v-card-subtitle style="color: #303F9F;">
+                                รอ Block ทำงาน
+                            </v-card-subtitle>
+                            <v-card-text class="text-end" style="color: #303F9F;
+                            font-weight: bold;
+                            font-size: 20px;">
+                                {{ pend }} <span class="mdi mdi-help-box-multiple"></span>
+                            </v-card-text>
+                        </v-img>
                     </v-card>
                 </v-hover>
             </v-col>
             <v-col cols="12" md="3">
                 <v-hover v-slot="{ hover }">
                     <v-card :elevation="hover ? 10 :
-                        showBlockWorkShadow ? 20 : 1" 
-                        :style="showBlockWorkShadow ? 'outline: #FFA726 solid 2px;' : ''"
+                        showBlockWorkShadow ? 20 : 1"
+                        :style="showBlockWorkShadow ? 'outline: #CF7C00 solid 2px;' : ''"
                         @click="showBlockWorking()" class="rounded-xl" color="orange lighten-5">
-                        <v-card-title style="color: #FFA726;">
-                            Block Working
-                        </v-card-title>
-                        <v-card-subtitle style="color: #FFA726;">
-                            Block ที่ทำงานอยู่
-                        </v-card-subtitle>
-                        <v-card-text class="text-end" style="color: #FFA726;
-                            font-weight: bold;
-                            font-size: 20px;">
-                            {{ work }} <span class="mdi mdi-box-shadow"></span>
-                        </v-card-text>
+                        <v-img class="white--text align-end rounded-xl"
+                            max-height="125px" :src="require('~/assets/img-store/blockWork1.jpg')"
+                            gradient="to bottom, rgba(255, 243, 224,0.8), rgba(255, 243, 224,0.8)">
+                            <v-card-title style="color: #CF7C00;">
+                                Block Working
+                            </v-card-title>
+                            <v-card-subtitle style="color: #CF7C00;">
+                                Block ที่ทำงานอยู่
+                            </v-card-subtitle>
+                            <v-card-text class="text-end" style="color: #CF7C00;
+                                font-weight: bold;
+                                font-size: 20px;">
+                                {{ work }} <span class="mdi mdi-box-shadow"></span>
+                            </v-card-text>
+                        </v-img>
                     </v-card>
                 </v-hover>
             </v-col>
@@ -66,17 +79,21 @@
                         showBlockStopShadow ? 20 : 1" :style="showBlockStopShadow ? 'outline: #E65100 solid 2px;' : ''"
                         @click="showBlockStop()" class="rounded-xl"
                         color="deep-orange lighten-4">
-                        <v-card-title style="color: #E65100;">
-                            Block Stop
-                        </v-card-title>
-                        <v-card-subtitle style="color: #E65100;">
-                            Block ที่หมดอายุ
-                        </v-card-subtitle>
-                        <v-card-text class="text-end" style="color: #E65100;
-                            font-weight: bold;
-                            font-size: 20px;">
-                            {{ close }} <span class="mdi mdi-package-variant-closed-remove"></span>
-                        </v-card-text>
+                        <v-img class="white--text align-end rounded-xl"
+                            max-height="125px" :src="require('~/assets/img-store/blockDown.jpg')"
+                            gradient="to bottom, rgba(255, 204, 188,0.8), rgba(255, 204, 188,0.8)">
+                            <v-card-title style="color: #E65100;">
+                                Block Stop
+                            </v-card-title>
+                            <v-card-subtitle style="color: #E65100;">
+                                Block ที่หมดอายุ
+                            </v-card-subtitle>
+                            <v-card-text class="text-end" style="color: #E65100;
+                                font-weight: bold;
+                                font-size: 20px;">
+                                {{ close }} <span class="mdi mdi-package-variant-closed-remove"></span>
+                            </v-card-text>
+                        </v-img>
                     </v-card>
                 </v-hover>
             </v-col>
