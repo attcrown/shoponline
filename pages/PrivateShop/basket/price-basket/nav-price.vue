@@ -13,7 +13,7 @@
                 <div v-if="$store.state.deviceMode">
                     {{ sumPrice }} ฿
                 </div>
-                <v-btn color="success" class="ps-3 ms-3" v-if="$store.state.deviceMode" 
+                <v-btn color="success" class="ps-3 ms-3" v-if="$store.state.deviceMode"
                     :disabled="sumPrice < 1" @click="sumPriceSelect()">
                     ชำระเงิน <v-icon>mdi mdi-cash</v-icon>
                 </v-btn>

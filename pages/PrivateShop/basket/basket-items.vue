@@ -7,7 +7,8 @@
                 </div>
                 <div v-if="itemsAll.length !== 0" style="margin-bottom: 100px;">
                     <div class="d-flex align-center justify-space-between">
-                        <v-checkbox v-model="selectItemsAll" @change="clickSelectAll()" label="เลือกทั้งหมด">
+                        <v-checkbox v-model="selectItemsAll" 
+                            @change="clickSelectAll()" label="เลือกทั้งหมด">
                         </v-checkbox>
                         <v-btn text color="error" class="px-0 ps-1" @click="deleteAll()">
                             ลบทั้งหมด <v-icon>mdi mdi-delete</v-icon>
@@ -16,10 +17,15 @@
                     <div v-for="(item, index) in itemsAll " :key="index">
                         <v-card class="p-0 mt-3 mb-5">
                             <v-card-title class="ps-3 p-0">
-                                <v-checkbox 
-                                    v-model="selectItems" 
+                                <v-checkbox
+                                    :disabled="item.countItems > item.stockItems"
+                                    v-model="selectItems"
                                     :value="item"
                                     :label="formatTextSize(item.name)"></v-checkbox>
+                                <div v-if="item.countItems > item.stockItems"
+                                    style="color: red; font-size: 11px">
+                                        &nbsp; จำนวนสินค้าเหลือ {{ item.stockItems }} ชิ้น
+                                </div>
                                 <v-spacer></v-spacer>
                                 <v-btn icon color="error" @click="deleteItem(item.idDocs)">
                                     <v-icon>mdi mdi-delete</v-icon>
@@ -137,7 +143,8 @@ export default {
     watch: {
         'selectItems': {
             handler: function () {
-                this.selectItems.length === this.itemsAll.length ? this.selectItemsAll = true : this.selectItemsAll = false
+                const filterItemAll = this.itemsAll.filter(item => item.countItems <= item.stockItems);
+                this.selectItemsAll = this.selectItems.length === filterItemAll.length;
                 this.sumPriceSelect()
             },
             deep: true
@@ -150,7 +157,7 @@ export default {
     methods: {
         clickSelectAll() {
             if (this.selectItemsAll) {
-                this.selectItems = this.itemsAll
+                this.selectItems = this.itemsAll.filter(item => item.countItems <= item.stockItems);
             } else {
                 this.selectItems = []
             }
@@ -231,8 +238,8 @@ export default {
 
         async getBasket() {
             const result = await getBasketAll()
-            this.itemsAll = result || [];
-            return
+            console.log(result)
+            return this.itemsAll = result || [];
         },
 
         formatTextSize(text) {
@@ -245,6 +252,8 @@ export default {
         },
 
         async updateBasketing(item) {
+            if(item.countItems === this.previousCountItem) return
+
             const result = await updateBasket(item)
             if (result.status) {
                 this.$refs.AlertButtom.snackbar = true
