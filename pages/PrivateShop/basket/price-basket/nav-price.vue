@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="fontsPublic pt-2"
+        <div class="fontsNavPrice pt-2"
             :style="!$store.state.deviceMode ?
                 'background-color: #0240aa; color: white; position: fixed; width: 100%; z-index: 100; bottom: 0;' :
                 'background-color: rgb(2, 64, 170,0.7); color: white; position: fixed; width: 100%; z-index: 100; bottom: 0; margin-bottom: 57px'">
@@ -30,11 +30,13 @@
             </div>
         </div>
         <AlertButtom ref="AlertButtom"></AlertButtom>
+        <confireOrder ref="confireOrderRef"></confireOrder>
     </div>
 </template>
 
 <script>
 import AlertButtom from '~/components/AlertButtom'
+import confireOrder from './confire-order.vue'
 export default {
     data() {
         return {
@@ -45,21 +47,30 @@ export default {
     methods: {
         sumPriceSelect() {
             if(this.selectItems.length > 0) {
-                this.$refs.AlertButtom.snackbar = true
-                this.$refs.AlertButtom.colorAlart = 'green'
-                this.$refs.AlertButtom.text = 'ชำระเงินเรียบร้อย'
-                this.$refs.AlertButtom.icon = 'mdi mdi-check'
+                this.$refs.confireOrderRef.dialog = true
+                this.$refs.confireOrderRef.items = this.selectItems
+                // this.$refs.AlertButtom.snackbar = true
+                // this.$refs.AlertButtom.colorAlart = 'green'
+                // this.$refs.AlertButtom.text = 'ชำระเงินเรียบร้อย'
+                // this.$refs.AlertButtom.icon = 'mdi mdi-check'
             }else{
                 this.$refs.AlertButtom.snackbar = true
                 this.$refs.AlertButtom.colorAlart = 'red'
                 this.$refs.AlertButtom.text = 'กรุณาเลือกสินค้าที่ต้องการชำระเงิน'
                 this.$refs.AlertButtom.icon = 'mdi mdi-alert'
             }
-            console.log(this.selectItems)
         }
     },
     components: {
-        AlertButtom
+        AlertButtom,
+        confireOrder
     }
 }
 </script>
+
+<style>
+.fontsNavPrice {
+    font-family: 'Prompt', sans-serif;
+    font-weight: 300;
+}
+</style>

@@ -1,8 +1,5 @@
-import { 
-    formatTimestamp ,
-    formatDatetime ,
-    checkDateNow
-} from './formatDatetime';
+import { formatDatetime ,checkDateNow } from './formatDatetime';
+import { PRECEN_STORE } from './const';
 
 export function priceCalculate(priceSend, discountSend ,countItemsSend) {
     var price = priceSend
@@ -19,7 +16,7 @@ export function priceCalculate(priceSend, discountSend ,countItemsSend) {
     if (!discount) return price * countItems
 
     discount = parseFloat(discount)
-    return (price * countItems) - (price * countItems) * (discount / 100)
+    return (price * countItems) - (price * countItems) * (discount / PRECEN_STORE)
 }
 
 export function unitCalculate(priceSend ,countItemsSend) {
