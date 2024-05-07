@@ -34,18 +34,20 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="error" outlined @click="dialog = false">
-                        ยกเลิกคำสั่งซื้อ
+                        ยกเลิก
                     </v-btn>
-                    <v-btn color="success" outlined @click="dialog = false">
-                        ชำระเรียบร้อย
+                    <v-btn color="success" outlined @click="showPayment() ,dialog = false">
+                        ยืนยัน
                     </v-btn>
                     <v-spacer></v-spacer>
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <payment ref="paymentRef"></payment>
     </div>
 </template>
 <script>
+import payment from './payment.vue';
 import { formatBath } from '~/services/format-number';
 import { priceCalculate ,unitCalculate ,dateCalculate } from '~/services/calculate-service.js'
 export default {
@@ -55,6 +57,9 @@ export default {
             items: [],
             sumPrice: 0
         }
+    },
+    components: {
+        payment
     },
     watch: {
         'items': {
@@ -81,6 +86,11 @@ export default {
                 console.log(this.sumPrice)
             }
             this.sumPrice = this.formatBathBasket(this.sumPrice)
+        },
+        showPayment() {
+            this.$refs.paymentRef.dialog = true
+            this.$refs.paymentRef.min = 3
+            this.$refs.paymentRef.seconds = 60
         }
     }
 }
