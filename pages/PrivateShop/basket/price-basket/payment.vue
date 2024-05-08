@@ -37,7 +37,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn @click="dialog = false">
+                    <v-btn @click="min = 0 , seconds = 0">
                         ยกเลิก
                     </v-btn>
                     <v-btn :disabled="img == null" color="success">
@@ -55,7 +55,7 @@ export default {
     data() {
         return {
             dialog: false,
-            min: 3,
+            min: 0,
             seconds: 0,
             img: null,
             generateImg: null
@@ -79,7 +79,7 @@ export default {
     methods: {
         settimeSeconds() {
             if (this.seconds === 0) {
-                if (this.min == 0) {
+                if (this.min === 0) {
                     this.dialog = false
                     return
                 } else {

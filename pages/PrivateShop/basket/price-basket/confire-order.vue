@@ -89,7 +89,7 @@ export default {
         },
         showPayment() {
             this.$refs.paymentRef.dialog = true
-            this.$refs.paymentRef.min = 3
+            this.$refs.paymentRef.min = 4
             this.$refs.paymentRef.seconds = 60
         }
     }
