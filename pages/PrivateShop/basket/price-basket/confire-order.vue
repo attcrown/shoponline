@@ -83,7 +83,6 @@ export default {
             for (const x in this.items) {
                 const data = this.items[x]
                 this.sumPrice = parseFloat(this.sumPrice) + parseFloat(this.checkDateDiscount(data))
-                console.log(this.sumPrice)
             }
             this.sumPrice = this.formatBathBasket(this.sumPrice)
         },
