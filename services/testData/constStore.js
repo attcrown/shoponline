@@ -4,25 +4,25 @@ export const TESTDATASTORE = [
         id : "EDti-1231sda-213",
         name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
         block : 10,
-        createdAt : formatDatetime('2022-10-10', '12:00'),                    
+        createdAt : formatDatetime('2024-10-10', '12:00'),                    
         cost : 0.55,
-        contract : 1095
+        contract : 300
     },
     {
         id : "EDti-1231sda-21323asdawd",
         name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
         block : 25,
-        createdAt : formatDatetime('2023-11-10', '15:00'),
+        createdAt : formatDatetime('2024-11-10', '15:00'),
         cost : 0.55,
-        contract : 1095
+        contract : 30
     },
     {
         id : "EDti-1231sda-21311-sdaa-aasdsd",
         name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
         block : 15,
-        createdAt : formatDatetime('2023-12-10', '16:00'),
+        createdAt : formatDatetime('2024-12-10', '16:00'),
         cost : 0.55,
-        contract : 1095
+        contract : 60
     },
     {
         id : "EDti-1231da-1311-sdaa-aasdsd",
@@ -52,9 +52,9 @@ export const TESTDATASTORE = [
         id : "EDti-1231sda-213233",
         name : 'Cymera-Photo Editor Camera Cymera-Photo Editor Camera',
         block : 10,
-        createdAt : formatDatetime('2022-10-10', '12:00'),                    
+        createdAt : formatDatetime('2024-10-10', '12:00'),                    
         cost : 0.55,
-        contract : 1095
+        contract : 95
     },
     {
         id : "Dti-1231sda-21323asdawd",
@@ -62,7 +62,7 @@ export const TESTDATASTORE = [
         block : 25,
         createdAt : formatDatetime('2023-11-10', '15:00'),
         cost : 0.55,
-        contract : 1095
+        contract : 400
     },
     {
         id : "Ei-1231sda-21311-sdaa-aasdsd",
@@ -70,7 +70,7 @@ export const TESTDATASTORE = [
         block : 15,
         createdAt : formatDatetime('2023-12-10', '16:00'),
         cost : 0.55,
-        contract : 1095
+        contract : 100
     },
     {
         id : "EDti-1231da-11-sdaa-aasdsd",
