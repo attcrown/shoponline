@@ -23,6 +23,6 @@ jobs:
         with:
             repoToken: "${{ secrets.GIT_ACTION_TOKEN }}"
             firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT }}"
-            projectId: goshop-9e571
+            projectId: mfec-1a5c5
             channelId: live
-            target: exchange-shop-th
+            target: mfec-itoms-op
