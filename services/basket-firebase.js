@@ -78,16 +78,22 @@ export async function getBasketAll() {
     const auth = firebase.auth();
     const dbDocs = firebase.firestore();
     const db = firebase.database();
-    
+
     try {
         let sumData = [];
         const user = auth.currentUser;
         const result = await dbDocs.collection('basket').doc(user.uid).get();
         if (!result.exists) return null
-        
+
         const data = result.data();
         for(const idDocs in data) {
             const item = await dbDocs.collection('items').doc(idDocs).get();
+
+            if(!item.exists) {
+                delBasket(idDocs);
+                continue
+            }
+
             let itemData = item.data();
 
             delete itemData.updatedAt;
@@ -109,7 +115,7 @@ export async function getBasketAll() {
 
 export async function updateBasket(item){
     const dbDocs = firebase.firestore();
-    const db = firebase.database();    
+    const db = firebase.database();
     const auth = firebase.auth();
 
     const countItems = parseInt(item.countItems);
