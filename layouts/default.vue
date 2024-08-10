@@ -21,11 +21,11 @@ export default {
         desktopDefault,
         mobileDefault
     },
-    mounted() {    
+    mounted() {
         this.checkMobile();
         window.addEventListener('resize', this.checkMobile);
     },
-    methods: {        
+    methods: {
         checkMobile() {
             this.deviceMode = window.innerWidth <= 1100; // ตั้งค่าให้เป็น mobile ถ้าขนาดน้อยกว่าหรือเท่ากับ 768 pixels
             this.$store.commit("SET_DEVICE", this.deviceMode);

@@ -1,24 +1,24 @@
 <template>
     <div>
-        PriceAll
-        <div style="width: 40%;">
-            <v-sparkline
-                :gradient="['#5EF7B7','#0CBB72']"
-                type="bar"
-                show-labels
-                :value="value"
-                :labels="valuelabels"
-            ></v-sparkline>
+        <div class="d-flex align-center justify-center">
+            <v-card class="p-5 rounded-xxl" elevation="4" :style="$store.state.deviceMode ? 'width: 100%;' : 'width: 60%;'">
+                <ChartLine></ChartLine>
+            </v-card>
         </div>
     </div>
 </template>
 <script>
+import ChartLine from '~/components/ChartLine.vue';
 export default {
     data() {
-        return {
-            value: [1, 2, 5, 9, 5, 10, 3, 5 ,20 ,13 ,15 ,18] ,
-            valuelabels: ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'] ,
-        }
+        return { }
     },
+    components: {
+        ChartLine
+    },
+    mounted() {
+
+    }
+
 }
 </script>
