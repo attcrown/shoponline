@@ -21,8 +21,11 @@ Vue.component("BarChart", {
         },
     },
     watch: {
-        data() {
-            this.renderChart(this.data, this.options);
+        data: {
+            handler() {
+                this.renderChart(this.data, this.options);
+            },
+            deep: true
         },
     },
     mounted() {

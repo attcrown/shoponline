@@ -1,7 +1,9 @@
 <template>
-    <div>
+    <div :class="$store.state.deviceMode ? '' : 'mx-3'">
         <div class="d-flex align-center justify-center">
-            <v-card class="p-5 rounded-xxl" elevation="4" :style="$store.state.deviceMode ? 'width: 100%;' : 'width: 60%;'">
+            <v-card elevation="4"
+                :class="$store.state.deviceMode ? '' : 'p-5 rounded-xxl'"
+                :style="$store.state.deviceMode ? 'width: 100%;' : 'width: 60%;'">
                 <ChartLine></ChartLine>
             </v-card>
         </div>

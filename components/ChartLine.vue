@@ -1,7 +1,7 @@
 <template>
     <div>
         <client-only>
-            <BarChart :data="chartData" :options="option" />
+            <BarChart :data="chartData" :options="options" />
         </client-only>
     </div>
 </template>
@@ -10,12 +10,17 @@
 export default {
     data() {
         return {
-            
+            chartData: null,
+            options: null,
         }
     },
-    computed: {
-        chartData() {
-            return {
+    created() {
+        this.setChartData()
+        this.setOptions()
+    },
+    methods: {
+        setChartData() {
+            this.chartData = {
                 labels: [1, 2, 3, 4, 5 ,6 ,7 ,8],
                 datasets: [
                     {
@@ -46,12 +51,12 @@ export default {
                 ],
             }
         },
-        option() {
-            return {
+        setOptions() {
+            this.options = {
                 responsive: true,
                 maintainAspectRatio: false
             }
         }
-    },
+    }
 }
 </script>
